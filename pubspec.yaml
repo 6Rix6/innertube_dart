@@ -1,0 +1,19 @@
+name: innertube_dart
+description: Dart port of YouTube Music InnerTube API client
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+# Add regular dependencies here.
+dependencies:
+  dio: ^5.4.0
+  json_annotation: ^4.8.1
+  crypto: ^3.0.3
+  logger: ^2.6.2
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  json_serializable: ^6.7.0
+  lints: ^6.0.0
+  test: ^1.25.6
