@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:innertube_dart/src/models/renderer/continuations.dart';
+import 'package:innertube_dart/src/utils/result.dart';
 import '../models/youtube_client.dart';
 import '../models/youtube_locale.dart';
 import '../models/body/browse_body.dart';
 import '../models/body/search_body.dart';
 import '../utils/utils.dart';
 
-/// Low-level InnerTube API client
+final _visitorRegex = RegExp(r"^Cg[t|s]");
+
 class InnerTube {
   late Dio _httpClient;
 
@@ -29,6 +33,48 @@ class InnerTube {
     _httpClient = _createClient();
   }
 
+  /// Must be called after creating an instance.
+  /// Automatically fetches visitorData if missing.
+  Future<void> initialize() async {
+    if (visitorData != null) return;
+
+    final result = await _fetchVisitorData();
+    result.when(
+      success: (value) {
+        visitorData = value;
+      },
+      error: (err) {
+        print("Failed to fetch visitorData: $err");
+      },
+    );
+  }
+
+  Future<Result<String>> _fetchVisitorData() async {
+    try {
+      final res = await Dio(
+        BaseOptions(responseType: ResponseType.plain),
+      ).get("https://music.youtube.com/sw.js_data");
+
+      if (res.statusCode != 200) {
+        return Result.error("HTTP ${res.statusCode}");
+      }
+
+      final raw = res.data.toString();
+      final trimmed = raw.substring(5);
+      final json = jsonDecode(trimmed);
+
+      final list = json[0][2] as List;
+      for (final item in list) {
+        if (item is String && _visitorRegex.hasMatch(item)) {
+          return Result.success(item);
+        }
+      }
+      return Result.error("VisitorData not found");
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
   String? get cookie => _cookie;
 
   set cookie(String? value) {
@@ -45,10 +91,8 @@ class InnerTube {
       ),
     );
 
-    // Add JSON parsing interceptor
     dio.options.contentType = Headers.jsonContentType;
     dio.options.responseType = ResponseType.json;
-
     return dio;
   }
 
@@ -80,7 +124,6 @@ class InnerTube {
     options.queryParameters['prettyPrint'] = 'false';
   }
 
-  /// Search API
   Future<Response> search(
     YouTubeClient client, {
     String? query,
@@ -114,12 +157,11 @@ class InnerTube {
     );
   }
 
-  /// Browse API
   Future<Response> browse(
     YouTubeClient client, {
     String? browseId,
     String? params,
-    String? continuation,
+    Continuations? continuation,
     bool setLogin = false,
   }) async {
     final options = Options();
@@ -137,10 +179,24 @@ class InnerTube {
       ),
       browseId: browseId,
       params: params,
-      continuation: continuation,
     );
 
-    return _httpClient.post('browse', data: body.toJson(), options: options);
+    final queryParams = <String, dynamic>{};
+    if (continuation != null && continuation.nextContinuationData != null) {
+      queryParams['ctoken'] = continuation.nextContinuationData!.continuation;
+      queryParams['continuation'] =
+          continuation.nextContinuationData!.continuation;
+      queryParams['type'] = 'next';
+      queryParams['itct'] =
+          continuation.nextContinuationData!.clickTrackingParams;
+    }
+
+    return _httpClient.post(
+      'browse',
+      data: body.toJson(),
+      options: options,
+      queryParameters: queryParams,
+    );
   }
 
   void close() {

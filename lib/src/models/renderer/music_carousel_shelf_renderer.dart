@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'runs.dart';
 import 'music_two_row_item_renderer.dart';
@@ -9,7 +10,7 @@ part 'music_carousel_shelf_renderer.g.dart';
 @JsonSerializable()
 class MusicCarouselShelfRenderer {
   final MusicCarouselShelfBasicHeaderRenderer? header;
-  final List<MusicTwoRowItemRendererContainer> contents;
+  final List<MusicCarouselShelfRendererContent> contents;
 
   const MusicCarouselShelfRenderer({this.header, required this.contents});
 
@@ -78,4 +79,22 @@ class ButtonRenderer {
       _$ButtonRendererFromJson(json);
 
   Map<String, dynamic> toJson() => _$ButtonRendererToJson(this);
+}
+
+@JsonSerializable()
+class MusicCarouselShelfRendererContent {
+  final MusicTwoRowItemRenderer? musicTwoRowItemRenderer;
+  final MusicResponsiveListItemRenderer? musicResponsiveListItemRenderer;
+
+  const MusicCarouselShelfRendererContent({
+    this.musicTwoRowItemRenderer,
+    this.musicResponsiveListItemRenderer,
+  });
+
+  factory MusicCarouselShelfRendererContent.fromJson(
+    Map<String, dynamic> json,
+  ) => _$MusicCarouselShelfRendererContentFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$MusicCarouselShelfRendererContentToJson(this);
 }

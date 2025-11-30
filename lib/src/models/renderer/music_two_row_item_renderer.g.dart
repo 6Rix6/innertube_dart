@@ -47,19 +47,3 @@ Map<String, dynamic> _$MusicTwoRowItemRendererToJson(
   'subtitleBadges': instance.subtitleBadges,
   'menu': instance.menu,
 };
-
-MusicTwoRowItemRendererContainer _$MusicTwoRowItemRendererContainerFromJson(
-  Map<String, dynamic> json,
-) => MusicTwoRowItemRendererContainer(
-  musicTwoRowItemRenderer: json['musicTwoRowItemRenderer'] == null
-      ? null
-      : MusicTwoRowItemRenderer.fromJson(
-          json['musicTwoRowItemRenderer'] as Map<String, dynamic>,
-        ),
-);
-
-Map<String, dynamic> _$MusicTwoRowItemRendererContainerToJson(
-  MusicTwoRowItemRendererContainer instance,
-) => <String, dynamic>{
-  'musicTwoRowItemRenderer': instance.musicTwoRowItemRenderer,
-};

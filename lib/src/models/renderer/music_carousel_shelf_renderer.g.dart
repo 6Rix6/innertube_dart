@@ -16,7 +16,7 @@ MusicCarouselShelfRenderer _$MusicCarouselShelfRendererFromJson(
         ),
   contents: (json['contents'] as List<dynamic>)
       .map(
-        (e) => MusicTwoRowItemRendererContainer.fromJson(
+        (e) => MusicCarouselShelfRendererContent.fromJson(
           e as Map<String, dynamic>,
         ),
       )
@@ -89,3 +89,26 @@ Map<String, dynamic> _$ButtonRendererToJson(ButtonRenderer instance) =>
       'navigationEndpoint': instance.navigationEndpoint,
       'trackingParams': instance.trackingParams,
     };
+
+MusicCarouselShelfRendererContent _$MusicCarouselShelfRendererContentFromJson(
+  Map<String, dynamic> json,
+) => MusicCarouselShelfRendererContent(
+  musicTwoRowItemRenderer: json['musicTwoRowItemRenderer'] == null
+      ? null
+      : MusicTwoRowItemRenderer.fromJson(
+          json['musicTwoRowItemRenderer'] as Map<String, dynamic>,
+        ),
+  musicResponsiveListItemRenderer:
+      json['musicResponsiveListItemRenderer'] == null
+      ? null
+      : MusicResponsiveListItemRenderer.fromJson(
+          json['musicResponsiveListItemRenderer'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$MusicCarouselShelfRendererContentToJson(
+  MusicCarouselShelfRendererContent instance,
+) => <String, dynamic>{
+  'musicTwoRowItemRenderer': instance.musicTwoRowItemRenderer,
+  'musicResponsiveListItemRenderer': instance.musicResponsiveListItemRenderer,
+};

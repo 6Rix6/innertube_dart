@@ -11,12 +11,14 @@ class BrowseResponse {
   final Map<String, dynamic>? contents;
   final Map<String, dynamic>? microformat;
   final Map<String, dynamic>? background;
+  final Map<String, dynamic>? continuationContents;
 
   const BrowseResponse({
     this.header,
     this.contents,
     this.microformat,
     this.background,
+    this.continuationContents,
   });
 
   factory BrowseResponse.fromJson(Map<String, dynamic> json) =>
@@ -113,5 +115,10 @@ class BrowseResponse {
 
     return sectionContents.first['musicResponsiveHeaderRenderer']
         as Map<String, dynamic>?;
+  }
+
+  @override
+  String toString() {
+    return 'BrowseResponse(header: $header, contents: $contents, microformat: $microformat, background: $background)';
   }
 }

@@ -1,4 +1,6 @@
+import 'package:innertube_dart/src/models/renderer/continuations.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
+import 'package:innertube_dart/src/pages/home_page.dart';
 
 import '../pages/album_page.dart';
 import '../pages/search_result.dart';
@@ -41,6 +43,10 @@ class YouTube {
       dataSyncId: dataSyncId,
       cookie: cookie,
     );
+  }
+
+  Future<void> initialize() async {
+    await _innerTube.initialize();
   }
 
   /// Search for content on YouTube Music
@@ -189,6 +195,35 @@ class YouTube {
       );
 
       return Result.success(artistPage);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  /// Get home feed
+  ///
+  /// Returns a Result containing HomePage or an error
+  Future<Result<HomePage>> home({Continuations? continuation}) async {
+    try {
+      // Call InnerTube browse API
+      final response = await _innerTube.browse(
+        YouTubeClient.webRemix,
+        browseId: continuation == null ? 'FEmusic_home' : null,
+        continuation: continuation,
+      );
+
+      // Parse response as BrowseResponse
+      final browseResponse = BrowseResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      // Parse HomePage
+      final homePage = HomePage.fromBrowseResponse(
+        browseResponse,
+        isContinuation: continuation != null,
+      );
+
+      return Result.success(homePage);
     } catch (e) {
       return Result.error(e);
     }

@@ -12,6 +12,8 @@ BrowseResponse _$BrowseResponseFromJson(Map<String, dynamic> json) =>
       contents: json['contents'] as Map<String, dynamic>?,
       microformat: json['microformat'] as Map<String, dynamic>?,
       background: json['background'] as Map<String, dynamic>?,
+      continuationContents:
+          json['continuationContents'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$BrowseResponseToJson(BrowseResponse instance) =>
@@ -20,4 +22,5 @@ Map<String, dynamic> _$BrowseResponseToJson(BrowseResponse instance) =>
       'contents': instance.contents,
       'microformat': instance.microformat,
       'background': instance.background,
+      'continuationContents': instance.continuationContents,
     };

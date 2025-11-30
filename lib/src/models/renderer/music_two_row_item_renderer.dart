@@ -51,18 +51,3 @@ class MusicTwoRowItemRenderer {
   bool get isArtist =>
       navigationEndpoint?.browseEndpoint?.pageType == 'MUSIC_PAGE_TYPE_ARTIST';
 }
-
-/// Container for MusicTwoRowItemRenderer
-@JsonSerializable()
-class MusicTwoRowItemRendererContainer {
-  final MusicTwoRowItemRenderer? musicTwoRowItemRenderer;
-
-  const MusicTwoRowItemRendererContainer({this.musicTwoRowItemRenderer});
-
-  factory MusicTwoRowItemRendererContainer.fromJson(
-    Map<String, dynamic> json,
-  ) => _$MusicTwoRowItemRendererContainerFromJson(json);
-
-  Map<String, dynamic> toJson() =>
-      _$MusicTwoRowItemRendererContainerToJson(this);
-}
