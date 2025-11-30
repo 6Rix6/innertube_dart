@@ -32,6 +32,9 @@ class YouTube {
   String? get cookie => _innerTube.cookie;
   set cookie(String? value) => _innerTube.cookie = value;
 
+  bool _isInitialized = false;
+  bool get isInitialized => _isInitialized;
+
   YouTube({
     YouTubeLocale locale = YouTubeLocale.defaultLocale,
     String? visitorData,
@@ -48,6 +51,13 @@ class YouTube {
 
   Future<void> initialize() async {
     await _innerTube.initialize();
+    _isInitialized = true;
+  }
+
+  Future<void> waitForInitialization() async {
+    while (!_isInitialized) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
   }
 
   /// Search for content on YouTube Music
