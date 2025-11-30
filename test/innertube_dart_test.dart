@@ -196,5 +196,24 @@ void main() {
       }
       expect(result2.isSuccess, isTrue);
     });
+
+    test('Player Api is working', () async {
+      final youtube = YouTube(
+        locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
+      );
+      await youtube.initialize();
+      final result = await youtube.player(
+        'dQw4w9WgXcQ',
+        client: YouTubeClient.android,
+      );
+      if (isDebug && result.isSuccess) {
+        print(result.value.playabilityStatus.status);
+        print(result.value.videoDetails?.title);
+        print(result.value.videoDetails?.author);
+        print(result.value.streamingData?.adaptiveFormats);
+        print(result.value.streamingData?.serverAbrStreamingUrl);
+      }
+      expect(result.isSuccess, isTrue);
+    });
   });
 }

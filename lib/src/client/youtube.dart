@@ -12,6 +12,7 @@ import '../models/youtube_locale.dart';
 import '../models/youtube_client.dart';
 import '../models/response/browse_response.dart';
 import '../models/response/search_response.dart';
+import '../models/response/player_response.dart';
 import '../models/renderer/music_item_renderer.dart';
 import 'innertube.dart';
 
@@ -224,6 +225,37 @@ class YouTube {
       );
 
       return Result.success(homePage);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  /// Get player response for a video
+  ///
+  /// [videoId] - Video ID
+  /// [playlistId] - Optional playlist ID
+  /// [client] - YouTube client to use (default: YouTubeClient.webRemix)
+  /// [signatureTimestamp] - Optional signature timestamp
+  /// Returns a Result containing PlayerResponse or an error
+  Future<Result<PlayerResponse>> player(
+    String videoId, {
+    String? playlistId,
+    YouTubeClient client = YouTubeClient.webRemix,
+    int? signatureTimestamp,
+  }) async {
+    try {
+      final response = await _innerTube.player(
+        client,
+        videoId: videoId,
+        playlistId: playlistId,
+        signatureTimestamp: signatureTimestamp,
+      );
+
+      final playerResponse = PlayerResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      return Result.success(playerResponse);
     } catch (e) {
       return Result.error(e);
     }

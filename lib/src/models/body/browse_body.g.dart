@@ -10,6 +10,7 @@ BrowseBody _$BrowseBodyFromJson(Map<String, dynamic> json) => BrowseBody(
   context: Context.fromJson(json['context'] as Map<String, dynamic>),
   browseId: json['browseId'] as String?,
   params: json['params'] as String?,
+  continuation: json['continuation'] as String?,
 );
 
 Map<String, dynamic> _$BrowseBodyToJson(BrowseBody instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$BrowseBodyToJson(BrowseBody instance) =>
       'context': instance.context,
       'browseId': instance.browseId,
       'params': instance.params,
+      'continuation': instance.continuation,
     };

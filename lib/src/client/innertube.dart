@@ -6,6 +6,7 @@ import '../models/youtube_client.dart';
 import '../models/youtube_locale.dart';
 import '../models/body/browse_body.dart';
 import '../models/body/search_body.dart';
+import '../models/body/player_body.dart';
 import '../utils/utils.dart';
 
 final _visitorRegex = RegExp(r"^Cg[t|s]");
@@ -197,6 +198,33 @@ class InnerTube {
       options: options,
       queryParameters: queryParams,
     );
+  }
+
+  /// Get player response for a video
+  Future<Response> player(
+    YouTubeClient client, {
+    required String videoId,
+    String? playlistId,
+    int? signatureTimestamp,
+  }) async {
+    final options = Options();
+    _ytClient(options.toRequestOptions(), client, setLogin: true);
+
+    final body = PlayerBody(
+      context: client.toContext(locale, visitorData, dataSyncId),
+      videoId: videoId,
+      playlistId: playlistId,
+      playbackContext:
+          (client.useSignatureTimestamp && signatureTimestamp != null)
+          ? PlaybackContext(
+              contentPlaybackContext: ContentPlaybackContext(
+                signatureTimestamp: signatureTimestamp,
+              ),
+            )
+          : null,
+    );
+
+    return _httpClient.post('player', data: body.toJson(), options: options);
   }
 
   void close() {
