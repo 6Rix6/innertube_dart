@@ -42,8 +42,6 @@ class _DemoAppState extends State<DemoApp> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   // Controllers and state
-  final TextEditingController _searchController = TextEditingController();
-  List<innertube.YTItem> _searchResults = [];
   bool _isLoading = false;
   String? _errorMessage;
   innertube.PlayerResponse? _currentPlayerResponse;
@@ -62,58 +60,15 @@ class _DemoAppState extends State<DemoApp> {
   /// It is recommended to use one instance throughout your application
   Future<void> _initializeYouTube() async {
     _youtube = innertube.YouTube(
-        cookie:
-            'YSC=G1kzae6sKZs; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; LOGIN_INFO=AFmmF2swRQIgV4tEUdOkpIx-2Cx2oDzczKXAnULdoBEDqqTTfOrQfaACIQDMMR6rUGMLxOKogaZ3fZTuiG0QMRQsO9zdtoe5q31flQ:QUQ3MjNmeUg3UDZmZUxEZU1PZHB3S3BqUGZOZkNCelJQaGh2ZGRfTHFPYU41czAwV0QzZHJsVHBaTXZUMmpIYnFKNnR5NkRNeG1mU0d1QnZiNVQ1NmdVaFNNTUxhSGo2X0hhSVV2Yk92dE44NldZemwxTDlEZkRQUE91Ml9IZVgwY0tRRE5uejduczB5cFVMRFpJRUdBVHRDNFl0UGVVRk1n; _gcl_au=1.1.976739750.1757334615; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; HSID=Ax-eno6m1GVFz020b; SSID=ApBq2XxuW5OTt2s2i; APISID=7wXeukWyAI3L4Gdu/Ar38BEB8JcKOdRbAE; SAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; __Secure-1PAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; __Secure-3PAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; SID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOe_bRo2GKmrVN-n9W2a8BP4wACgYKAXQSARYSFQHGX2MifebMXD_6gclfj3LmGXp7pBoVAUF8yKqwcrnufLTExWkz26MgTf9Q0076; __Secure-1PSID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOezRK9MzG9WlgF-XZm4Wa2RgACgYKAZgSARYSFQHGX2Miw5KX5eGy-5bcMrSPRGDQXhoVAUF8yKpWXyoexrrqqYOKP_Ajdpfv0076; __Secure-3PSID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOe29TJ2DnT0C5TbID8_RKKCAACgYKATsSARYSFQHGX2Mig8fAJaTu6UcMn_9embBLrBoVAUF8yKrETMvVuszxLgMfeGx5tkWH0076; PREF=tz=Asia.Tokyo&repeat=NONE&autoplay=true; __Secure-1PSIDTS=sidts-CjUBwQ9iIzr58evzBOYX2AZU9ozwg0y-3eZtYxpjZ-X6yOPE_0ncw28GZStiw-w35AZf06OaFBAA; __Secure-3PSIDTS=sidts-CjUBwQ9iIzr58evzBOYX2AZU9ozwg0y-3eZtYxpjZ-X6yOPE_0ncw28GZStiw-w35AZf06OaFBAA; __Secure-ROLLOUT_TOKEN=COGf8NzYz4D6DRCulr-61siPAxiEmuz24piRAw%3D%3D; SIDCC=AKEyXzVwOs8eLj6B5Ik-63FFIINE5jQetLCyYvR2g9EFNh60AoYhW3k_z0I4brUr7Euh92GE3MM; __Secure-1PSIDCC=AKEyXzWQNtmHCA7TCYFE8H6FTjgFx50CPZgQZXRg0mcu81aHOs6-elhPtjehFsYtNgD52veRlFk; __Secure-3PSIDCC=AKEyXzXX_Gp_3Fo6GwBO3vJASJAewkCNpnTPNohayihyIFOhdcrngpHmNgHBgUU0Uy7QG56i1a0',
         locale: const innertube.YouTubeLocale(gl: 'JP', hl: 'ja'));
     await _youtube.initialize();
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
     _audioPlayer.dispose();
     _youtube.dispose();
     super.dispose();
-  }
-
-  /// Search for music on YouTube Music
-  Future<void> _performSearch() async {
-    final query = _searchController.text.trim();
-    if (query.isEmpty) return;
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-      _searchResults = [];
-    });
-
-    try {
-      // Call search API with song filter
-      final result = await _youtube.search(
-        query,
-        innertube.SearchFilter.songs,
-      );
-
-      result.when(
-        success: (searchResult) {
-          setState(() {
-            _searchResults = searchResult.items;
-            _isLoading = false;
-          });
-        },
-        error: (error) {
-          setState(() {
-            _errorMessage = 'Search failed: $error';
-            _isLoading = false;
-          });
-        },
-      );
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Unexpected error: $e';
-        _isLoading = false;
-      });
-    }
   }
 
   /// Get player information and play audio
@@ -202,10 +157,6 @@ class _DemoAppState extends State<DemoApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('InnerTube Dart Demo'),
-      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -239,7 +190,7 @@ class _DemoAppState extends State<DemoApp> {
                 youtube: _youtube,
                 onPlay: _playVideo,
               ),
-              SearchPage(),
+              SearchPage(youtube: _youtube),
               PlayPage(),
             ],
           ),

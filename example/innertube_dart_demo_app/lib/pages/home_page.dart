@@ -78,15 +78,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : ListView.builder(
-            itemCount: sections.length,
-            itemBuilder: (context, index) {
-              final section = sections[index];
-              return SectionItem(section: section, onPlay: widget.onPlay);
-            },
-          );
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('InnerTube Dart Demo'),
+        ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: sections.length,
+                itemBuilder: (context, index) {
+                  final section = sections[index];
+                  return SectionItem(section: section, onPlay: widget.onPlay);
+                },
+              ));
   }
 }
 
