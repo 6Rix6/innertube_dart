@@ -49,11 +49,17 @@ class YouTube {
     );
   }
 
+  /// Initialize InnerTube
+  ///
+  /// Returns a Future that completes when initialization is complete
   Future<void> initialize() async {
     await _innerTube.initialize();
     _isInitialized = true;
   }
 
+  /// Wait for initialization to complete
+  ///
+  /// Returns a Future that completes when initialization is complete
   Future<void> waitForInitialization() async {
     while (!_isInitialized) {
       await Future.delayed(const Duration(milliseconds: 100));
