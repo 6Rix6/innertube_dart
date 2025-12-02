@@ -12,6 +12,7 @@ class BrowseResponse {
   final Map<String, dynamic>? microformat;
   final Map<String, dynamic>? background;
   final Map<String, dynamic>? continuationContents;
+  final String? trackingParams;
 
   const BrowseResponse({
     this.header,
@@ -19,6 +20,7 @@ class BrowseResponse {
     this.microformat,
     this.background,
     this.continuationContents,
+    this.trackingParams,
   });
 
   factory BrowseResponse.fromJson(Map<String, dynamic> json) =>

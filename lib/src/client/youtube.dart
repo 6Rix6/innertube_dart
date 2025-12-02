@@ -1,4 +1,4 @@
-import 'package:innertube_dart/src/models/renderer/continuations.dart';
+import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
 

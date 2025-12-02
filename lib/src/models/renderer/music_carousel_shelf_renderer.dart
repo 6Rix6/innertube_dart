@@ -1,8 +1,8 @@
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'runs.dart';
+import '../runs.dart';
 import 'music_two_row_item_renderer.dart';
-import 'navigation_endpoint.dart';
+import '../navigation_endpoint.dart';
 
 part 'music_carousel_shelf_renderer.g.dart';
 

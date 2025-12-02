@@ -1,4 +1,4 @@
-import 'package:innertube_dart/src/models/renderer/navigation_endpoint.dart';
+import 'package:innertube_dart/src/models/navigation_endpoint.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 

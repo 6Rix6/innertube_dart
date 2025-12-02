@@ -1,4 +1,4 @@
-import 'package:innertube_dart/src/models/renderer/continuations.dart';
+import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:innertube_dart/src/models/response/browse_response.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';

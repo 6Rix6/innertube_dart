@@ -8,7 +8,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   dio: ^5.4.0
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   crypto: ^3.0.3
   logger: ^2.6.2
 

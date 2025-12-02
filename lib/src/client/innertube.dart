@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:innertube_dart/src/models/renderer/continuations.dart';
+import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/utils/result.dart';
 import '../models/youtube_client.dart';
 import '../models/youtube_locale.dart';

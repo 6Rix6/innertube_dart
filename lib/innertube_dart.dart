@@ -13,7 +13,7 @@ export 'src/models/youtube_locale.dart';
 export 'src/models/youtube_client.dart';
 export 'src/models/response/player_response.dart';
 export 'src/models/section.dart';
-export 'src/models/renderer/continuations.dart';
+export 'src/models/continuations.dart';
 export 'src/pages/album_page.dart';
 export 'src/pages/search_result.dart';
 export 'src/pages/home_page.dart';

@@ -4,7 +4,7 @@ import '../models/artist.dart';
 import '../models/album.dart';
 import '../models/response/browse_response.dart';
 import '../models/renderer/music_item_renderer.dart';
-import '../models/renderer/runs.dart';
+import '../models/runs.dart';
 import '../utils/parse_time.dart';
 
 /// Represents a parsed playlist page with songs

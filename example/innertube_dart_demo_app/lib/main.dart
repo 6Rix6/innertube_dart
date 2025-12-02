@@ -42,10 +42,7 @@ class _DemoAppState extends State<DemoApp> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   // Controllers and state
-  bool _isLoading = false;
-  String? _errorMessage;
   innertube.PlayerResponse? _currentPlayerResponse;
-  String? _currentVideoId;
 
   // index of tab navigation
   int _currentPageIndex = 0;
@@ -73,12 +70,6 @@ class _DemoAppState extends State<DemoApp> {
 
   /// Get player information and play audio
   Future<void> _playVideo(String videoId) async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-      _currentVideoId = videoId;
-    });
-
     try {
       // Call player API to get streaming URLs
       final result = await _youtube.player(
@@ -91,11 +82,6 @@ class _DemoAppState extends State<DemoApp> {
         success: (playerResponse) async {
           // Check if video is playable
           if (playerResponse.playabilityStatus.status != 'OK') {
-            setState(() {
-              _errorMessage =
-                  'Cannot play: ${playerResponse.playabilityStatus.reason}';
-              _isLoading = false;
-            });
             return;
           }
 
@@ -109,10 +95,6 @@ class _DemoAppState extends State<DemoApp> {
               .toList();
 
           if (audioFormats == null || audioFormats.isEmpty) {
-            setState(() {
-              _errorMessage = 'No audio formats available';
-              _isLoading = false;
-            });
             return;
           }
 
@@ -124,23 +106,11 @@ class _DemoAppState extends State<DemoApp> {
           // Set URL and play
           await _audioPlayer.setUrl(bestFormat.url!);
           await _audioPlayer.play();
-
-          setState(() {
-            _isLoading = false;
-          });
         },
-        error: (error) {
-          setState(() {
-            _errorMessage = 'Player API failed: $error';
-            _isLoading = false;
-          });
-        },
+        error: (error) {},
       );
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Unexpected error: $e';
-        _isLoading = false;
-      });
+      setState(() {});
     }
   }
 
@@ -191,7 +161,7 @@ class _DemoAppState extends State<DemoApp> {
                 onPlay: _playVideo,
               ),
               SearchPage(youtube: _youtube),
-              PlayPage(),
+              const PlayPage(),
             ],
           ),
           // Now playing bar

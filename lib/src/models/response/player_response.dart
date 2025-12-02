@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../renderer/thumbnails.dart';
+import '../thumbnails.dart';
 
 part 'player_response.g.dart';
 
