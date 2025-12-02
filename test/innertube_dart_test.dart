@@ -2,8 +2,9 @@ import 'package:innertube_dart/innertube_dart.dart';
 import 'package:test/test.dart';
 
 const testCookie =
-    "YSC=fYpa1t-hHyM; VISITOR_INFO1_LIVE=IX9F3e5sllE; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgTg%3D%3D; _gcl_au=1.1.388645542.1764399384; __Secure-ROLLOUT_TOKEN=CNqG_IPG49Lv8wEQ7eTG8-OWkQMY6PvC9OOWkQM%3D; PREF=repeat=NONE; CONSISTENCY=AKreu9v9qfGi_GB2KuyGnpxOT23QcYcO2eke7hR7PwFAiE7n04K1H60Q1hH7OqOJJCklei09h0oYMl9cFz2J3hb7cRTs0XSsmXDC_wrzf736ALLfeA7oJh6aFLc-LzIQdg1uWDE78y7l5ay6dwU2DnU; __Secure-1PSIDTS=sidts-CjUBwQ9iI3XTUX6i5yx1pjGVDi6qoPC3EbMVd7WNBDs4F7i-spFLzmH4Gp5pJmGoChkoq_UQ0RAA; __Secure-3PSIDTS=sidts-CjUBwQ9iI3XTUX6i5yx1pjGVDi6qoPC3EbMVd7WNBDs4F7i-spFLzmH4Gp5pJmGoChkoq_UQ0RAA; HSID=AL7O48iPZAiM52uT4; SSID=AeOefivefAj81GdAc; APISID=kNcJkG870XaLwCT_/A8i_OpVThhewGFXaX; SAPISID=odriVyvt3p8Vu9vq/AtYMRT0GuzD4e9L5L; __Secure-1PAPISID=odriVyvt3p8Vu9vq/AtYMRT0GuzD4e9L5L; __Secure-3PAPISID=odriVyvt3p8Vu9vq/AtYMRT0GuzD4e9L5L; SID=g.a0004AiWBsMVc4618HGc4-0Azi8nJFEA-H_vpVVooli0KJ4vmm8rynskaZXDeNEjAJDdPZXpwAACgYKAbASARISFQHGX2MidtL_WqqgPs4QE8g7eodbrhoVAUF8yKr8oVvy6_wD_-0_CWlhklqz0076; __Secure-1PSID=g.a0004AiWBsMVc4618HGc4-0Azi8nJFEA-H_vpVVooli0KJ4vmm8rUOus9ifkG2VbjY4Ow7tKogACgYKASQSARISFQHGX2MiyTvUw3W1JasjLo3pt7DmohoVAUF8yKoeinVfTyClTlmNXHqlgy3w0076; __Secure-3PSID=g.a0004AiWBsMVc4618HGc4-0Azi8nJFEA-H_vpVVooli0KJ4vmm8rEJnj6sbWmHnMS0tEuED4_QACgYKASsSARISFQHGX2Mi5yEyQ4tXvU8rT0gtSUtayxoVAUF8yKo32x_vuBD45bxo2e_16uKf0076; LOGIN_INFO=AFmmF2swRQIhALKB2ylaXDL5h1A_qiuNkYNj6qazs-wbSnPhWdB1FIMdAiAvBCHeKf0zsv6JIydjKNsWkYgDrS48axz0O_8LBOIpOg:QUQ3MjNmeWpnRXJrVFZ4dk1oakRER2I4ZHduWS1WT1VfRmJnN3VFaktsZHZVeVpRNFNoUjVFQ0l6Zm43TkxzT0dRWDhoLTlLTkJ4dTgzSHN4YjBsNjZ5RUhEaEplYlZSVzFEOTQ0M0ViSm5sVTVNN01sMXNMNlFnTmdzZ3lRMjJZYTZYQThBMENqXzdubGdJelFZb2FSX0hfRWdKalktaFR3; SIDCC=AKEyXzXfsJrtWSjUMDetD1RTrPQRY-F1o_7pwNRiu_MBJwK4-mm2rQzrb6NVjW1uV46oszkH5g; __Secure-1PSIDCC=AKEyXzVCKOITk2BOnyaloGiIULP7U7QVebczWpKdsCZWca2A1gWPUf3CaD1fIdUTOLMlGXzghQ; __Secure-3PSIDCC=AKEyXzW4v9KhKrcE32uvGfu5pjBa5z5qI_Kt_ziO44VPk6SP4MogohkkTBbgSgFXYOhrUSlD; ST-1b=";
-const testVisitorData = "CgtiZFNwRFNrMHNlcyih2K_JBjIKCgJKUBIEGgAgVw%3D%3D";
+    "YSC=G1kzae6sKZs; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; _gcl_au=1.1.976739750.1757334615; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; PREF=tz=Asia.Tokyo&repeat=NONE&autoplay=true; __Secure-ROLLOUT_TOKEN=COGf8NzYz4D6DRCulr-61siPAxijkOjbqZ6RAw%3D%3D; __Secure-1PSIDTS=sidts-CjUBwQ9iI8SlRW7H6uTLeBYRtjU6N0Uef9HyCeB5S1ug1ZZ08MFqVnGn6yLzWMUn16lWpL5qDxAA; __Secure-3PSIDTS=sidts-CjUBwQ9iI8SlRW7H6uTLeBYRtjU6N0Uef9HyCeB5S1ug1ZZ08MFqVnGn6yLzWMUn16lWpL5qDxAA; HSID=AKOmeAZX5F_QQNqdb; SSID=AV0H5wbxllIJ87B-D; APISID=hYwgnby29OkaMzWf/ASeh8FQBMq5h_ibi5; SAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; __Secure-1PAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; __Secure-3PAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; SID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfvvNUixbdLYtC6_kVZJ84CgACgYKAdcSARYSFQHGX2MiD1lcE1tdVuveWaLoOxzmMxoVAUF8yKrYE_GpCH3b-2RqCc3zFYWf0076; __Secure-1PSID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfeeNS1BcwRw-5rk2fYnk8lgACgYKAUgSARYSFQHGX2MiUTajfpe1ixFVVagb5Fi2ghoVAUF8yKrh7uEey3SVVR7AB2IzuI0z0076; __Secure-3PSID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfOknm4uXkTp_dn3ldMccj1wACgYKAUMSARYSFQHGX2Mi0SLOkLOmb9fad7WOD37waBoVAUF8yKpdWKrsyBXeT4YY08K5ejBW0076; LOGIN_INFO=AFmmF2swRQIgJ3d437FbvYla8GC7tWUKH_6nzYDc2bxMYvxlu3nqzH0CIQCFXU6jReJYN6TFGJIQqEuRNVTJyvA_0OHHnGYoUAgZLw:QUQ3MjNmejZDbnhKVWgyZWtHcXJTcXNXT1gwU0k4cXRoQnZvMkFQM01DSFRqc3lvWl9rUlNPcFphclNJS0VIM05NTklRMU5pMUNLS2lfUmlBYlpQZ00tMGR0czFRV2dxWm15QnRsSVBVZVB5amwzRWJLXzU3UDRZR0dnNU9YTDhjc2NhTElMMWg5NEltTTZXNnRVa1FUUFo3LV9Ebk54bHZR; SIDCC=AKEyXzUQlT3d8DccvTNpymjy_DhB0mg4ChVMdTImTEzb7GEKCIeKfNVn2u2-XXnze9Ormfxjr7I; __Secure-1PSIDCC=AKEyXzVS6vrFoFzva_kGmUNCt8dd-opmkCH2rdT_eqWyM3QSyPIL8eEINqit67kym8Eg0fj_D5Y; __Secure-3PSIDCC=AKEyXzVagc72y8dkyAjldgEfXCOhSFtD0Mr1Sup0Swpno12EGc6aiqF5NYsA2n5CWAjl8WZ-sJo";
+const testVisitorData = "CgtiZFNwRFNrMHNlcyi0w7rJBjIKCgJKUBIEGgAgVw%3D%3D";
+const testDataSyncId = "114921521729099886596||";
 const isDebug = true;
 
 void main() {
@@ -163,8 +164,7 @@ void main() {
 
     test('Home Feed Api is working', () async {
       final youtube = YouTube(
-        // cookie: testCookie,
-        // visitorData: testVisitorData,
+        cookie: testCookie,
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
@@ -172,6 +172,11 @@ void main() {
       if (isDebug && result.isSuccess) {
         for (var section in result.value.sections) {
           print(section);
+          if (section.items != null) {
+            for (var item in section.items!) {
+              print(item);
+            }
+          }
         }
       }
       expect(result.isSuccess, isTrue);
@@ -214,6 +219,19 @@ void main() {
         print(result.value.streamingData?.serverAbrStreamingUrl);
       }
       expect(result.isSuccess, isTrue);
+    });
+
+    test('Account Info Api is working', () async {
+      final youtube = YouTube(
+        cookie: testCookie,
+        // visitorData: testVisitorData,
+        // dataSyncId: testDataSyncId,
+        locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
+      );
+      await youtube.initialize();
+      // see console
+      await youtube.accountInfo(client: YouTubeClient.webRemix);
+      expect(true, isTrue);
     });
   });
 }

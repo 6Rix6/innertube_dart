@@ -48,8 +48,9 @@ class YouTubeClient {
   /// Convert to Context for API requests
   Context toContext(
     YouTubeLocale locale,
-    String? visitorData,
+    // String? visitorData,
     String? dataSyncId,
+    SessionContext? sessionContext,
   ) {
     return Context(
       client: ContextClient(
@@ -62,7 +63,11 @@ class YouTubeClient {
         androidSdkVersion: androidSdkVersion,
         gl: locale.gl,
         hl: locale.hl,
-        visitorData: visitorData,
+        visitorData: sessionContext?.visitorData,
+        remoteHost: sessionContext?.remoteHost,
+        appInstallData: sessionContext?.appInstallData,
+        deviceExperimentId: sessionContext?.deviceExperimentId,
+        rolloutToken: sessionContext?.rolloutToken,
       ),
       user: loginSupported
           ? ContextUser(onBehalfOfUser: dataSyncId)
@@ -92,7 +97,7 @@ class YouTubeClient {
 
   static const webRemix = YouTubeClient(
     clientName: 'WEB_REMIX',
-    clientVersion: '1.20250310.01.00',
+    clientVersion: '1.20251125.01.00',
     clientId: '67',
     userAgent: userAgentWeb,
     loginSupported: true,

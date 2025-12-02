@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'dart:math' as math;
 
 /// Parse cookie string into a map
 Map<String, String> parseCookieString(String? cookie) {
@@ -31,4 +32,12 @@ String sha1Hash(String input) {
   final bytes = utf8.encode(input);
   final digest = sha1.convert(bytes);
   return digest.toString();
+}
+
+String generateRandomString(int length) {
+  const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  final rand = math.Random.secure();
+
+  return List.generate(length, (_) => chars[rand.nextInt(chars.length)]).join();
 }

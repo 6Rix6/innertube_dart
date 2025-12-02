@@ -36,6 +36,10 @@ class ContextClient {
   final String gl;
   final String hl;
   final String? visitorData;
+  final String? remoteHost;
+  final String? appInstallData;
+  final String? deviceExperimentId;
+  final String? rolloutToken;
 
   const ContextClient({
     required this.clientName,
@@ -48,6 +52,10 @@ class ContextClient {
     required this.gl,
     required this.hl,
     this.visitorData,
+    this.remoteHost,
+    this.appInstallData,
+    this.deviceExperimentId,
+    this.rolloutToken,
   });
 
   factory ContextClient.fromJson(Map<String, dynamic> json) =>
@@ -91,4 +99,27 @@ class ContextUser {
   factory ContextUser.fromJson(Map<String, dynamic> json) =>
       _$ContextUserFromJson(json);
   Map<String, dynamic> toJson() => _$ContextUserToJson(this);
+}
+
+@JsonSerializable()
+class SessionContext {
+  final String? remoteHost;
+  final String? visitorData;
+  final String? appInstallData;
+  final String? deviceExperimentId;
+  final String? rolloutToken;
+  final String? apiKey;
+
+  const SessionContext({
+    this.remoteHost,
+    this.visitorData,
+    this.appInstallData,
+    this.deviceExperimentId,
+    this.rolloutToken,
+    this.apiKey,
+  });
+
+  factory SessionContext.fromJson(Map<String, dynamic> json) =>
+      _$SessionContextFromJson(json);
+  Map<String, dynamic> toJson() => _$SessionContextToJson(this);
 }

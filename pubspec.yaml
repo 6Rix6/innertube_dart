@@ -5,12 +5,12 @@ version: 0.1.0
 environment:
   sdk: ^3.10.0
 
-# Add regular dependencies here.
 dependencies:
   dio: ^5.4.0
   json_annotation: ^4.9.0
   crypto: ^3.0.3
   logger: ^2.6.2
+  protobuf: ^6.0.0
 
 dev_dependencies:
   build_runner: ^2.4.0

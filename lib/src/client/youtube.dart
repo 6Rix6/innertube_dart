@@ -40,12 +40,14 @@ class YouTube {
     String? visitorData,
     String? dataSyncId,
     String? cookie,
+    int accountIndex = 0,
   }) {
     _innerTube = InnerTube(
       locale: locale,
       visitorData: visitorData,
       dataSyncId: dataSyncId,
       cookie: cookie,
+      accountIndex: accountIndex,
     );
   }
 
@@ -53,6 +55,7 @@ class YouTube {
   ///
   /// Returns a Future that completes when initialization is complete
   Future<void> initialize() async {
+    if (_isInitialized) return;
     await _innerTube.initialize();
     _isInitialized = true;
   }
@@ -272,6 +275,19 @@ class YouTube {
       );
 
       return Result.success(playerResponse);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  Future<Result<void>> accountInfo({
+    YouTubeClient client = YouTubeClient.webRemix,
+  }) async {
+    try {
+      final response = await _innerTube.accountMenu(client);
+      print(response.data);
+
+      return Result.success(null);
     } catch (e) {
       return Result.error(e);
     }

@@ -38,6 +38,10 @@ ContextClient _$ContextClientFromJson(Map<String, dynamic> json) =>
       gl: json['gl'] as String,
       hl: json['hl'] as String,
       visitorData: json['visitorData'] as String?,
+      remoteHost: json['remoteHost'] as String?,
+      appInstallData: json['appInstallData'] as String?,
+      deviceExperimentId: json['deviceExperimentId'] as String?,
+      rolloutToken: json['rolloutToken'] as String?,
     );
 
 Map<String, dynamic> _$ContextClientToJson(ContextClient instance) =>
@@ -52,6 +56,10 @@ Map<String, dynamic> _$ContextClientToJson(ContextClient instance) =>
       'gl': instance.gl,
       'hl': instance.hl,
       'visitorData': instance.visitorData,
+      'remoteHost': instance.remoteHost,
+      'appInstallData': instance.appInstallData,
+      'deviceExperimentId': instance.deviceExperimentId,
+      'rolloutToken': instance.rolloutToken,
     };
 
 ThirdParty _$ThirdPartyFromJson(Map<String, dynamic> json) =>
@@ -85,4 +93,24 @@ Map<String, dynamic> _$ContextUserToJson(ContextUser instance) =>
     <String, dynamic>{
       'lockedSafetyMode': instance.lockedSafetyMode,
       'onBehalfOfUser': instance.onBehalfOfUser,
+    };
+
+SessionContext _$SessionContextFromJson(Map<String, dynamic> json) =>
+    SessionContext(
+      remoteHost: json['remoteHost'] as String?,
+      visitorData: json['visitorData'] as String?,
+      appInstallData: json['appInstallData'] as String?,
+      deviceExperimentId: json['deviceExperimentId'] as String?,
+      rolloutToken: json['rolloutToken'] as String?,
+      apiKey: json['apiKey'] as String?,
+    );
+
+Map<String, dynamic> _$SessionContextToJson(SessionContext instance) =>
+    <String, dynamic>{
+      'remoteHost': instance.remoteHost,
+      'visitorData': instance.visitorData,
+      'appInstallData': instance.appInstallData,
+      'deviceExperimentId': instance.deviceExperimentId,
+      'rolloutToken': instance.rolloutToken,
+      'apiKey': instance.apiKey,
     };

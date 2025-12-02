@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:innertube_dart/src/models/body/account_body.dart';
+import 'package:innertube_dart/src/models/context.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/utils/result.dart';
 import '../models/youtube_client.dart';
@@ -9,22 +11,25 @@ import '../models/body/search_body.dart';
 import '../models/body/player_body.dart';
 import '../utils/utils.dart';
 
-final _visitorRegex = RegExp(r"^Cg[t|s]");
-
 class InnerTube {
   late Dio _httpClient;
 
   YouTubeLocale locale;
   String? visitorData;
   String? dataSyncId;
-  String? _cookie;
+  int accountIndex = 0;
   Map<String, String> _cookieMap = {};
   bool useLoginForBrowse = false;
+  SessionContext sessionContext = SessionContext();
+
+  String? _cookie;
+  String? get cookie => _cookie;
 
   InnerTube({
     this.locale = YouTubeLocale.defaultLocale,
     this.visitorData,
     this.dataSyncId,
+    this.accountIndex = 0,
     String? cookie,
   }) {
     _cookie = cookie;
@@ -35,48 +40,63 @@ class InnerTube {
   }
 
   /// Must be called after creating an instance.
-  /// Automatically fetches visitorData if missing.
   Future<void> initialize() async {
-    if (visitorData != null) return;
-
-    final result = await _fetchVisitorData();
+    final result = await _initSessionContext();
     result.when(
       success: (value) {
-        visitorData = value;
+        sessionContext = value;
       },
       error: (err) {
+        // TODO: Handle error
         print("Failed to fetch visitorData: $err");
       },
     );
   }
 
-  Future<Result<String>> _fetchVisitorData() async {
+  Future<Result<SessionContext>> _initSessionContext() async {
+    final visitorId = generateRandomString(11);
     try {
       final res = await Dio(
-        BaseOptions(responseType: ResponseType.plain),
+        BaseOptions(
+          responseType: ResponseType.plain,
+          headers: {
+            'Accept-Language': locale.hl,
+            'User-Agent': YouTubeClient.webRemix.userAgent,
+            'Accept': '*/*',
+            'Referer': 'https://music.youtube.com/sw.js',
+            'Cookie': 'VISITOR_INFO1_LIVE=$visitorId',
+          },
+        ),
       ).get("https://music.youtube.com/sw.js_data");
 
       if (res.statusCode != 200) {
         return Result.error("HTTP ${res.statusCode}");
       }
 
-      final raw = res.data.toString();
-      final trimmed = raw.substring(5);
-      final json = jsonDecode(trimmed);
+      final text = res.data.toString();
+      final cleaned = text.replaceFirst(RegExp(r"^\)\]\}'"), "");
+      final data = jsonDecode(cleaned);
 
-      final list = json[0][2] as List;
-      for (final item in list) {
-        if (item is String && _visitorRegex.hasMatch(item)) {
-          return Result.success(item);
-        }
-      }
-      return Result.error("VisitorData not found");
+      final ytcfg = data[0][2];
+      final deviceInfo = ytcfg[0][0];
+      final apiKey = ytcfg[1];
+      final configInfo = deviceInfo[61];
+      final appInstallData = configInfo[configInfo.length - 1];
+
+      return Result.success(
+        SessionContext(
+          remoteHost: deviceInfo[3],
+          visitorData: visitorData ?? deviceInfo[13],
+          appInstallData: appInstallData,
+          deviceExperimentId: deviceInfo[103],
+          rolloutToken: deviceInfo[107],
+          apiKey: apiKey,
+        ),
+      );
     } catch (e) {
       return Result.error(e);
     }
   }
-
-  String? get cookie => _cookie;
 
   set cookie(String? value) {
     _cookie = value;
@@ -102,12 +122,13 @@ class InnerTube {
     YouTubeClient client, {
     bool setLogin = false,
   }) {
-    options.headers['X-Goog-Api-Format-Version'] = '1';
+    options.headers['X-Goog-Api-Format-Version'] = '2';
     options.headers['X-YouTube-Client-Name'] = client.clientId;
     options.headers['X-YouTube-Client-Version'] = client.clientVersion;
     options.headers['X-Origin'] = YouTubeClient.originYouTubeMusic;
     options.headers['Referer'] = YouTubeClient.refererYouTubeMusic;
     options.headers['User-Agent'] = client.userAgent;
+    options.headers['X-Goog-Visitor-Id'] = visitorData;
 
     if (setLogin && client.loginSupported && _cookie != null) {
       options.headers['cookie'] = _cookie;
@@ -117,8 +138,10 @@ class InnerTube {
         final sapisidHash = sha1Hash(
           '$currentTime ${_cookieMap['SAPISID']} ${YouTubeClient.originYouTubeMusic}',
         );
-        options.headers['Authorization'] =
-            'SAPISIDHASH ${currentTime}_$sapisidHash';
+        // print('SAPISIDHASH ${currentTime}_$sapisidHash');
+        final value = '${currentTime}_$sapisidHash';
+        options.headers['Authorization'] = 'SAPISIDHASH $value';
+        options.headers['X-Goog-Authuser'] = accountIndex.toString();
       }
     }
 
@@ -137,8 +160,8 @@ class InnerTube {
     final body = SearchBody(
       context: client.toContext(
         locale,
-        visitorData,
         useLoginForBrowse ? dataSyncId : null,
+        sessionContext,
       ),
       query: query,
       params: params,
@@ -163,20 +186,16 @@ class InnerTube {
     String? browseId,
     String? params,
     Continuations? continuation,
-    bool setLogin = false,
+    bool setLogin = true,
   }) async {
-    final options = Options();
-    _ytClient(
-      options.toRequestOptions(),
-      client,
-      setLogin: setLogin || useLoginForBrowse,
-    );
+    final options = RequestOptions();
+    _ytClient(options, client, setLogin: setLogin || useLoginForBrowse);
 
     final body = BrowseBody(
       context: client.toContext(
         locale,
-        visitorData,
         (setLogin || useLoginForBrowse) ? dataSyncId : null,
+        sessionContext,
       ),
       browseId: browseId,
       params: params,
@@ -195,7 +214,7 @@ class InnerTube {
     return _httpClient.post(
       'browse',
       data: body.toJson(),
-      options: options,
+      options: Options(headers: options.headers),
       queryParameters: queryParams,
     );
   }
@@ -211,7 +230,7 @@ class InnerTube {
     _ytClient(options.toRequestOptions(), client, setLogin: true);
 
     final body = PlayerBody(
-      context: client.toContext(locale, visitorData, dataSyncId),
+      context: client.toContext(locale, dataSyncId, sessionContext),
       videoId: videoId,
       playlistId: playlistId,
       playbackContext:
@@ -227,6 +246,21 @@ class InnerTube {
     return _httpClient.post('player', data: body.toJson(), options: options);
   }
 
+  Future<Response> accountMenu(YouTubeClient client) async {
+    final options = RequestOptions();
+    _ytClient(options, client, setLogin: true);
+
+    final body = AccountBody(
+      context: client.toContext(locale, dataSyncId, sessionContext),
+    );
+
+    return _httpClient.post(
+      'account/account_menu',
+      data: body.toJson(),
+      options: Options(headers: options.headers),
+    );
+  }
+
   void close() {
     _httpClient.close();
   }
@@ -234,6 +268,6 @@ class InnerTube {
 
 extension on Options {
   RequestOptions toRequestOptions() {
-    return RequestOptions(path: '', headers: headers);
+    return RequestOptions(path: '', headers: headers ?? {});
   }
 }
