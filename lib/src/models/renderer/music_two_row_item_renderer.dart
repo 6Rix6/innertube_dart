@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
-import '../navigation_endpoint.dart';
+import '../endpoints.dart';
 import 'music_item_renderer.dart';
 
 part 'music_two_row_item_renderer.g.dart';

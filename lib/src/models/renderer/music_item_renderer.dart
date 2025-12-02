@@ -1,7 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
 import '../thumbnails.dart';
-import '../navigation_endpoint.dart';
+import '../endpoints.dart';
+import '../icon.dart';
 
 part 'music_item_renderer.g.dart';
 
@@ -134,16 +135,6 @@ class MusicInlineBadgeRenderer {
   factory MusicInlineBadgeRenderer.fromJson(Map<String, dynamic> json) =>
       _$MusicInlineBadgeRendererFromJson(json);
   Map<String, dynamic> toJson() => _$MusicInlineBadgeRendererToJson(this);
-}
-
-@JsonSerializable()
-class Icon {
-  final String? iconType;
-
-  const Icon({this.iconType});
-
-  factory Icon.fromJson(Map<String, dynamic> json) => _$IconFromJson(json);
-  Map<String, dynamic> toJson() => _$IconToJson(this);
 }
 
 @JsonSerializable()

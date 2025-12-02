@@ -148,13 +148,6 @@ Map<String, dynamic> _$MusicInlineBadgeRendererToJson(
   MusicInlineBadgeRenderer instance,
 ) => <String, dynamic>{'icon': instance.icon};
 
-Icon _$IconFromJson(Map<String, dynamic> json) =>
-    Icon(iconType: json['iconType'] as String?);
-
-Map<String, dynamic> _$IconToJson(Icon instance) => <String, dynamic>{
-  'iconType': instance.iconType,
-};
-
 MenuRenderer _$MenuRendererFromJson(Map<String, dynamic> json) => MenuRenderer(
   items: (json['items'] as List<dynamic>?)
       ?.map((e) => MenuItem.fromJson(e as Map<String, dynamic>))

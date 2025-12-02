@@ -4,7 +4,7 @@ import 'package:innertube_dart/src/models/renderer/music_carousel_shelf_renderer
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
-import 'package:innertube_dart/src/models/navigation_endpoint.dart';
+import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:json_annotation/json_annotation.dart';
 

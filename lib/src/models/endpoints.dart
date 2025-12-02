@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'navigation_endpoint.g.dart';
+part 'endpoints.g.dart';
 
 /// Navigation endpoint  for YouTube content
 @JsonSerializable()
@@ -79,4 +79,68 @@ class WatchPlaylistEndpoint {
   String toString() {
     return 'WatchPlaylistEndpoint(playlistId: $playlistId, params: $params)';
   }
+}
+
+@JsonSerializable()
+class ServiceEndpoint {
+  final String clickTrackingParams;
+  final GetAccountSwitcherEndpoint? getAccountSwitcherEndpoint;
+
+  const ServiceEndpoint({
+    required this.clickTrackingParams,
+    this.getAccountSwitcherEndpoint,
+  });
+
+  factory ServiceEndpoint.fromJson(Map<String, dynamic> json) =>
+      _$ServiceEndpointFromJson(json);
+  Map<String, dynamic> toJson() => _$ServiceEndpointToJson(this);
+}
+
+@JsonSerializable()
+class GetAccountSwitcherEndpoint {
+  final bool hack;
+
+  const GetAccountSwitcherEndpoint({required this.hack});
+
+  factory GetAccountSwitcherEndpoint.fromJson(Map<String, dynamic> json) =>
+      _$GetAccountSwitcherEndpointFromJson(json);
+  Map<String, dynamic> toJson() => _$GetAccountSwitcherEndpointToJson(this);
+}
+
+@JsonSerializable()
+class SignalServiceEndpoint {
+  final String signal;
+  final List<String>? actions;
+
+  const SignalServiceEndpoint({required this.signal, this.actions});
+
+  factory SignalServiceEndpoint.fromJson(Map<String, dynamic> json) =>
+      _$SignalServiceEndpointFromJson(json);
+  Map<String, dynamic> toJson() => _$SignalServiceEndpointToJson(this);
+}
+
+@JsonSerializable()
+class SignalServiceEndpointAction {
+  final String clickTrackingParams;
+  final SendFeedbackAction sendFeedbackAction;
+
+  const SignalServiceEndpointAction({
+    required this.clickTrackingParams,
+    required this.sendFeedbackAction,
+  });
+
+  factory SignalServiceEndpointAction.fromJson(Map<String, dynamic> json) =>
+      _$SignalServiceEndpointActionFromJson(json);
+  Map<String, dynamic> toJson() => _$SignalServiceEndpointActionToJson(this);
+}
+
+@JsonSerializable()
+class SendFeedbackAction {
+  final String bucket;
+
+  const SendFeedbackAction({required this.bucket});
+
+  factory SendFeedbackAction.fromJson(Map<String, dynamic> json) =>
+      _$SendFeedbackActionFromJson(json);
+  Map<String, dynamic> toJson() => _$SendFeedbackActionToJson(this);
 }

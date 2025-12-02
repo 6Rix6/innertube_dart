@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'navigation_endpoint.dart';
+part of 'endpoints.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -77,3 +77,62 @@ Map<String, dynamic> _$WatchPlaylistEndpointToJson(
   'playlistId': instance.playlistId,
   'params': instance.params,
 };
+
+ServiceEndpoint _$ServiceEndpointFromJson(Map<String, dynamic> json) =>
+    ServiceEndpoint(
+      clickTrackingParams: json['clickTrackingParams'] as String,
+      getAccountSwitcherEndpoint: json['getAccountSwitcherEndpoint'] == null
+          ? null
+          : GetAccountSwitcherEndpoint.fromJson(
+              json['getAccountSwitcherEndpoint'] as Map<String, dynamic>,
+            ),
+    );
+
+Map<String, dynamic> _$ServiceEndpointToJson(ServiceEndpoint instance) =>
+    <String, dynamic>{
+      'clickTrackingParams': instance.clickTrackingParams,
+      'getAccountSwitcherEndpoint': instance.getAccountSwitcherEndpoint,
+    };
+
+GetAccountSwitcherEndpoint _$GetAccountSwitcherEndpointFromJson(
+  Map<String, dynamic> json,
+) => GetAccountSwitcherEndpoint(hack: json['hack'] as bool);
+
+Map<String, dynamic> _$GetAccountSwitcherEndpointToJson(
+  GetAccountSwitcherEndpoint instance,
+) => <String, dynamic>{'hack': instance.hack};
+
+SignalServiceEndpoint _$SignalServiceEndpointFromJson(
+  Map<String, dynamic> json,
+) => SignalServiceEndpoint(
+  signal: json['signal'] as String,
+  actions: (json['actions'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+);
+
+Map<String, dynamic> _$SignalServiceEndpointToJson(
+  SignalServiceEndpoint instance,
+) => <String, dynamic>{'signal': instance.signal, 'actions': instance.actions};
+
+SignalServiceEndpointAction _$SignalServiceEndpointActionFromJson(
+  Map<String, dynamic> json,
+) => SignalServiceEndpointAction(
+  clickTrackingParams: json['clickTrackingParams'] as String,
+  sendFeedbackAction: SendFeedbackAction.fromJson(
+    json['sendFeedbackAction'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$SignalServiceEndpointActionToJson(
+  SignalServiceEndpointAction instance,
+) => <String, dynamic>{
+  'clickTrackingParams': instance.clickTrackingParams,
+  'sendFeedbackAction': instance.sendFeedbackAction,
+};
+
+SendFeedbackAction _$SendFeedbackActionFromJson(Map<String, dynamic> json) =>
+    SendFeedbackAction(bucket: json['bucket'] as String);
+
+Map<String, dynamic> _$SendFeedbackActionToJson(SendFeedbackAction instance) =>
+    <String, dynamic>{'bucket': instance.bucket};

@@ -1,4 +1,6 @@
 import 'package:innertube_dart/src/models/continuations.dart';
+import 'package:innertube_dart/src/models/response/account_menu_response.dart';
+import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
 
@@ -280,14 +282,25 @@ class YouTube {
     }
   }
 
-  Future<Result<void>> accountInfo({
+  /// Get account info
+  ///
+  /// [client] - YouTube client to use (default: YouTubeClient.webRemix)
+  /// Returns a Result containing AccountMenuResponse or an error
+  Future<Result<AccountMenuPage>> accountInfo({
     YouTubeClient client = YouTubeClient.webRemix,
   }) async {
     try {
       final response = await _innerTube.accountMenu(client);
-      print(response.data);
 
-      return Result.success(null);
+      final accountMenuResponse = AccountMenuResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      final accountMenuPage = AccountMenuPage.fromAccountMenuResponse(
+        accountMenuResponse,
+      );
+
+      return Result.success(accountMenuPage);
     } catch (e) {
       return Result.error(e);
     }

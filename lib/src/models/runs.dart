@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'navigation_endpoint.dart';
+import 'endpoints.dart';
 
 part 'runs.g.dart';
 

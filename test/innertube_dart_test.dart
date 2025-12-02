@@ -2,7 +2,8 @@ import 'package:innertube_dart/innertube_dart.dart';
 import 'package:test/test.dart';
 
 const testCookie =
-    "YSC=G1kzae6sKZs; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; _gcl_au=1.1.976739750.1757334615; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; PREF=tz=Asia.Tokyo&repeat=NONE&autoplay=true; __Secure-ROLLOUT_TOKEN=COGf8NzYz4D6DRCulr-61siPAxijkOjbqZ6RAw%3D%3D; __Secure-1PSIDTS=sidts-CjUBwQ9iI8SlRW7H6uTLeBYRtjU6N0Uef9HyCeB5S1ug1ZZ08MFqVnGn6yLzWMUn16lWpL5qDxAA; __Secure-3PSIDTS=sidts-CjUBwQ9iI8SlRW7H6uTLeBYRtjU6N0Uef9HyCeB5S1ug1ZZ08MFqVnGn6yLzWMUn16lWpL5qDxAA; HSID=AKOmeAZX5F_QQNqdb; SSID=AV0H5wbxllIJ87B-D; APISID=hYwgnby29OkaMzWf/ASeh8FQBMq5h_ibi5; SAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; __Secure-1PAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; __Secure-3PAPISID=wTsRXLE8kFvEnM22/AuXH3pBzwAhvD5EZR; SID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfvvNUixbdLYtC6_kVZJ84CgACgYKAdcSARYSFQHGX2MiD1lcE1tdVuveWaLoOxzmMxoVAUF8yKrYE_GpCH3b-2RqCc3zFYWf0076; __Secure-1PSID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfeeNS1BcwRw-5rk2fYnk8lgACgYKAUgSARYSFQHGX2MiUTajfpe1ixFVVagb5Fi2ghoVAUF8yKrh7uEey3SVVR7AB2IzuI0z0076; __Secure-3PSID=g.a0004AhzshEG8gt4qyiWoZgNQCtYjMMBBY6BgrjMZ2ps32OXfujfOknm4uXkTp_dn3ldMccj1wACgYKAUMSARYSFQHGX2Mi0SLOkLOmb9fad7WOD37waBoVAUF8yKpdWKrsyBXeT4YY08K5ejBW0076; LOGIN_INFO=AFmmF2swRQIgJ3d437FbvYla8GC7tWUKH_6nzYDc2bxMYvxlu3nqzH0CIQCFXU6jReJYN6TFGJIQqEuRNVTJyvA_0OHHnGYoUAgZLw:QUQ3MjNmejZDbnhKVWgyZWtHcXJTcXNXT1gwU0k4cXRoQnZvMkFQM01DSFRqc3lvWl9rUlNPcFphclNJS0VIM05NTklRMU5pMUNLS2lfUmlBYlpQZ00tMGR0czFRV2dxWm15QnRsSVBVZVB5amwzRWJLXzU3UDRZR0dnNU9YTDhjc2NhTElMMWg5NEltTTZXNnRVa1FUUFo3LV9Ebk54bHZR; SIDCC=AKEyXzUQlT3d8DccvTNpymjy_DhB0mg4ChVMdTImTEzb7GEKCIeKfNVn2u2-XXnze9Ormfxjr7I; __Secure-1PSIDCC=AKEyXzVS6vrFoFzva_kGmUNCt8dd-opmkCH2rdT_eqWyM3QSyPIL8eEINqit67kym8Eg0fj_D5Y; __Secure-3PSIDCC=AKEyXzVagc72y8dkyAjldgEfXCOhSFtD0Mr1Sup0Swpno12EGc6aiqF5NYsA2n5CWAjl8WZ-sJo";
+    "YSC=G1kzae6sKZs; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; LOGIN_INFO=AFmmF2swRQIgV4tEUdOkpIx-2Cx2oDzczKXAnULdoBEDqqTTfOrQfaACIQDMMR6rUGMLxOKogaZ3fZTuiG0QMRQsO9zdtoe5q31flQ:QUQ3MjNmeUg3UDZmZUxEZU1PZHB3S3BqUGZOZkNCelJQaGh2ZGRfTHFPYU41czAwV0QzZHJsVHBaTXZUMmpIYnFKNnR5NkRNeG1mU0d1QnZiNVQ1NmdVaFNNTUxhSGo2X0hhSVV2Yk92dE44NldZemwxTDlEZkRQUE91Ml9IZVgwY0tRRE5uejduczB5cFVMRFpJRUdBVHRDNFl0UGVVRk1n; _gcl_au=1.1.976739750.1757334615; VISITOR_INFO1_LIVE=bdSpDSk0ses; VISITOR_PRIVACY_METADATA=CgJKUBIEGgAgVw%3D%3D; HSID=Ax-eno6m1GVFz020b; SSID=ApBq2XxuW5OTt2s2i; APISID=7wXeukWyAI3L4Gdu/Ar38BEB8JcKOdRbAE; SAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; __Secure-1PAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; __Secure-3PAPISID=Wi8ACq36QJZI9OnV/Ae-8FAEYZrmjOusJS; SID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOe_bRo2GKmrVN-n9W2a8BP4wACgYKAXQSARYSFQHGX2MifebMXD_6gclfj3LmGXp7pBoVAUF8yKqwcrnufLTExWkz26MgTf9Q0076; __Secure-1PSID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOezRK9MzG9WlgF-XZm4Wa2RgACgYKAZgSARYSFQHGX2Miw5KX5eGy-5bcMrSPRGDQXhoVAUF8yKpWXyoexrrqqYOKP_Ajdpfv0076; __Secure-3PSID=g.a0003whzsva5qwvD9r4FVZZBegU5e_eBOslAHEXu1WtoSNprLSOe29TJ2DnT0C5TbID8_RKKCAACgYKATsSARYSFQHGX2Mig8fAJaTu6UcMn_9embBLrBoVAUF8yKrETMvVuszxLgMfeGx5tkWH0076; PREF=tz=Asia.Tokyo&repeat=NONE&autoplay=true; __Secure-ROLLOUT_TOKEN=COGf8NzYz4D6DRCulr-61siPAxijkOjbqZ6RAw%3D%3D; __Secure-1PSIDTS=sidts-CjUBwQ9iIweWwyXR6LIx0x9zhWO7x58IKYAIUqWMrJ8anQJmc6WTg1uyxyv07viwU5I9rcs56hAA; __Secure-3PSIDTS=sidts-CjUBwQ9iIweWwyXR6LIx0x9zhWO7x58IKYAIUqWMrJ8anQJmc6WTg1uyxyv07viwU5I9rcs56hAA; SIDCC=AKEyXzXuc1_aoKvWVtSeWMBR-NemuYBQmsqx3ir5llN2gYh4vjFJBB4Uz9Jtdh173VS6ktf6BkE; __Secure-1PSIDCC=AKEyXzUTpTae1cxf9LsQzL7hWpseMAAwzahoEH0Udo9UeSI3Lcv9VP2uWiAeGKQflJJDjpUdX4k; __Secure-3PSIDCC=AKEyXzWyAwaCUkrIfB5_Qp5Uw07ZrZypr8j8wxah7gLEAWdwvaMta765qOQOAKfvC6W8OOy4Bms; ST-1b=";
+
 const testVisitorData = "CgtiZFNwRFNrMHNlcyi0w7rJBjIKCgJKUBIEGgAgVw%3D%3D";
 const testDataSyncId = "114921521729099886596||";
 const isDebug = true;
@@ -184,6 +185,7 @@ void main() {
 
     test('Home Feed Continuation Api is working', () async {
       final youtube = YouTube(
+        cookie: testCookie,
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
@@ -224,14 +226,17 @@ void main() {
     test('Account Info Api is working', () async {
       final youtube = YouTube(
         cookie: testCookie,
-        // visitorData: testVisitorData,
-        // dataSyncId: testDataSyncId,
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
       // see console
-      await youtube.accountInfo(client: YouTubeClient.webRemix);
-      expect(true, isTrue);
+      final result = await youtube.accountInfo(client: YouTubeClient.webRemix);
+      if (isDebug && result.isSuccess) {
+        print(result.value.accountName);
+        print(result.value.accountHandle);
+        print(result.value.accountPhoto?.thumbnails.first.url);
+      }
+      expect(result.isSuccess, isTrue);
     });
   });
 }
