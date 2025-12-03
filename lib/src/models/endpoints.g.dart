@@ -26,6 +26,11 @@ NavigationEndpoint _$NavigationEndpointFromJson(
       : QueueAddEndpoint.fromJson(
           json['queueAddEndpoint'] as Map<String, dynamic>,
         ),
+  serviceEndpoint: json['serviceEndpoint'] == null
+      ? null
+      : ServiceEndpoint.fromJson(
+          json['serviceEndpoint'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$NavigationEndpointToJson(NavigationEndpoint instance) =>
@@ -35,6 +40,7 @@ Map<String, dynamic> _$NavigationEndpointToJson(NavigationEndpoint instance) =>
       'watchEndpoint': instance.watchEndpoint,
       'watchPlaylistEndpoint': instance.watchPlaylistEndpoint,
       'queueAddEndpoint': instance.queueAddEndpoint,
+      'serviceEndpoint': instance.serviceEndpoint,
     };
 
 BrowseEndpoint _$BrowseEndpointFromJson(Map<String, dynamic> json) =>

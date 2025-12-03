@@ -9,6 +9,8 @@ class ArtistPage {
   final String? thumbnailUrl;
   final String? subscriberCountText;
   final List<Section> sections;
+  final BrowseResponse response;
+  final bool isArtist;
 
   const ArtistPage({
     required this.browseId,
@@ -17,6 +19,8 @@ class ArtistPage {
     this.thumbnailUrl,
     this.subscriberCountText,
     required this.sections,
+    required this.response,
+    required this.isArtist,
   });
 
   /// Parse an artist page from a BrowseResponse
@@ -40,25 +44,53 @@ class ArtistPage {
 
     final sectionContents = sectionListRenderer?.contents ?? [];
 
-    // Parse artist metadata from header
-    final header =
-        response.header?['musicImmersiveHeaderRenderer'] ??
-        response.header?['musicVisualHeaderRenderer'];
+    String name;
+    String? description;
+    String? thumbnailUrl;
+    String? subscriberCountText;
+    bool isArtist;
 
-    final name =
-        header?['title']?['runs']?[0]?['text'] as String? ?? 'Unknown Artist';
+    if (response.header?.musicImmersiveHeaderRenderer != null) {
+      final header = response.header!.musicImmersiveHeaderRenderer!;
+      name = header.title.runs?[0].text ?? "Unknown Artist";
+      description = header.description?.runs?[0].text;
+      thumbnailUrl = header.thumbnail?.musicThumbnailRenderer?.thumbnail
+          .getBest();
+      subscriberCountText = header
+          .subscriptionButton
+          ?.subscribeButtonRenderer
+          .subscriberCountText
+          ?.runs?[0]
+          .text;
+      isArtist = true;
+    } else if (response.header?.musicVisualHeaderRenderer != null) {
+      name =
+          response.header?.musicVisualHeaderRenderer?.title.runs?[0].text ??
+          "Unknown Artist";
+      thumbnailUrl = response
+          .header
+          ?.musicVisualHeaderRenderer
+          ?.thumbnail
+          ?.musicThumbnailRenderer
+          ?.thumbnail
+          .getBest();
+      subscriberCountText = response
+          .header
+          ?.musicVisualHeaderRenderer
+          ?.subscriptionButton
+          ?.subscribeButtonRenderer
+          .subscriberCountText
+          ?.runs?[0]
+          .text;
+      isArtist = false;
+    } else {
+      throw Exception('No header found');
+    }
 
-    final description = header?['description']?['runs']?[0]?['text'] as String?;
-
-    final thumbnailUrl =
-        (header?['thumbnail']?['musicThumbnailRenderer']?['thumbnail']?['thumbnails']
-                    as List<dynamic>?)
-                ?.lastOrNull?['url']
-            as String?;
-
-    final subscriberCountText =
-        header?['subscriptionButton']?['subscribeButtonRenderer']?['subscriberCountText']?['runs']?[0]?['text']
-            as String?;
+    print("Artist: $name");
+    print("Description: $description");
+    print("Thumbnail URL: $thumbnailUrl");
+    print("Subscriber Count: $subscriberCountText");
 
     // Parse sections
     final sections = <Section>[];
@@ -76,6 +108,8 @@ class ArtistPage {
       thumbnailUrl: thumbnailUrl,
       subscriberCountText: subscriberCountText,
       sections: sections,
+      response: response,
+      isArtist: isArtist,
     );
   }
 

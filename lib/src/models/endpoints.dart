@@ -11,6 +11,11 @@ class NavigationEndpoint {
   final WatchEndpoint? watchEndpoint;
   final WatchPlaylistEndpoint? watchPlaylistEndpoint;
   final QueueAddEndpoint? queueAddEndpoint;
+  final ServiceEndpoint? serviceEndpoint;
+
+  // TODO: Add endpoints
+  // subscribeEndpoint
+  // signalServiceEndpoint
 
   const NavigationEndpoint({
     required this.clickTrackingParams,
@@ -18,6 +23,7 @@ class NavigationEndpoint {
     this.watchEndpoint,
     this.watchPlaylistEndpoint,
     this.queueAddEndpoint,
+    this.serviceEndpoint,
   });
 
   factory NavigationEndpoint.fromJson(Map<String, dynamic> json) =>

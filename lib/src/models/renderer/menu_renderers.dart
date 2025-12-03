@@ -7,9 +7,19 @@ import 'package:json_annotation/json_annotation.dart';
 part 'menu_renderers.g.dart';
 
 @JsonSerializable()
+class Menu {
+  final MenuRenderer menuRenderer;
+
+  const Menu({required this.menuRenderer});
+
+  factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
+  Map<String, dynamic> toJson() => _$MenuToJson(this);
+}
+
+@JsonSerializable()
 class MenuRenderer {
   final List<MenuRendererItem>? items;
-  final AccessibilityData? accessibility;
+  final Accessibility? accessibility;
 
   const MenuRenderer({required this.items, this.accessibility});
 

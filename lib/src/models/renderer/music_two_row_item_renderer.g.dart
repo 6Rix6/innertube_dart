@@ -33,7 +33,7 @@ MusicTwoRowItemRenderer _$MusicTwoRowItemRendererFromJson(
       .toList(),
   menu: json['menu'] == null
       ? null
-      : MenuRenderer.fromJson(json['menu'] as Map<String, dynamic>),
+      : Menu.fromJson(json['menu'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MusicTwoRowItemRendererToJson(

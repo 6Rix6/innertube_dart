@@ -323,7 +323,7 @@ class SectionListRendererContents {
         ?.playNavigationEndpoint
         ?.watchPlaylistEndpoint;
 
-    final shuffleEndpoint = renderer.menu?.items
+    final shuffleEndpoint = renderer.menu?.menuRenderer.items
         ?.firstWhere(
           (item) =>
               item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
@@ -335,7 +335,7 @@ class SectionListRendererContents {
         .menuNavigationItemRenderer
         ?.navigationEndpoint
         ?.watchPlaylistEndpoint;
-    final radioEndpoint = renderer.menu?.items
+    final radioEndpoint = renderer.menu?.menuRenderer.items
         ?.firstWhere(
           (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
           orElse: () => MenuRendererItem(
@@ -370,7 +370,7 @@ class SectionListRendererContents {
     final thumbnailUrl = renderer.thumbnailRenderer?.getThumbnailUrl();
 
     final channelId =
-        renderer.menu?.items
+        renderer.menu?.menuRenderer.items
                 ?.firstWhere(
                   (item) =>
                       item.toggleMenuServiceItemRenderer?['defaultIcon']?['iconType'] ==
@@ -383,7 +383,7 @@ class SectionListRendererContents {
                 .toggleMenuServiceItemRenderer?['defaultServiceEndpoint']?['subscribeEndpoint']?['channelIds']?[0]
             as String?;
 
-    final shuffleEndpoint = renderer.menu?.items
+    final shuffleEndpoint = renderer.menu?.menuRenderer.items
         ?.firstWhere(
           (item) =>
               item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
@@ -396,7 +396,7 @@ class SectionListRendererContents {
         ?.navigationEndpoint
         ?.watchPlaylistEndpoint;
 
-    final radioEndpoint = renderer.menu?.items
+    final radioEndpoint = renderer.menu?.menuRenderer.items
         ?.firstWhere(
           (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
           orElse: () => MenuRendererItem(

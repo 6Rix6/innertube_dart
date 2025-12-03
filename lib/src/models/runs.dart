@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/accessibility_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'endpoints.dart';
 
@@ -7,8 +8,9 @@ part 'runs.g.dart';
 @JsonSerializable()
 class Runs {
   final List<Run>? runs;
+  final Accessibility? accessibility;
 
-  const Runs({this.runs});
+  const Runs({this.runs, this.accessibility});
 
   factory Runs.fromJson(Map<String, dynamic> json) => _$RunsFromJson(json);
   Map<String, dynamic> toJson() => _$RunsToJson(this);

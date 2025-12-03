@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/browse_header_renderes.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -9,7 +10,7 @@ part 'browse_response.g.dart';
 /// Browse response from YouTube API
 @JsonSerializable()
 class BrowseResponse {
-  final Map<String, dynamic>? header;
+  final BrowseHeaderRenderer? header;
   final BrowseResponseContent? contents;
   final Map<String, dynamic>? microformat;
   final Map<String, dynamic>? background;

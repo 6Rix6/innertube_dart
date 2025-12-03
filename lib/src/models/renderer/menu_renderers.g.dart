@@ -6,15 +6,23 @@ part of 'menu_renderers.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+Menu _$MenuFromJson(Map<String, dynamic> json) => Menu(
+  menuRenderer: MenuRenderer.fromJson(
+    json['menuRenderer'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$MenuToJson(Menu instance) => <String, dynamic>{
+  'menuRenderer': instance.menuRenderer,
+};
+
 MenuRenderer _$MenuRendererFromJson(Map<String, dynamic> json) => MenuRenderer(
   items: (json['items'] as List<dynamic>?)
       ?.map((e) => MenuRendererItem.fromJson(e as Map<String, dynamic>))
       .toList(),
   accessibility: json['accessibility'] == null
       ? null
-      : AccessibilityData.fromJson(
-          json['accessibility'] as Map<String, dynamic>,
-        ),
+      : Accessibility.fromJson(json['accessibility'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MenuRendererToJson(MenuRenderer instance) =>

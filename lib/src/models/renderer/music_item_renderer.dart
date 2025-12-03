@@ -1,10 +1,10 @@
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
-import '../thumbnails.dart';
 import '../endpoints.dart';
 import '../icon.dart';
 import 'menu_renderers.dart';
+import 'thumbnail_renderer.dart';
 
 part 'music_item_renderer.g.dart';
 
@@ -17,7 +17,7 @@ class MusicResponsiveListItemRenderer {
   final PlaylistItemData? playlistItemData;
   final NavigationEndpoint? navigationEndpoint;
   final List<Badge>? badges;
-  final MenuRenderer? menu;
+  final Menu? menu;
   final Overlay? overlay;
 
   const MusicResponsiveListItemRenderer({
@@ -80,30 +80,6 @@ class MusicResponsiveListItemFlexColumnRenderer {
   ) => _$MusicResponsiveListItemFlexColumnRendererFromJson(json);
   Map<String, dynamic> toJson() =>
       _$MusicResponsiveListItemFlexColumnRendererToJson(this);
-}
-
-@JsonSerializable()
-class ThumbnailRenderer {
-  final MusicThumbnailRenderer? musicThumbnailRenderer;
-
-  const ThumbnailRenderer({this.musicThumbnailRenderer});
-
-  String? getThumbnailUrl() => musicThumbnailRenderer?.thumbnail.getBest();
-
-  factory ThumbnailRenderer.fromJson(Map<String, dynamic> json) =>
-      _$ThumbnailRendererFromJson(json);
-  Map<String, dynamic> toJson() => _$ThumbnailRendererToJson(this);
-}
-
-@JsonSerializable()
-class MusicThumbnailRenderer {
-  final Thumbnails thumbnail;
-
-  const MusicThumbnailRenderer({required this.thumbnail});
-
-  factory MusicThumbnailRenderer.fromJson(Map<String, dynamic> json) =>
-      _$MusicThumbnailRendererFromJson(json);
-  Map<String, dynamic> toJson() => _$MusicThumbnailRendererToJson(this);
 }
 
 @JsonSerializable()

@@ -6,20 +6,22 @@ part of 'browse_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BrowseResponse _$BrowseResponseFromJson(Map<String, dynamic> json) =>
-    BrowseResponse(
-      header: json['header'] as Map<String, dynamic>?,
-      contents: json['contents'] == null
-          ? null
-          : BrowseResponseContent.fromJson(
-              json['contents'] as Map<String, dynamic>,
-            ),
-      microformat: json['microformat'] as Map<String, dynamic>?,
-      background: json['background'] as Map<String, dynamic>?,
-      continuationContents:
-          json['continuationContents'] as Map<String, dynamic>?,
-      trackingParams: json['trackingParams'] as String?,
-    );
+BrowseResponse _$BrowseResponseFromJson(
+  Map<String, dynamic> json,
+) => BrowseResponse(
+  header: json['header'] == null
+      ? null
+      : BrowseHeaderRenderer.fromJson(json['header'] as Map<String, dynamic>),
+  contents: json['contents'] == null
+      ? null
+      : BrowseResponseContent.fromJson(
+          json['contents'] as Map<String, dynamic>,
+        ),
+  microformat: json['microformat'] as Map<String, dynamic>?,
+  background: json['background'] as Map<String, dynamic>?,
+  continuationContents: json['continuationContents'] as Map<String, dynamic>?,
+  trackingParams: json['trackingParams'] as String?,
+);
 
 Map<String, dynamic> _$BrowseResponseToJson(BrowseResponse instance) =>
     <String, dynamic>{

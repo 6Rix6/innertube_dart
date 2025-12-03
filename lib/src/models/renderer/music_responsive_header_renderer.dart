@@ -1,8 +1,8 @@
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
-import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'thumbnail_renderer.dart';
 
 part 'music_responsive_header_renderer.g.dart';
 
