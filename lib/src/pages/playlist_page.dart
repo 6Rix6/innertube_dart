@@ -13,11 +13,13 @@ class PlaylistPage {
   final List<SongItem> songs;
   final String? songsContinuation;
   final String? continuation;
+  final BrowseResponse response;
   const PlaylistPage({
     required this.playlist,
     required this.songs,
     this.songsContinuation,
     this.continuation,
+    required this.response,
   });
 
   /// Parse PlaylistPage from BrowseResponse
@@ -46,6 +48,7 @@ class PlaylistPage {
         songs: songs,
         songsContinuation: continuation,
         continuation: continuation,
+        response: response,
       );
     } catch (e) {
       // TODO: handle error

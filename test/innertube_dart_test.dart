@@ -151,6 +151,12 @@ void main() {
       final result = await youtube.playlist(
         'VLRDCLAK5uy_lXFoH_0mBWcJWJu6ZR2bPAX_gKYP_wmPo',
       );
+      if (isDebug && result.isSuccess) {
+        print(result.value.playlist.title);
+        for (var song in result.value.songs) {
+          print(song);
+        }
+      }
       expect(result.isSuccess, isTrue);
     });
 
