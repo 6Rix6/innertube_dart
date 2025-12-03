@@ -1,8 +1,10 @@
+import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
 import '../thumbnails.dart';
 import '../endpoints.dart';
 import '../icon.dart';
+import 'menu_renderers.dart';
 
 part 'music_item_renderer.g.dart';
 
@@ -137,37 +139,35 @@ class MusicInlineBadgeRenderer {
   Map<String, dynamic> toJson() => _$MusicInlineBadgeRendererToJson(this);
 }
 
-@JsonSerializable()
-class MenuRenderer {
-  final List<MenuItem>? items;
+// @JsonSerializable()
+// class MenuRenderer {
+//   final List<MenuItem>? items;
 
-  const MenuRenderer({this.items});
+//   const MenuRenderer({this.items});
 
-  factory MenuRenderer.fromJson(Map<String, dynamic> json) {
-    // print(json);
-    return _$MenuRendererFromJson(json['menuRenderer']);
-  }
+//   factory MenuRenderer.fromJson(Map<String, dynamic> json) =>
+//       _$MenuRendererFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MenuRendererToJson(this);
-}
+//   Map<String, dynamic> toJson() => _$MenuRendererToJson(this);
+// }
 
-@JsonSerializable()
-class MenuItem {
-  final Map<String, dynamic>? menuNavigationItemRenderer;
-  final Map<String, dynamic>? toggleMenuServiceItemRenderer;
-  final Map<String, dynamic>? menuServiceItemRenderer;
+// @JsonSerializable()
+// class MenuItem {
+//   final Map<String, dynamic>? menuNavigationItemRenderer;
+//   final Map<String, dynamic>? toggleMenuServiceItemRenderer;
+//   final Map<String, dynamic>? menuServiceItemRenderer;
 
-  const MenuItem({
-    this.menuNavigationItemRenderer,
-    this.toggleMenuServiceItemRenderer,
-    this.menuServiceItemRenderer,
-  });
+//   const MenuItem({
+//     this.menuNavigationItemRenderer,
+//     this.toggleMenuServiceItemRenderer,
+//     this.menuServiceItemRenderer,
+//   });
 
-  factory MenuItem.fromJson(Map<String, dynamic> json) =>
-      _$MenuItemFromJson(json);
+//   factory MenuItem.fromJson(Map<String, dynamic> json) =>
+//       _$MenuItemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MenuItemToJson(this);
-}
+//   Map<String, dynamic> toJson() => _$MenuItemToJson(this);
+// }
 
 @JsonSerializable()
 class Overlay {
@@ -202,15 +202,4 @@ class OverlayContent {
   factory OverlayContent.fromJson(Map<String, dynamic> json) =>
       _$OverlayContentFromJson(json);
   Map<String, dynamic> toJson() => _$OverlayContentToJson(this);
-}
-
-@JsonSerializable()
-class MusicPlayButtonRenderer {
-  final NavigationEndpoint? playNavigationEndpoint;
-
-  const MusicPlayButtonRenderer({this.playNavigationEndpoint});
-
-  factory MusicPlayButtonRenderer.fromJson(Map<String, dynamic> json) =>
-      _$MusicPlayButtonRendererFromJson(json);
-  Map<String, dynamic> toJson() => _$MusicPlayButtonRendererToJson(this);
 }

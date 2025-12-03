@@ -9,6 +9,7 @@ part of 'endpoints.dart';
 NavigationEndpoint _$NavigationEndpointFromJson(
   Map<String, dynamic> json,
 ) => NavigationEndpoint(
+  clickTrackingParams: json['clickTrackingParams'] as String,
   browseEndpoint: json['browseEndpoint'] == null
       ? null
       : BrowseEndpoint.fromJson(json['browseEndpoint'] as Map<String, dynamic>),
@@ -20,15 +21,20 @@ NavigationEndpoint _$NavigationEndpointFromJson(
       : WatchPlaylistEndpoint.fromJson(
           json['watchPlaylistEndpoint'] as Map<String, dynamic>,
         ),
-  clickTrackingParams: json['clickTrackingParams'] as String?,
+  queueAddEndpoint: json['queueAddEndpoint'] == null
+      ? null
+      : QueueAddEndpoint.fromJson(
+          json['queueAddEndpoint'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$NavigationEndpointToJson(NavigationEndpoint instance) =>
     <String, dynamic>{
+      'clickTrackingParams': instance.clickTrackingParams,
       'browseEndpoint': instance.browseEndpoint,
       'watchEndpoint': instance.watchEndpoint,
       'watchPlaylistEndpoint': instance.watchPlaylistEndpoint,
-      'clickTrackingParams': instance.clickTrackingParams,
+      'queueAddEndpoint': instance.queueAddEndpoint,
     };
 
 BrowseEndpoint _$BrowseEndpointFromJson(Map<String, dynamic> json) =>
@@ -136,3 +142,34 @@ SendFeedbackAction _$SendFeedbackActionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SendFeedbackActionToJson(SendFeedbackAction instance) =>
     <String, dynamic>{'bucket': instance.bucket};
+
+QueueAddEndpoint _$QueueAddEndpointFromJson(Map<String, dynamic> json) =>
+    QueueAddEndpoint(
+      queueInsertPosition: json['queueInsertPosition'] as String?,
+      videoId: json['videoId'] as String?,
+    );
+
+Map<String, dynamic> _$QueueAddEndpointToJson(QueueAddEndpoint instance) =>
+    <String, dynamic>{
+      'queueInsertPosition': instance.queueInsertPosition,
+      'videoId': instance.videoId,
+    };
+
+QueueTarget _$QueueTargetFromJson(Map<String, dynamic> json) => QueueTarget(
+  playlistId: json['playlistId'] as String,
+  onEmptyQueue: json['onEmptyQueue'] == null
+      ? null
+      : NavigationEndpoint.fromJson(
+          json['onEmptyQueue'] as Map<String, dynamic>,
+        ),
+  commands: (json['commands'] as List<dynamic>?)
+      ?.map((e) => Command.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$QueueTargetToJson(QueueTarget instance) =>
+    <String, dynamic>{
+      'playlistId': instance.playlistId,
+      'onEmptyQueue': instance.onEmptyQueue,
+      'commands': instance.commands,
+    };

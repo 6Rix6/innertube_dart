@@ -20,10 +20,15 @@ class HomePage {
         response.continuationContents?['sectionListContinuation'],
       );
     } else {
-      sectionListRenderer = SectionListRenderer.fromJson(
-        response
-            .contents?['singleColumnBrowseResultsRenderer']?['tabs']?[0]?['tabRenderer']?['content']?['sectionListRenderer'],
-      );
+      sectionListRenderer =
+          response
+              .contents
+              ?.singleColumnBrowseResultsRenderer
+              ?.tabs?[0]
+              .tabRenderer
+              ?.content
+              ?.sectionListRenderer ??
+          SectionListRenderer();
     }
     final contents = sectionListRenderer.contents;
     if (contents == null || contents.isEmpty) {

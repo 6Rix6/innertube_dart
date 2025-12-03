@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/command.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'endpoints.g.dart';
@@ -5,16 +6,18 @@ part 'endpoints.g.dart';
 /// Navigation endpoint  for YouTube content
 @JsonSerializable()
 class NavigationEndpoint {
+  final String clickTrackingParams;
   final BrowseEndpoint? browseEndpoint;
   final WatchEndpoint? watchEndpoint;
   final WatchPlaylistEndpoint? watchPlaylistEndpoint;
-  final String? clickTrackingParams;
+  final QueueAddEndpoint? queueAddEndpoint;
 
   const NavigationEndpoint({
+    required this.clickTrackingParams,
     this.browseEndpoint,
     this.watchEndpoint,
     this.watchPlaylistEndpoint,
-    this.clickTrackingParams,
+    this.queueAddEndpoint,
   });
 
   factory NavigationEndpoint.fromJson(Map<String, dynamic> json) =>
@@ -143,4 +146,33 @@ class SendFeedbackAction {
   factory SendFeedbackAction.fromJson(Map<String, dynamic> json) =>
       _$SendFeedbackActionFromJson(json);
   Map<String, dynamic> toJson() => _$SendFeedbackActionToJson(this);
+}
+
+@JsonSerializable()
+class QueueAddEndpoint {
+  final String? queueInsertPosition;
+  final String? videoId;
+
+  const QueueAddEndpoint({this.queueInsertPosition, this.videoId});
+
+  factory QueueAddEndpoint.fromJson(Map<String, dynamic> json) =>
+      _$QueueAddEndpointFromJson(json);
+  Map<String, dynamic> toJson() => _$QueueAddEndpointToJson(this);
+}
+
+@JsonSerializable()
+class QueueTarget {
+  final String playlistId;
+  final NavigationEndpoint? onEmptyQueue;
+  final List<Command>? commands;
+
+  const QueueTarget({
+    required this.playlistId,
+    this.onEmptyQueue,
+    this.commands,
+  });
+
+  factory QueueTarget.fromJson(Map<String, dynamic> json) =>
+      _$QueueTargetFromJson(json);
+  Map<String, dynamic> toJson() => _$QueueTargetToJson(this);
 }

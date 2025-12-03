@@ -148,30 +148,6 @@ Map<String, dynamic> _$MusicInlineBadgeRendererToJson(
   MusicInlineBadgeRenderer instance,
 ) => <String, dynamic>{'icon': instance.icon};
 
-MenuRenderer _$MenuRendererFromJson(Map<String, dynamic> json) => MenuRenderer(
-  items: (json['items'] as List<dynamic>?)
-      ?.map((e) => MenuItem.fromJson(e as Map<String, dynamic>))
-      .toList(),
-);
-
-Map<String, dynamic> _$MenuRendererToJson(MenuRenderer instance) =>
-    <String, dynamic>{'items': instance.items};
-
-MenuItem _$MenuItemFromJson(Map<String, dynamic> json) => MenuItem(
-  menuNavigationItemRenderer:
-      json['menuNavigationItemRenderer'] as Map<String, dynamic>?,
-  toggleMenuServiceItemRenderer:
-      json['toggleMenuServiceItemRenderer'] as Map<String, dynamic>?,
-  menuServiceItemRenderer:
-      json['menuServiceItemRenderer'] as Map<String, dynamic>?,
-);
-
-Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
-  'menuNavigationItemRenderer': instance.menuNavigationItemRenderer,
-  'toggleMenuServiceItemRenderer': instance.toggleMenuServiceItemRenderer,
-  'menuServiceItemRenderer': instance.menuServiceItemRenderer,
-};
-
 Overlay _$OverlayFromJson(Map<String, dynamic> json) => Overlay(
   musicItemThumbnailOverlayRenderer:
       json['musicItemThumbnailOverlayRenderer'] == null
@@ -211,19 +187,3 @@ Map<String, dynamic> _$OverlayContentToJson(OverlayContent instance) =>
     <String, dynamic>{
       'musicPlayButtonRenderer': instance.musicPlayButtonRenderer,
     };
-
-MusicPlayButtonRenderer _$MusicPlayButtonRendererFromJson(
-  Map<String, dynamic> json,
-) => MusicPlayButtonRenderer(
-  playNavigationEndpoint: json['playNavigationEndpoint'] == null
-      ? null
-      : NavigationEndpoint.fromJson(
-          json['playNavigationEndpoint'] as Map<String, dynamic>,
-        ),
-);
-
-Map<String, dynamic> _$MusicPlayButtonRendererToJson(
-  MusicPlayButtonRenderer instance,
-) => <String, dynamic>{
-  'playNavigationEndpoint': instance.playNavigationEndpoint,
-};

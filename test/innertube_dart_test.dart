@@ -134,6 +134,12 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.album('MPREb_MVRIwFy1LUK');
+      if (isDebug && result.isSuccess) {
+        print(result.value.album.title);
+        for (var song in result.value.songs) {
+          print(song);
+        }
+      }
       expect(result.isSuccess, isTrue);
     });
 

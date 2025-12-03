@@ -48,6 +48,7 @@ class PlaylistPage {
         continuation: continuation,
       );
     } catch (e) {
+      // TODO: handle error
       print('Error parsing playlist page: $e');
       return null;
     }
@@ -60,7 +61,9 @@ class PlaylistPage {
     final songs = <SongItem>[];
     final contents =
         response
-                .contents?['twoColumnBrowseResultsRenderer']?['secondaryContents']?['sectionListRenderer']?['contents']
+                .contents
+                ?.twoColumnBrowseResultsRenderer
+                ?.secondaryContents?['sectionListRenderer']?['contents']
                 ?.first?['musicPlaylistShelfRenderer']?['contents']
             as List?;
     if (contents != null && contents.isNotEmpty) {
@@ -149,7 +152,9 @@ class PlaylistPage {
   static String? _parseContinuation(BrowseResponse response) {
     final contents =
         response
-                .contents?['twoColumnBrowseResultsRenderer']?['secondaryContents']?['sectionListRenderer']?['contents']
+                .contents
+                ?.twoColumnBrowseResultsRenderer
+                ?.secondaryContents?['sectionListRenderer']?['contents']
                 ?.first?['musicPlaylistShelfRenderer']?['contents']
             as List?;
     if (contents != null && contents.isNotEmpty) {

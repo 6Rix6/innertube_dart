@@ -1,4 +1,3 @@
-import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:innertube_dart/src/models/response/browse_response.dart';
 
@@ -31,12 +30,15 @@ class ArtistPage {
     }
 
     // Get section list renderer
-    final sectionListRenderer = SectionListRenderer.fromJson(
-      response
-          .contents?['singleColumnBrowseResultsRenderer']?['tabs']?[0]?['tabRenderer']?['content']?['sectionListRenderer'],
-    );
+    final sectionListRenderer = response
+        .contents
+        ?.singleColumnBrowseResultsRenderer
+        ?.tabs?[0]
+        .tabRenderer
+        ?.content
+        ?.sectionListRenderer;
 
-    final sectionContents = sectionListRenderer.contents ?? [];
+    final sectionContents = sectionListRenderer?.contents ?? [];
 
     // Parse artist metadata from header
     final header =

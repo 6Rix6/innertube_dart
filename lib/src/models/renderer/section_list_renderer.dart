@@ -1,10 +1,16 @@
-import 'package:innertube_dart/innertube_dart.dart';
+import 'package:innertube_dart/src/models/album_item.dart';
+import 'package:innertube_dart/src/models/artist_item.dart';
+import 'package:innertube_dart/src/models/playlist_item.dart';
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
+import 'package:innertube_dart/src/models/yt_item.dart';
+import 'package:innertube_dart/src/models/artist.dart';
+import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/renderer/music_carousel_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
-import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -34,12 +40,14 @@ class SectionListRenderer {
 class SectionListRendererContents {
   final MusicCarouselShelfRenderer? musicCarouselShelfRenderer;
   final MusicShelfRenderer? musicShelfRenderer;
+  final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer;
   // TODO: Add support for music card shelf renderer
   // final dynamic? musicCardShelfRenderer;
 
   const SectionListRendererContents({
     this.musicCarouselShelfRenderer,
     this.musicShelfRenderer,
+    this.musicResponsiveHeaderRenderer,
     // this.musicCardShelfRenderer,
   });
 
@@ -318,24 +326,26 @@ class SectionListRendererContents {
     final shuffleEndpoint = renderer.menu?.items
         ?.firstWhere(
           (item) =>
-              item.menuNavigationItemRenderer?['icon']?['iconType'] ==
-              'MUSIC_SHUFFLE',
-          orElse: () => MenuItem(
+              item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
+          orElse: () => MenuRendererItem(
             menuNavigationItemRenderer: null,
             toggleMenuServiceItemRenderer: null,
           ),
         )
-        .menuNavigationItemRenderer?['navigationEndpoint']?['watchPlaylistEndpoint'];
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
     final radioEndpoint = renderer.menu?.items
         ?.firstWhere(
-          (item) =>
-              item.menuNavigationItemRenderer?['icon']?['iconType'] == 'MIX',
-          orElse: () => MenuItem(
+          (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
+          orElse: () => MenuRendererItem(
             menuNavigationItemRenderer: null,
             toggleMenuServiceItemRenderer: null,
           ),
         )
-        .menuNavigationItemRenderer?['navigationEndpoint']?['watchPlaylistEndpoint'];
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
 
     return PlaylistItem(
       id: id,
@@ -344,12 +354,8 @@ class SectionListRendererContents {
       songCountText: null,
       thumbnail: thumbnailUrl,
       playEndpoint: playEndpoint,
-      shuffleEndpoint: shuffleEndpoint != null
-          ? WatchPlaylistEndpoint.fromJson(shuffleEndpoint)
-          : null,
-      radioEndpoint: radioEndpoint != null
-          ? WatchPlaylistEndpoint.fromJson(radioEndpoint)
-          : null,
+      shuffleEndpoint: shuffleEndpoint,
+      radioEndpoint: radioEndpoint,
     );
   }
 
@@ -369,7 +375,7 @@ class SectionListRendererContents {
                   (item) =>
                       item.toggleMenuServiceItemRenderer?['defaultIcon']?['iconType'] ==
                       'SUBSCRIBE',
-                  orElse: () => MenuItem(
+                  orElse: () => MenuRendererItem(
                     menuNavigationItemRenderer: null,
                     toggleMenuServiceItemRenderer: null,
                   ),
@@ -380,37 +386,35 @@ class SectionListRendererContents {
     final shuffleEndpoint = renderer.menu?.items
         ?.firstWhere(
           (item) =>
-              item.menuNavigationItemRenderer?['icon']?['iconType'] ==
-              'MUSIC_SHUFFLE',
-          orElse: () => MenuItem(
+              item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
+          orElse: () => MenuRendererItem(
             menuNavigationItemRenderer: null,
             toggleMenuServiceItemRenderer: null,
           ),
         )
-        .menuNavigationItemRenderer?['navigationEndpoint']?['watchPlaylistEndpoint'];
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
 
     final radioEndpoint = renderer.menu?.items
         ?.firstWhere(
-          (item) =>
-              item.menuNavigationItemRenderer?['icon']?['iconType'] == 'MIX',
-          orElse: () => MenuItem(
+          (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
+          orElse: () => MenuRendererItem(
             menuNavigationItemRenderer: null,
             toggleMenuServiceItemRenderer: null,
           ),
         )
-        .menuNavigationItemRenderer?['navigationEndpoint']?['watchPlaylistEndpoint'];
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
 
     return ArtistItem(
       id: browseId,
       title: title,
       thumbnail: thumbnailUrl,
       channelId: channelId,
-      shuffleEndpoint: shuffleEndpoint != null
-          ? WatchPlaylistEndpoint.fromJson(shuffleEndpoint)
-          : null,
-      radioEndpoint: radioEndpoint != null
-          ? WatchPlaylistEndpoint.fromJson(radioEndpoint)
-          : null,
+      shuffleEndpoint: shuffleEndpoint,
+      radioEndpoint: radioEndpoint,
     );
   }
 }

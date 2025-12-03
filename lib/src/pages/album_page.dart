@@ -52,6 +52,7 @@ class AlbumPage {
 
       return AlbumPage(album: albumItem, songs: songs);
     } catch (e) {
+      // TODO: handle error
       print('Error parsing album page: $e');
       return null;
     }
@@ -61,27 +62,21 @@ class AlbumPage {
     final artists = <Artist>[];
 
     // Try music responsive header
-    final tabs =
-        response.contents?['twoColumnBrowseResultsRenderer']?['tabs'] as List?;
+    final tabs = response.contents?.twoColumnBrowseResultsRenderer?.tabs;
     if (tabs != null && tabs.isNotEmpty) {
       final sectionContents =
-          tabs.first['tabRenderer']?['content']?['sectionListRenderer']?['contents']
-              as List?;
+          tabs.first.tabRenderer?.content?.sectionListRenderer?.contents;
       if (sectionContents != null && sectionContents.isNotEmpty) {
-        final header = sectionContents.first['musicResponsiveHeaderRenderer'];
+        final header = sectionContents.first.musicResponsiveHeaderRenderer;
         if (header != null) {
-          final runs = header['straplineTextOne']?['runs'] as List?;
+          final runs = header.straplineTextOne?.runs;
           if (runs != null) {
             // Get odd elements (artists, skipping separators)
             for (var i = 0; i < runs.length; i += 2) {
-              final run = runs[i] as Map<String, dynamic>;
-              final name = run['text'] as String?;
-              final id =
-                  run['navigationEndpoint']?['browseEndpoint']?['browseId']
-                      as String?;
-              if (name != null) {
-                artists.add(Artist(name: name, id: id));
-              }
+              final run = runs[i];
+              final name = run.text;
+              final id = run.navigationEndpoint?.browseEndpoint?.browseId;
+              artists.add(Artist(name: name, id: id));
             }
           }
         }
@@ -93,20 +88,19 @@ class AlbumPage {
 
   static String? _parseYear(BrowseResponse response) {
     // Try music responsive header
-    final tabs =
-        response.contents?['twoColumnBrowseResultsRenderer']?['tabs'] as List?;
+    final tabs = response.contents?.twoColumnBrowseResultsRenderer?.tabs;
     if (tabs != null && tabs.isNotEmpty) {
       final sectionContents =
-          tabs.first['tabRenderer']?['content']?['sectionListRenderer']?['contents']
-              as List?;
+          tabs.first.tabRenderer?.content?.sectionListRenderer?.contents;
       if (sectionContents != null && sectionContents.isNotEmpty) {
         final header = sectionContents
-            .where((e) => e['musicResponsiveHeaderRenderer'] != null)
-            .first['musicResponsiveHeaderRenderer'];
+            .where((e) => e.musicResponsiveHeaderRenderer != null)
+            .first
+            .musicResponsiveHeaderRenderer;
         if (header != null) {
-          final runs = header['subtitle']?['runs'] as List?;
+          final runs = header.subtitle?.runs;
           if (runs != null && runs.isNotEmpty) {
-            final lastText = runs.last['text'] as String?;
+            final lastText = runs.last.text;
             return lastText;
           }
         }
@@ -122,7 +116,9 @@ class AlbumPage {
     // Try twoColumnBrowseResultsRenderer
     final contents =
         response
-                .contents?['twoColumnBrowseResultsRenderer']?['secondaryContents']?['sectionListRenderer']?['contents']
+                .contents
+                ?.twoColumnBrowseResultsRenderer
+                ?.secondaryContents?['sectionListRenderer']?['contents']
                 ?.first?['musicShelfRenderer']?['contents']
             as List?;
     if (contents != null && contents.isNotEmpty) {
@@ -178,6 +174,7 @@ class AlbumPage {
         setVideoId: renderer.playlistItemData?.playlistSetVideoId,
       );
     } catch (e) {
+      // TODO: handle error
       print('Error parsing song: $e');
       return null;
     }

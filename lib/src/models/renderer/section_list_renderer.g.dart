@@ -43,6 +43,11 @@ SectionListRendererContents _$SectionListRendererContentsFromJson(
       : MusicShelfRenderer.fromJson(
           json['musicShelfRenderer'] as Map<String, dynamic>,
         ),
+  musicResponsiveHeaderRenderer: json['musicResponsiveHeaderRenderer'] == null
+      ? null
+      : MusicResponsiveHeaderRenderer.fromJson(
+          json['musicResponsiveHeaderRenderer'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$SectionListRendererContentsToJson(
@@ -50,4 +55,5 @@ Map<String, dynamic> _$SectionListRendererContentsToJson(
 ) => <String, dynamic>{
   'musicCarouselShelfRenderer': instance.musicCarouselShelfRenderer,
   'musicShelfRenderer': instance.musicShelfRenderer,
+  'musicResponsiveHeaderRenderer': instance.musicResponsiveHeaderRenderer,
 };
