@@ -8,6 +8,19 @@ import 'thumbnail_renderer.dart';
 
 part 'music_item_renderer.g.dart';
 
+@JsonSerializable()
+class MusicResponsiveListItem {
+  final MusicResponsiveListItemRenderer musicResponsiveListItemRenderer;
+
+  const MusicResponsiveListItem({
+    required this.musicResponsiveListItemRenderer,
+  });
+
+  factory MusicResponsiveListItem.fromJson(Map<String, dynamic> json) =>
+      _$MusicResponsiveListItemFromJson(json);
+  Map<String, dynamic> toJson() => _$MusicResponsiveListItemToJson(this);
+}
+
 /// Music responsive list item renderer
 @JsonSerializable()
 class MusicResponsiveListItemRenderer {

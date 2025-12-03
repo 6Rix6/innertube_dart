@@ -66,8 +66,11 @@ class PlaylistPage {
         response
                 .contents
                 ?.twoColumnBrowseResultsRenderer
-                ?.secondaryContents?['sectionListRenderer']?['contents']
-                ?.first?['musicPlaylistShelfRenderer']?['contents']
+                ?.secondaryContents
+                ?.sectionListRenderer
+                ?.contents
+                ?.first
+                .musicPlaylistShelfRenderer?["contents"]
             as List?;
     if (contents != null && contents.isNotEmpty) {
       for (final item in contents) {
@@ -157,8 +160,11 @@ class PlaylistPage {
         response
                 .contents
                 ?.twoColumnBrowseResultsRenderer
-                ?.secondaryContents?['sectionListRenderer']?['contents']
-                ?.first?['musicPlaylistShelfRenderer']?['contents']
+                ?.secondaryContents
+                ?.sectionListRenderer
+                ?.contents
+                ?.first
+                .musicPlaylistShelfRenderer?["contents"]
             as List?;
     if (contents != null && contents.isNotEmpty) {
       final lastItem = contents.last;

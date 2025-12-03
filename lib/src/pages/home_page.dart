@@ -26,7 +26,7 @@ class HomePage {
               ?.singleColumnBrowseResultsRenderer
               ?.tabs?[0]
               .tabRenderer
-              ?.content
+              .content
               ?.sectionListRenderer ??
           SectionListRenderer();
     }

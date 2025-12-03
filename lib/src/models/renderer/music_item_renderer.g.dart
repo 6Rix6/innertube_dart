@@ -6,6 +6,20 @@ part of 'music_item_renderer.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+MusicResponsiveListItem _$MusicResponsiveListItemFromJson(
+  Map<String, dynamic> json,
+) => MusicResponsiveListItem(
+  musicResponsiveListItemRenderer: MusicResponsiveListItemRenderer.fromJson(
+    json['musicResponsiveListItemRenderer'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$MusicResponsiveListItemToJson(
+  MusicResponsiveListItem instance,
+) => <String, dynamic>{
+  'musicResponsiveListItemRenderer': instance.musicResponsiveListItemRenderer,
+};
+
 MusicResponsiveListItemRenderer _$MusicResponsiveListItemRendererFromJson(
   Map<String, dynamic> json,
 ) => MusicResponsiveListItemRenderer(

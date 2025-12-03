@@ -133,7 +133,7 @@ void main() {
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
-      final result = await youtube.album('MPREb_MVRIwFy1LUK');
+      final result = await youtube.album('MPREb_1wQ6dIEh3ZE');
       if (isDebug && result.isSuccess) {
         print(result.value.album.title);
         for (var song in result.value.songs) {

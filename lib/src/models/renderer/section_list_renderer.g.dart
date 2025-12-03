@@ -6,6 +6,23 @@ part of 'section_list_renderer.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+SecionList _$SecionListFromJson(Map<String, dynamic> json) => SecionList(
+  sectionListRenderer: json['sectionListRenderer'] == null
+      ? null
+      : SectionListRenderer.fromJson(
+          json['sectionListRenderer'] as Map<String, dynamic>,
+        ),
+  continuations: (json['continuations'] as List<dynamic>?)
+      ?.map((e) => Continuations.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$SecionListToJson(SecionList instance) =>
+    <String, dynamic>{
+      'sectionListRenderer': instance.sectionListRenderer,
+      'continuations': instance.continuations,
+    };
+
 SectionListRenderer _$SectionListRendererFromJson(Map<String, dynamic> json) =>
     SectionListRenderer(
       contents: (json['contents'] as List<dynamic>?)
@@ -48,6 +65,10 @@ SectionListRendererContents _$SectionListRendererContentsFromJson(
       : MusicResponsiveHeaderRenderer.fromJson(
           json['musicResponsiveHeaderRenderer'] as Map<String, dynamic>,
         ),
+  musicPlaylistShelfRenderer:
+      json['musicPlaylistShelfRenderer'] as Map<String, dynamic>?,
+  musicCardShelfRenderer:
+      json['musicCardShelfRenderer'] as Map<String, dynamic>?,
 );
 
 Map<String, dynamic> _$SectionListRendererContentsToJson(
@@ -56,4 +77,6 @@ Map<String, dynamic> _$SectionListRendererContentsToJson(
   'musicCarouselShelfRenderer': instance.musicCarouselShelfRenderer,
   'musicShelfRenderer': instance.musicShelfRenderer,
   'musicResponsiveHeaderRenderer': instance.musicResponsiveHeaderRenderer,
+  'musicPlaylistShelfRenderer': instance.musicPlaylistShelfRenderer,
+  'musicCardShelfRenderer': instance.musicCardShelfRenderer,
 };

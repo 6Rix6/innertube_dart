@@ -1,4 +1,5 @@
 import 'package:innertube_dart/src/models/endpoints.dart';
+import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
 
@@ -8,7 +9,8 @@ part 'music_shelf_renderer.g.dart';
 @JsonSerializable()
 class MusicShelfRenderer {
   final Runs? title;
-  final List<Map<String, dynamic>>? contents;
+  // TODO: contents
+  final List<MusicResponsiveListItem>? contents;
   final List<Map<String, dynamic>>? continuations;
   final String? trackingParams;
   final Runs? buttomText;

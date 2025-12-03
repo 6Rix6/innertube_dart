@@ -12,7 +12,9 @@ MusicShelfRenderer _$MusicShelfRendererFromJson(Map<String, dynamic> json) =>
           ? null
           : Runs.fromJson(json['title'] as Map<String, dynamic>),
       contents: (json['contents'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
+          ?.map(
+            (e) => MusicResponsiveListItem.fromJson(e as Map<String, dynamic>),
+          )
           .toList(),
       continuations: (json['continuations'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)

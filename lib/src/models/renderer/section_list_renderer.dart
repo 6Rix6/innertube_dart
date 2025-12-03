@@ -17,6 +17,19 @@ import 'package:json_annotation/json_annotation.dart';
 part 'section_list_renderer.g.dart';
 
 @JsonSerializable()
+class SecionList {
+  final SectionListRenderer? sectionListRenderer;
+  final List<Continuations>? continuations;
+
+  const SecionList({this.sectionListRenderer, this.continuations});
+
+  factory SecionList.fromJson(Map<String, dynamic> json) =>
+      _$SecionListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SecionListToJson(this);
+}
+
+@JsonSerializable()
 class SectionListRenderer {
   final List<SectionListRendererContents>? contents;
   final List<Continuations>? continuations;
@@ -41,14 +54,16 @@ class SectionListRendererContents {
   final MusicCarouselShelfRenderer? musicCarouselShelfRenderer;
   final MusicShelfRenderer? musicShelfRenderer;
   final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer;
-  // TODO: Add support for music card shelf renderer
-  // final dynamic? musicCardShelfRenderer;
+  // TODO: Add support for music playlist shelf renderer
+  final Map<String, dynamic>? musicPlaylistShelfRenderer;
+  final Map<String, dynamic>? musicCardShelfRenderer;
 
   const SectionListRendererContents({
     this.musicCarouselShelfRenderer,
     this.musicShelfRenderer,
     this.musicResponsiveHeaderRenderer,
-    // this.musicCardShelfRenderer,
+    this.musicPlaylistShelfRenderer,
+    this.musicCardShelfRenderer,
   });
 
   factory SectionListRendererContents.fromJson(Map<String, dynamic> json) =>
@@ -81,17 +96,13 @@ class SectionListRendererContents {
       final items = <SongItem>[];
       if (shelfData.contents != null) {
         for (final content in shelfData.contents!) {
-          final renderer = content['musicResponsiveListItemRenderer'];
-          if (renderer != null) {
-            try {
-              final item = _parseSongFromRenderer(
-                MusicResponsiveListItemRenderer.fromJson(renderer),
-              );
-              if (item != null) items.add(item);
-            } catch (e) {
-              // Skip invalid items
-              continue;
-            }
+          final renderer = content.musicResponsiveListItemRenderer;
+          try {
+            final item = _parseSongFromRenderer(renderer);
+            if (item != null) items.add(item);
+          } catch (e) {
+            // Skip invalid items
+            continue;
           }
         }
       }

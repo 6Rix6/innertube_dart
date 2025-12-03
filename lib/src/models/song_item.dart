@@ -1,3 +1,6 @@
+import 'package:innertube_dart/src/models/album_item.dart';
+import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/utils/parse_time.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 import 'artist.dart';
@@ -47,6 +50,44 @@ class SongItem extends YTItem {
     this.historyRemoveToken,
   });
 
+  /// generate songItem from musicResponsiveListItemRenderer and albumItem
+  static SongItem? fromMusicResponsiveListItemRenderer(
+    MusicResponsiveListItemRenderer renderer,
+    AlbumItem album,
+  ) {
+    final videoId = renderer.playlistItemData?.videoId;
+    if (videoId == null) return null;
+
+    // Get title
+    final titleRuns = renderer.flexColumns.firstOrNull?.renderer?.text?.runs;
+    final title = titleRuns?.firstOrNull?.text;
+    if (title == null) return null;
+
+    // Get duration
+    final durationText = renderer
+        .fixedColumns
+        ?.firstOrNull
+        ?.renderer
+        ?.text
+        ?.runs
+        ?.firstOrNull
+        ?.text;
+    final duration = parseTime(durationText);
+
+    // Get thumbnail
+    final thumbnail = renderer.thumbnail?.getThumbnailUrl() ?? album.thumbnail;
+
+    return SongItem(
+      id: videoId,
+      title: title,
+      artists: album.artists ?? [],
+      album: Album(name: album.title, id: album.browseId),
+      duration: duration,
+      thumbnail: thumbnail,
+      setVideoId: renderer.playlistItemData?.playlistSetVideoId,
+    );
+  }
+
   @override
   String get shareLink => 'https://music.youtube.com/watch?v=$id';
 
@@ -57,4 +98,8 @@ class SongItem extends YTItem {
 
   @override
   String toString() => '$title by ${artists.map((a) => a.name).join(", ")}';
+}
+
+extension _FirstOrNull<T> on List<T> {
+  T? get firstOrNull => isEmpty ? null : first;
 }

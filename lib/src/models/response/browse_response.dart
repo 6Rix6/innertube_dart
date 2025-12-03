@@ -1,6 +1,7 @@
 import 'package:innertube_dart/src/models/renderer/browse_header_renderes.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
+import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../artist.dart';
@@ -117,7 +118,7 @@ class BrowseResponse {
     if (tabs == null || tabs.isEmpty) return null;
 
     final sectionContents =
-        tabs.first.tabRenderer?.content?.sectionListRenderer?.contents;
+        tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
     if (sectionContents == null || sectionContents.isEmpty) return null;
 
     return sectionContents.first.musicResponsiveHeaderRenderer;
@@ -146,7 +147,7 @@ class BrowseResponseContent {
 
 @JsonSerializable()
 class SingleColumnBrowseResultsRenderer {
-  final List<ColumnBrowseResultsRendererTab>? tabs;
+  final List<Tab>? tabs;
 
   const SingleColumnBrowseResultsRenderer({this.tabs});
 
@@ -159,46 +160,12 @@ class SingleColumnBrowseResultsRenderer {
 
 @JsonSerializable()
 class TwoColumnBrowseResultsRenderer {
-  final List<ColumnBrowseResultsRendererTab>? tabs;
-  // TODO: secondaryContents
-  final Map<String, dynamic>? secondaryContents;
+  final List<Tab>? tabs;
+  final SecionList? secondaryContents;
 
   const TwoColumnBrowseResultsRenderer({this.tabs, this.secondaryContents});
 
   factory TwoColumnBrowseResultsRenderer.fromJson(Map<String, dynamic> json) =>
       _$TwoColumnBrowseResultsRendererFromJson(json);
   Map<String, dynamic> toJson() => _$TwoColumnBrowseResultsRendererToJson(this);
-}
-
-@JsonSerializable()
-class ColumnBrowseResultsRendererTab {
-  final TabRenderer? tabRenderer;
-
-  const ColumnBrowseResultsRendererTab({this.tabRenderer});
-
-  factory ColumnBrowseResultsRendererTab.fromJson(Map<String, dynamic> json) =>
-      _$ColumnBrowseResultsRendererTabFromJson(json);
-  Map<String, dynamic> toJson() => _$ColumnBrowseResultsRendererTabToJson(this);
-}
-
-@JsonSerializable()
-class TabRenderer {
-  final TabRendererContent? content;
-
-  const TabRenderer({this.content});
-
-  factory TabRenderer.fromJson(Map<String, dynamic> json) =>
-      _$TabRendererFromJson(json);
-  Map<String, dynamic> toJson() => _$TabRendererToJson(this);
-}
-
-@JsonSerializable()
-class TabRendererContent {
-  final SectionListRenderer? sectionListRenderer;
-
-  const TabRendererContent({this.sectionListRenderer});
-
-  factory TabRendererContent.fromJson(Map<String, dynamic> json) =>
-      _$TabRendererContentFromJson(json);
-  Map<String, dynamic> toJson() => _$TabRendererContentToJson(this);
 }

@@ -39,7 +39,7 @@ class ArtistPage {
         ?.singleColumnBrowseResultsRenderer
         ?.tabs?[0]
         .tabRenderer
-        ?.content
+        .content
         ?.sectionListRenderer;
 
     final sectionContents = sectionListRenderer?.contents ?? [];
