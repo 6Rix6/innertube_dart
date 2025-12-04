@@ -23,6 +23,7 @@ Map<String, dynamic> _$MusicResponsiveListItemToJson(
 MusicResponsiveListItemRenderer _$MusicResponsiveListItemRendererFromJson(
   Map<String, dynamic> json,
 ) => MusicResponsiveListItemRenderer(
+  trackingParams: json['trackingParams'] as String,
   flexColumns: (json['flexColumns'] as List<dynamic>)
       .map((e) => FlexColumn.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -51,11 +52,15 @@ MusicResponsiveListItemRenderer _$MusicResponsiveListItemRendererFromJson(
   overlay: json['overlay'] == null
       ? null
       : Overlay.fromJson(json['overlay'] as Map<String, dynamic>),
+  index: json['index'] == null
+      ? null
+      : Runs.fromJson(json['index'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MusicResponsiveListItemRendererToJson(
   MusicResponsiveListItemRenderer instance,
 ) => <String, dynamic>{
+  'trackingParams': instance.trackingParams,
   'flexColumns': instance.flexColumns,
   'fixedColumns': instance.fixedColumns,
   'thumbnail': instance.thumbnail,
@@ -64,6 +69,7 @@ Map<String, dynamic> _$MusicResponsiveListItemRendererToJson(
   'badges': instance.badges,
   'menu': instance.menu,
   'overlay': instance.overlay,
+  'index': instance.index,
 };
 
 FlexColumn _$FlexColumnFromJson(Map<String, dynamic> json) => FlexColumn(

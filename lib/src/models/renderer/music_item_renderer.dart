@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/accessibility_data.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
@@ -24,6 +25,7 @@ class MusicResponsiveListItem {
 /// Music responsive list item renderer
 @JsonSerializable()
 class MusicResponsiveListItemRenderer {
+  final String trackingParams;
   final List<FlexColumn> flexColumns;
   final List<FlexColumn>? fixedColumns;
   final ThumbnailRenderer? thumbnail;
@@ -32,8 +34,11 @@ class MusicResponsiveListItemRenderer {
   final List<Badge>? badges;
   final Menu? menu;
   final Overlay? overlay;
+  final Runs? index;
+  // TODO: multiSelectCheckbox
 
   const MusicResponsiveListItemRenderer({
+    required this.trackingParams,
     required this.flexColumns,
     this.fixedColumns,
     this.thumbnail,
@@ -42,6 +47,7 @@ class MusicResponsiveListItemRenderer {
     this.badges,
     this.menu,
     this.overlay,
+    this.index,
   });
 
   // Type detection helpers
@@ -69,6 +75,7 @@ class FlexColumn {
   @JsonKey(name: 'musicResponsiveListItemFlexColumnRenderer')
   final MusicResponsiveListItemFlexColumnRenderer? flexColumnRenderer;
 
+  // actually same as flexColumnRenderer
   @JsonKey(name: 'musicResponsiveListItemFixedColumnRenderer')
   final MusicResponsiveListItemFlexColumnRenderer? fixedColumnRenderer;
 
@@ -85,8 +92,12 @@ class FlexColumn {
 @JsonSerializable()
 class MusicResponsiveListItemFlexColumnRenderer {
   final Runs? text;
+  final Accessibility? accessibility;
 
-  const MusicResponsiveListItemFlexColumnRenderer({this.text});
+  const MusicResponsiveListItemFlexColumnRenderer({
+    this.text,
+    this.accessibility,
+  });
 
   factory MusicResponsiveListItemFlexColumnRenderer.fromJson(
     Map<String, dynamic> json,
@@ -127,36 +138,6 @@ class MusicInlineBadgeRenderer {
       _$MusicInlineBadgeRendererFromJson(json);
   Map<String, dynamic> toJson() => _$MusicInlineBadgeRendererToJson(this);
 }
-
-// @JsonSerializable()
-// class MenuRenderer {
-//   final List<MenuItem>? items;
-
-//   const MenuRenderer({this.items});
-
-//   factory MenuRenderer.fromJson(Map<String, dynamic> json) =>
-//       _$MenuRendererFromJson(json);
-
-//   Map<String, dynamic> toJson() => _$MenuRendererToJson(this);
-// }
-
-// @JsonSerializable()
-// class MenuItem {
-//   final Map<String, dynamic>? menuNavigationItemRenderer;
-//   final Map<String, dynamic>? toggleMenuServiceItemRenderer;
-//   final Map<String, dynamic>? menuServiceItemRenderer;
-
-//   const MenuItem({
-//     this.menuNavigationItemRenderer,
-//     this.toggleMenuServiceItemRenderer,
-//     this.menuServiceItemRenderer,
-//   });
-
-//   factory MenuItem.fromJson(Map<String, dynamic> json) =>
-//       _$MenuItemFromJson(json);
-
-//   Map<String, dynamic> toJson() => _$MenuItemToJson(this);
-// }
 
 @JsonSerializable()
 class Overlay {
