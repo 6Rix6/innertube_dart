@@ -20,6 +20,8 @@ class YouTubeClient {
   final String? cronetVersion;
   final String? packageName;
   final String? friendlyName;
+  final String? platform;
+  final String? clientFormFactor;
   final bool loginSupported;
   final bool loginRequired;
   final bool useSignatureTimestamp;
@@ -39,6 +41,8 @@ class YouTubeClient {
     this.cronetVersion,
     this.packageName,
     this.friendlyName,
+    this.platform,
+    this.clientFormFactor,
     this.loginSupported = false,
     this.loginRequired = false,
     this.useSignatureTimestamp = false,
@@ -61,6 +65,8 @@ class YouTubeClient {
         deviceMake: deviceMake,
         deviceModel: deviceModel,
         androidSdkVersion: androidSdkVersion,
+        platform: platform,
+        clientFormFactor: clientFormFactor,
         gl: locale.gl,
         hl: locale.hl,
         visitorData: sessionContext?.visitorData,
@@ -118,6 +124,13 @@ class YouTubeClient {
     clientName: 'ANDROID',
     clientVersion: '20.10.38',
     clientId: '3',
+    osName: 'Android',
+    osVersion: '13',
+    // deviceMake: 'Google',
+    // deviceModel: 'Pixel 6',
+    platform: 'MOBILE',
+    clientFormFactor: 'SMALL_FORM_FACTOR',
+    androidSdkVersion: '33',
     userAgent:
         'com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip',
     loginSupported: true,

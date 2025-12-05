@@ -32,6 +32,8 @@ class ContextClient {
   final String? osVersion;
   final String? deviceMake;
   final String? deviceModel;
+  final String? platform;
+  final String? clientFormFactor;
   final String? androidSdkVersion;
   final String gl;
   final String hl;
@@ -48,6 +50,8 @@ class ContextClient {
     this.osVersion,
     this.deviceMake,
     this.deviceModel,
+    this.platform,
+    this.clientFormFactor,
     this.androidSdkVersion,
     required this.gl,
     required this.hl,
