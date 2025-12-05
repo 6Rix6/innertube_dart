@@ -153,7 +153,7 @@ class YTItemTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               image: DecorationImage(
-                image: NetworkImage(item.thumbnail ?? ''),
+                image: NetworkImage(item.thumbnails?.thumbnails.last.url ?? ''),
                 fit: BoxFit.cover,
               ),
             ),

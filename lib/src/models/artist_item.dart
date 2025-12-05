@@ -1,4 +1,5 @@
 import 'package:innertube_dart/src/models/endpoints.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 
@@ -14,7 +15,7 @@ class ArtistItem extends YTItem {
   final String title;
 
   @override
-  final String? thumbnail;
+  final Thumbnails? thumbnails;
 
   final String? channelId;
 
@@ -24,7 +25,7 @@ class ArtistItem extends YTItem {
   const ArtistItem({
     required this.id,
     required this.title,
-    this.thumbnail,
+    this.thumbnails,
     this.channelId,
     this.shuffleEndpoint,
     this.radioEndpoint,

@@ -102,11 +102,17 @@ _$MusicResponsiveListItemFlexColumnRendererFromJson(
   text: json['text'] == null
       ? null
       : Runs.fromJson(json['text'] as Map<String, dynamic>),
+  accessibility: json['accessibility'] == null
+      ? null
+      : Accessibility.fromJson(json['accessibility'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MusicResponsiveListItemFlexColumnRendererToJson(
   MusicResponsiveListItemFlexColumnRenderer instance,
-) => <String, dynamic>{'text': instance.text};
+) => <String, dynamic>{
+  'text': instance.text,
+  'accessibility': instance.accessibility,
+};
 
 PlaylistItemData _$PlaylistItemDataFromJson(Map<String, dynamic> json) =>
     PlaylistItemData(

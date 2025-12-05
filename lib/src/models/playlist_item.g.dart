@@ -13,7 +13,9 @@ PlaylistItem _$PlaylistItemFromJson(Map<String, dynamic> json) => PlaylistItem(
       ? null
       : Artist.fromJson(json['author'] as Map<String, dynamic>),
   songCountText: json['songCountText'] as String?,
-  thumbnail: json['thumbnail'] as String?,
+  thumbnails: json['thumbnails'] == null
+      ? null
+      : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
   isEditable: json['isEditable'] as bool? ?? false,
   playEndpoint: json['playEndpoint'] == null
       ? null
@@ -38,7 +40,7 @@ Map<String, dynamic> _$PlaylistItemToJson(PlaylistItem instance) =>
       'title': instance.title,
       'author': instance.author,
       'songCountText': instance.songCountText,
-      'thumbnail': instance.thumbnail,
+      'thumbnails': instance.thumbnails,
       'isEditable': instance.isEditable,
       'playEndpoint': instance.playEndpoint,
       'shuffleEndpoint': instance.shuffleEndpoint,

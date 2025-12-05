@@ -146,9 +146,9 @@ class _SearchPageState extends State<SearchPage> {
                         if (item is! SongItem) return const SizedBox.shrink();
 
                         return ListTile(
-                          leading: item.thumbnail.isNotEmpty
+                          leading: item.thumbnails.thumbnails.isNotEmpty
                               ? Image.network(
-                                  item.thumbnail,
+                                  item.thumbnails.thumbnails.last.url,
                                   width: 56,
                                   height: 56,
                                   fit: BoxFit.cover,

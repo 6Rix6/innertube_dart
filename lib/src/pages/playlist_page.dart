@@ -31,7 +31,7 @@ class PlaylistPage {
       final title = response.getTitle();
       if (title == null) return null;
       final author = response.getAuthor();
-      final thumbnail = response.getThumbnailUrl();
+      final thumbnail = response.getThumbnails();
       final songCountText = response.getSongCountText();
 
       final playlistItem = PlaylistItem(
@@ -39,7 +39,7 @@ class PlaylistPage {
         title: title,
         author: author,
         songCountText: songCountText,
-        thumbnail: thumbnail,
+        thumbnails: thumbnail,
       );
       final songs = _parseSongs(response, playlistItem);
       final continuation = _parseContinuation(response);
@@ -131,8 +131,8 @@ class PlaylistPage {
           ?.firstOrNull
           ?.text;
       final duration = parseTime(durationText);
-      final thumbnail = renderer.thumbnail?.getThumbnailUrl();
-      if (thumbnail == null) return null;
+      final thumbnails = renderer.thumbnail?.getThumbnails();
+      if (thumbnails == null) return null;
       final explicit =
           renderer.badges?.any(
             (badge) =>
@@ -146,7 +146,7 @@ class PlaylistPage {
         artists: artists,
         album: album,
         duration: duration,
-        thumbnail: thumbnail,
+        thumbnails: thumbnails,
         explicit: explicit,
       );
     } catch (e) {

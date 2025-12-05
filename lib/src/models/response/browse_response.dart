@@ -2,8 +2,9 @@ import 'package:innertube_dart/src/models/renderer/browse_header_renderes.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
+import 'package:innertube_dart/src/models/renderer/thumbnail_renderer.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import '../artist.dart';
 
 part 'browse_response.g.dart';
@@ -14,7 +15,7 @@ class BrowseResponse {
   final BrowseHeaderRenderer? header;
   final BrowseResponseContent? contents;
   final Map<String, dynamic>? microformat;
-  final Map<String, dynamic>? background;
+  final BrowseResponseBackground? background;
   final Map<String, dynamic>? continuationContents;
   final String? trackingParams;
 
@@ -91,26 +92,16 @@ class BrowseResponse {
     return null;
   }
 
-  /// Helper to get thumbnail URL
-  String? getThumbnailUrl() {
-    // Try background
-    final bgUrl =
-        background?['musicThumbnailRenderer']?['thumbnail']?['thumbnails']
-                ?.last['url']
-            as String?;
-    if (bgUrl != null) return bgUrl;
-
-    // Try music responsive header
+  /// Helper to get thumbnail
+  Thumbnails? getThumbnails() {
     final musicHeader = _getMusicResponsiveHeader();
-    final responsiveUrl = musicHeader
-        ?.thumbnail
-        ?.musicThumbnailRenderer
-        .thumbnail
-        .thumbnails
-        .last
-        .url;
+    final thumbnails = musicHeader?.thumbnail?.musicThumbnailRenderer.thumbnail;
 
-    return responsiveUrl;
+    return thumbnails;
+  }
+
+  Thumbnails? getBackgroundThumbnails() {
+    return background?.musicThumbnailRenderer?.thumbnail;
   }
 
   MusicResponsiveHeaderRenderer? _getMusicResponsiveHeader() {
@@ -168,4 +159,15 @@ class TwoColumnBrowseResultsRenderer {
   factory TwoColumnBrowseResultsRenderer.fromJson(Map<String, dynamic> json) =>
       _$TwoColumnBrowseResultsRendererFromJson(json);
   Map<String, dynamic> toJson() => _$TwoColumnBrowseResultsRendererToJson(this);
+}
+
+@JsonSerializable()
+class BrowseResponseBackground {
+  final MusicThumbnailRenderer? musicThumbnailRenderer;
+
+  const BrowseResponseBackground({this.musicThumbnailRenderer});
+
+  factory BrowseResponseBackground.fromJson(Map<String, dynamic> json) =>
+      _$BrowseResponseBackgroundFromJson(json);
+  Map<String, dynamic> toJson() => _$BrowseResponseBackgroundToJson(this);
 }

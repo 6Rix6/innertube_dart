@@ -18,7 +18,11 @@ BrowseResponse _$BrowseResponseFromJson(
           json['contents'] as Map<String, dynamic>,
         ),
   microformat: json['microformat'] as Map<String, dynamic>?,
-  background: json['background'] as Map<String, dynamic>?,
+  background: json['background'] == null
+      ? null
+      : BrowseResponseBackground.fromJson(
+          json['background'] as Map<String, dynamic>,
+        ),
   continuationContents: json['continuationContents'] as Map<String, dynamic>?,
   trackingParams: json['trackingParams'] as String?,
 );
@@ -85,4 +89,20 @@ Map<String, dynamic> _$TwoColumnBrowseResultsRendererToJson(
 ) => <String, dynamic>{
   'tabs': instance.tabs,
   'secondaryContents': instance.secondaryContents,
+};
+
+BrowseResponseBackground _$BrowseResponseBackgroundFromJson(
+  Map<String, dynamic> json,
+) => BrowseResponseBackground(
+  musicThumbnailRenderer: json['musicThumbnailRenderer'] == null
+      ? null
+      : MusicThumbnailRenderer.fromJson(
+          json['musicThumbnailRenderer'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$BrowseResponseBackgroundToJson(
+  BrowseResponseBackground instance,
+) => <String, dynamic>{
+  'musicThumbnailRenderer': instance.musicThumbnailRenderer,
 };

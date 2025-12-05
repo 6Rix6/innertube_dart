@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 import 'artist.dart';
@@ -18,9 +19,12 @@ class AlbumItem extends YTItem {
 
   final List<Artist>? artists;
   final String? year;
+  final String? albumTypeText;
+  final String? songCountText;
+  final String? durationText;
 
   @override
-  final String thumbnail;
+  final Thumbnails thumbnails;
 
   @override
   final bool explicit;
@@ -32,7 +36,10 @@ class AlbumItem extends YTItem {
     required this.title,
     this.artists,
     this.year,
-    required this.thumbnail,
+    this.albumTypeText,
+    this.songCountText,
+    this.durationText,
+    required this.thumbnails,
     this.explicit = false,
   }) : id = id ?? browseId;
 

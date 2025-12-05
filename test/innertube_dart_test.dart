@@ -1,4 +1,5 @@
 import 'package:innertube_dart/innertube_dart.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:test/test.dart';
 
 const testCookie =
@@ -29,7 +30,9 @@ void main() {
         id: 'dQw4w9WgXcQ',
         title: 'Bohemian Rhapsody',
         artists: [Artist(name: 'Queen', id: 'UCRq...')],
-        thumbnail: 'https://example.com/thumb.jpg',
+        thumbnails: Thumbnails(
+          thumbnails: [Thumbnail(url: 'https://example.com/thumb.jpg')],
+        ),
         duration: 354,
       );
 
@@ -46,7 +49,9 @@ void main() {
         title: 'A Night at the Opera',
         artists: [Artist(name: 'Queen', id: 'UCRq...')],
         year: "1975",
-        thumbnail: 'https://example.com/thumb.jpg',
+        thumbnails: Thumbnails(
+          thumbnails: [Thumbnail(url: 'https://example.com/thumb.jpg')],
+        ),
       );
 
       expect(album.browseId, equals('MPREb...'));
@@ -135,6 +140,11 @@ void main() {
       final result = await youtube.album('MPREb_1wQ6dIEh3ZE');
       if (isDebug && result.isSuccess) {
         print(result.value.album.title);
+        print(result.value.album.year);
+        print(result.value.album.albumTypeText);
+        print(result.value.album.songCountText);
+        print(result.value.album.durationText);
+        print(result.value.forYouSection);
         for (var song in result.value.songs) {
           print(song);
         }
@@ -148,13 +158,15 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.playlist(
-        'VLRDCLAK5uy_lXFoH_0mBWcJWJu6ZR2bPAX_gKYP_wmPo',
+        'RDCLAK5uy_lXFoH_0mBWcJWJu6ZR2bPAX_gKYP_wmPo',
       );
       if (isDebug && result.isSuccess) {
         print(result.value.playlist.title);
-        for (var song in result.value.songs) {
-          print(song);
-        }
+        print(result.value.playlist.author);
+        print(result.value.playlist.songCountText);
+        // for (var song in result.value.songs) {
+        //   print(song);
+        // }
       }
       expect(result.isSuccess, isTrue);
     });

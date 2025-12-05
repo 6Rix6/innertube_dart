@@ -1,5 +1,6 @@
 import 'package:innertube_dart/src/models/album_item.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:innertube_dart/src/utils/parse_time.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
@@ -22,9 +23,10 @@ class SongItem extends YTItem {
   final int? duration;
   final int? chartPosition;
   final String? chartChange;
+  final String? viewCount;
 
   @override
-  final String thumbnail;
+  final Thumbnails thumbnails;
 
   @override
   final bool explicit;
@@ -42,7 +44,8 @@ class SongItem extends YTItem {
     this.duration,
     this.chartPosition,
     this.chartChange,
-    required this.thumbnail,
+    this.viewCount,
+    required this.thumbnails,
     this.explicit = false,
     this.setVideoId,
     this.libraryAddToken,
@@ -74,8 +77,20 @@ class SongItem extends YTItem {
         ?.text;
     final duration = parseTime(durationText);
 
+    // Get view count
+    final viewCountText = renderer
+        .flexColumns
+        .lastOrNull
+        ?.renderer
+        ?.text
+        ?.runs
+        ?.firstOrNull
+        ?.text;
+
     // Get thumbnail
-    final thumbnail = renderer.thumbnail?.getThumbnailUrl() ?? album.thumbnail;
+    final thumbnail =
+        renderer.thumbnail?.musicThumbnailRenderer?.thumbnail ??
+        album.thumbnails;
 
     return SongItem(
       id: videoId,
@@ -83,7 +98,8 @@ class SongItem extends YTItem {
       artists: album.artists ?? [],
       album: Album(name: album.title, id: album.browseId),
       duration: duration,
-      thumbnail: thumbnail,
+      viewCount: viewCountText,
+      thumbnails: thumbnail,
       setVideoId: renderer.playlistItemData?.playlistSetVideoId,
     );
   }

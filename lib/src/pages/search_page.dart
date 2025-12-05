@@ -78,8 +78,8 @@ class SearchPage {
     final durationText = secondaryLine.lastOrNull?.firstOrNull?.text;
     final duration = parseTime(durationText);
 
-    final thumbnail = renderer.thumbnail?.getThumbnailUrl();
-    if (thumbnail == null) return null;
+    final thumbnails = renderer.thumbnail?.getThumbnails();
+    if (thumbnails == null) return null;
 
     // Check explicit badge
     final explicit =
@@ -96,7 +96,7 @@ class SearchPage {
       artists: artists,
       album: album,
       duration: duration,
-      thumbnail: thumbnail,
+      thumbnails: thumbnails,
       explicit: explicit,
     );
   }
@@ -115,13 +115,13 @@ class SearchPage {
         ?.text;
     if (title == null) return null;
 
-    final thumbnail = renderer.thumbnail?.getThumbnailUrl();
-    if (thumbnail == null) return null;
+    final thumbnails = renderer.thumbnail?.getThumbnails();
+    if (thumbnails == null) return null;
 
     return ArtistItem(
       id: browseId,
       title: title,
-      thumbnail: thumbnail,
+      thumbnails: thumbnails,
       channelId: browseId,
     );
   }
@@ -164,8 +164,8 @@ class SearchPage {
     // Try to get year
     final year = secondaryLine.elementAtOrNull(2)?.firstOrNull?.text;
 
-    final thumbnail = renderer.thumbnail?.getThumbnailUrl();
-    if (thumbnail == null) return null;
+    final thumbnails = renderer.thumbnail?.getThumbnails();
+    if (thumbnails == null) return null;
 
     final explicit =
         renderer.badges?.any(
@@ -181,7 +181,7 @@ class SearchPage {
       title: title,
       artists: artists,
       year: year,
-      thumbnail: thumbnail,
+      thumbnails: thumbnails,
       explicit: explicit,
     );
   }
@@ -224,14 +224,14 @@ class SearchPage {
         ?.lastOrNull
         ?.text;
 
-    final thumbnail = renderer.thumbnail?.getThumbnailUrl();
+    final thumbnails = renderer.thumbnail?.getThumbnails();
 
     return PlaylistItem(
       id: browseId,
       title: title,
       author: author,
       songCountText: songCountText,
-      thumbnail: thumbnail,
+      thumbnails: thumbnails,
     );
   }
 }

@@ -87,7 +87,7 @@ class SectionListRendererContents {
   }
 
   /// Parse MusicShelfRenderer section (songs list)
-  Section? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
+  Section<SongItem>? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
     try {
       final title = shelfData.title?.runs?.firstOrNull?.text ?? 'Songs';
 
@@ -185,7 +185,7 @@ class SectionListRendererContents {
       }
 
       // Get thumbnail
-      final thumbnailUrl = renderer.thumbnail?.getThumbnailUrl();
+      final thumbnails = renderer.thumbnail?.musicThumbnailRenderer?.thumbnail;
 
       // Check if explicit
       final explicit =
@@ -202,7 +202,7 @@ class SectionListRendererContents {
         artists: artists,
         album: null,
         duration: null,
-        thumbnail: thumbnailUrl!,
+        thumbnails: thumbnails!,
         explicit: explicit,
       );
     } catch (e) {
@@ -247,7 +247,8 @@ class SectionListRendererContents {
       );
     }
 
-    final thumbnailUrl = renderer.thumbnailRenderer?.getThumbnailUrl();
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
 
     final explicit =
         renderer.subtitleBadges?.any(
@@ -263,7 +264,7 @@ class SectionListRendererContents {
       artists: artists,
       album: null,
       duration: null,
-      thumbnail: thumbnailUrl!,
+      thumbnails: thumbnails!,
       explicit: explicit,
     );
   }
@@ -285,7 +286,8 @@ class SectionListRendererContents {
         ?.watchPlaylistEndpoint
         ?.playlistId;
 
-    final thumbnailUrl = renderer.thumbnailRenderer?.getThumbnailUrl();
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
 
     final year = renderer.subtitle?.runs?.lastOrNull?.text;
 
@@ -303,7 +305,7 @@ class SectionListRendererContents {
       title: title,
       artists: null, // always null
       year: year,
-      thumbnail: thumbnailUrl!,
+      thumbnails: thumbnails!,
       explicit: explicit,
     );
   }
@@ -324,7 +326,8 @@ class SectionListRendererContents {
       id: null,
     );
 
-    final thumbnailUrl = renderer.thumbnailRenderer?.getThumbnailUrl();
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
 
     final playEndpoint = renderer
         .thumbnailOverlay
@@ -363,7 +366,7 @@ class SectionListRendererContents {
       title: title,
       author: author,
       songCountText: null,
-      thumbnail: thumbnailUrl,
+      thumbnails: thumbnails!,
       playEndpoint: playEndpoint,
       shuffleEndpoint: shuffleEndpoint,
       radioEndpoint: radioEndpoint,
@@ -378,7 +381,8 @@ class SectionListRendererContents {
     final title = renderer.title?.runs?.lastOrNull?.text;
     if (title == null) return null;
 
-    final thumbnailUrl = renderer.thumbnailRenderer?.getThumbnailUrl();
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
 
     final channelId =
         renderer.menu?.menuRenderer.items
@@ -422,7 +426,7 @@ class SectionListRendererContents {
     return ArtistItem(
       id: browseId,
       title: title,
-      thumbnail: thumbnailUrl,
+      thumbnails: thumbnails!,
       channelId: channelId,
       shuffleEndpoint: shuffleEndpoint,
       radioEndpoint: radioEndpoint,

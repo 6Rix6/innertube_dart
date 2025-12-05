@@ -9,7 +9,7 @@ class ThumbnailRenderer {
 
   const ThumbnailRenderer({this.musicThumbnailRenderer});
 
-  String? getThumbnailUrl() => musicThumbnailRenderer?.thumbnail.getBest();
+  Thumbnails? getThumbnails() => musicThumbnailRenderer?.thumbnail;
 
   factory ThumbnailRenderer.fromJson(Map<String, dynamic> json) =>
       _$ThumbnailRendererFromJson(json);

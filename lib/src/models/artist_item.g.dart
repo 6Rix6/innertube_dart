@@ -9,7 +9,9 @@ part of 'artist_item.dart';
 ArtistItem _$ArtistItemFromJson(Map<String, dynamic> json) => ArtistItem(
   id: json['id'] as String,
   title: json['title'] as String,
-  thumbnail: json['thumbnail'] as String?,
+  thumbnails: json['thumbnails'] == null
+      ? null
+      : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
   channelId: json['channelId'] as String?,
   shuffleEndpoint: json['shuffleEndpoint'] == null
       ? null
@@ -27,7 +29,7 @@ Map<String, dynamic> _$ArtistItemToJson(ArtistItem instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'thumbnail': instance.thumbnail,
+      'thumbnails': instance.thumbnails,
       'channelId': instance.channelId,
       'shuffleEndpoint': instance.shuffleEndpoint,
       'radioEndpoint': instance.radioEndpoint,

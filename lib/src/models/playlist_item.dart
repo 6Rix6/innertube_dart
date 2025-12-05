@@ -1,4 +1,5 @@
 import 'package:innertube_dart/src/models/endpoints.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 import 'artist.dart';
@@ -18,7 +19,7 @@ class PlaylistItem extends YTItem {
   final String? songCountText;
 
   @override
-  final String? thumbnail;
+  final Thumbnails? thumbnails;
 
   final bool isEditable;
 
@@ -31,7 +32,7 @@ class PlaylistItem extends YTItem {
     required this.title,
     this.author,
     this.songCountText,
-    this.thumbnail,
+    this.thumbnails,
     this.isEditable = false,
     this.playEndpoint,
     this.shuffleEndpoint,
