@@ -22,6 +22,7 @@ class AlbumItem extends YTItem {
   final String? albumTypeText;
   final String? songCountText;
   final String? durationText;
+  final Thumbnails? artistThumbnails;
 
   @override
   final Thumbnails thumbnails;
@@ -39,6 +40,7 @@ class AlbumItem extends YTItem {
     this.albumTypeText,
     this.songCountText,
     this.durationText,
+    this.artistThumbnails,
     required this.thumbnails,
     this.explicit = false,
   }) : id = id ?? browseId;

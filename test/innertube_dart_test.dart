@@ -38,7 +38,7 @@ void main() {
 
       expect(song.id, equals('dQw4w9WgXcQ'));
       expect(song.title, equals('Bohemian Rhapsody'));
-      expect(song.artists.length, equals(1));
+      expect(song.artists?.length, equals(1));
       expect(song.shareLink, contains('music.youtube.com/watch?v='));
     });
 
@@ -137,9 +137,10 @@ void main() {
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
-      final result = await youtube.album('MPREb_1wQ6dIEh3ZE');
+      final result = await youtube.album('MPREb_vcnEpgDsbqG');
       if (isDebug && result.isSuccess) {
         print(result.value.album.title);
+        print(result.value.album.artists);
         print(result.value.album.year);
         print(result.value.album.albumTypeText);
         print(result.value.album.songCountText);

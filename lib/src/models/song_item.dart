@@ -1,5 +1,5 @@
-import 'package:innertube_dart/src/models/album_item.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:innertube_dart/src/utils/parse_time.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,7 +18,7 @@ class SongItem extends YTItem {
   @override
   final String title;
 
-  final List<Artist> artists;
+  final List<Artist>? artists;
   final Album? album;
   final int? duration;
   final int? chartPosition;
@@ -26,7 +26,7 @@ class SongItem extends YTItem {
   final String? viewCount;
 
   @override
-  final Thumbnails thumbnails;
+  final Thumbnails? thumbnails;
 
   @override
   final bool explicit;
@@ -39,13 +39,13 @@ class SongItem extends YTItem {
   const SongItem({
     required this.id,
     required this.title,
-    required this.artists,
+    this.artists,
     this.album,
     this.duration,
     this.chartPosition,
     this.chartChange,
     this.viewCount,
-    required this.thumbnails,
+    this.thumbnails,
     this.explicit = false,
     this.setVideoId,
     this.libraryAddToken,
@@ -56,7 +56,6 @@ class SongItem extends YTItem {
   /// generate songItem from musicResponsiveListItemRenderer and albumItem
   static SongItem? fromMusicResponsiveListItemRenderer(
     MusicResponsiveListItemRenderer renderer,
-    AlbumItem album,
   ) {
     final videoId = renderer.playlistItemData?.videoId;
     if (videoId == null) return null;
@@ -88,15 +87,24 @@ class SongItem extends YTItem {
         ?.text;
 
     // Get thumbnail
-    final thumbnail =
-        renderer.thumbnail?.musicThumbnailRenderer?.thumbnail ??
-        album.thumbnails;
+    final thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.thumbnail;
+
+    final artistsRuns = renderer.flexColumns[1].flexColumnRenderer?.text?.runs;
+    List<Artist> artists = [];
+    for (final run in artistsRuns ?? <Run>[]) {
+      if (run.navigationEndpoint != null) {
+        final endpoint = run.navigationEndpoint;
+        final browseId = endpoint?.browseEndpoint?.browseId;
+        final title = run.text;
+        final artist = Artist(name: title, id: browseId);
+        artists.add(artist);
+      }
+    }
 
     return SongItem(
       id: videoId,
       title: title,
-      artists: album.artists ?? [],
-      album: Album(name: album.title, id: album.browseId),
+      artists: artists,
       duration: duration,
       viewCount: viewCountText,
       thumbnails: thumbnail,
@@ -113,7 +121,7 @@ class SongItem extends YTItem {
   Map<String, dynamic> toJson() => _$SongItemToJson(this);
 
   @override
-  String toString() => '$title by ${artists.map((a) => a.name).join(", ")}';
+  String toString() => '$title by ${artists?.map((a) => a.name).join(", ")}';
 }
 
 extension _FirstOrNull<T> on List<T> {

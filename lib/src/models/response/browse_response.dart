@@ -47,7 +47,7 @@ class BrowseResponse {
   /// Helper to get title from header
   String? getTitle() {
     // Try twoColumnBrowseResultsRenderer
-    final musicHeader = _getMusicResponsiveHeader();
+    final musicHeader = getMusicResponsiveHeader();
     if (musicHeader != null) {
       final runs = musicHeader.title?.runs;
       if (runs != null && runs.isNotEmpty) {
@@ -62,7 +62,7 @@ class BrowseResponse {
   Artist? getAuthor() {
     Artist? author;
     // Try twoColumnBrowseResultsRenderer
-    final musicHeader = _getMusicResponsiveHeader();
+    final musicHeader = getMusicResponsiveHeader();
     if (musicHeader != null) {
       final avatarStackViewModel =
           musicHeader.facepile?['avatarStackViewModel'];
@@ -81,7 +81,7 @@ class BrowseResponse {
   /// Helper to get song count text from header (only for playlist)
   String? getSongCountText() {
     // Try twoColumnBrowseResultsRenderer
-    final musicHeader = _getMusicResponsiveHeader();
+    final musicHeader = getMusicResponsiveHeader();
     if (musicHeader != null) {
       final runs = musicHeader.secondSubtitle?.runs;
       if (runs != null && runs.isNotEmpty) {
@@ -94,17 +94,16 @@ class BrowseResponse {
 
   /// Helper to get thumbnail
   Thumbnails? getThumbnails() {
-    final musicHeader = _getMusicResponsiveHeader();
+    final musicHeader = getMusicResponsiveHeader();
     final thumbnails = musicHeader?.thumbnail?.musicThumbnailRenderer.thumbnail;
 
     return thumbnails;
   }
 
-  Thumbnails? getBackgroundThumbnails() {
-    return background?.musicThumbnailRenderer?.thumbnail;
-  }
+  Thumbnails? get backgroundThumbnails =>
+      background?.musicThumbnailRenderer?.thumbnail;
 
-  MusicResponsiveHeaderRenderer? _getMusicResponsiveHeader() {
+  MusicResponsiveHeaderRenderer? getMusicResponsiveHeader() {
     final tabs = contents?.twoColumnBrowseResultsRenderer?.tabs;
     if (tabs == null || tabs.isEmpty) return null;
 
@@ -151,14 +150,37 @@ class SingleColumnBrowseResultsRenderer {
 
 @JsonSerializable()
 class TwoColumnBrowseResultsRenderer {
-  final List<Tab>? tabs;
-  final SecionList? secondaryContents;
+  final List<Tab>? tabs; // album header
+  final SecionList? secondaryContents; // album songs & foryou section
 
   const TwoColumnBrowseResultsRenderer({this.tabs, this.secondaryContents});
 
   factory TwoColumnBrowseResultsRenderer.fromJson(Map<String, dynamic> json) =>
       _$TwoColumnBrowseResultsRendererFromJson(json);
   Map<String, dynamic> toJson() => _$TwoColumnBrowseResultsRendererToJson(this);
+
+  /// helper to get music header
+  MusicResponsiveHeaderRenderer? getMusicResponsiveHeader() {
+    if (tabs != null && tabs!.isNotEmpty) {
+      final sectionContents =
+          tabs!.first.tabRenderer.content?.sectionListRenderer?.contents;
+      if (sectionContents == null || sectionContents.isEmpty) return null;
+
+      return sectionContents.first.musicResponsiveHeaderRenderer;
+    }
+
+    return null;
+  }
+
+  /// helper to get section list renderer contents
+  List<SectionListRendererContents>? getSectionListRendererContents() {
+    final contents = secondaryContents?.sectionListRenderer?.contents;
+    if (contents != null && contents.isNotEmpty) {
+      return contents;
+    }
+
+    return null;
+  }
 }
 
 @JsonSerializable()

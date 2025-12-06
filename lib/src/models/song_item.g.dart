@@ -9,8 +9,8 @@ part of 'song_item.dart';
 SongItem _$SongItemFromJson(Map<String, dynamic> json) => SongItem(
   id: json['id'] as String,
   title: json['title'] as String,
-  artists: (json['artists'] as List<dynamic>)
-      .map((e) => Artist.fromJson(e as Map<String, dynamic>))
+  artists: (json['artists'] as List<dynamic>?)
+      ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
       .toList(),
   album: json['album'] == null
       ? null
@@ -19,7 +19,9 @@ SongItem _$SongItemFromJson(Map<String, dynamic> json) => SongItem(
   chartPosition: (json['chartPosition'] as num?)?.toInt(),
   chartChange: json['chartChange'] as String?,
   viewCount: json['viewCount'] as String?,
-  thumbnails: Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
+  thumbnails: json['thumbnails'] == null
+      ? null
+      : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
   explicit: json['explicit'] as bool? ?? false,
   setVideoId: json['setVideoId'] as String?,
   libraryAddToken: json['libraryAddToken'] as String?,
