@@ -28,11 +28,21 @@ class PlaylistPage {
     String playlistId,
   ) {
     try {
-      final title = response.getTitle();
-      if (title == null) return null;
+      final contents = response.contents?.twoColumnBrowseResultsRenderer;
+      final header = contents?.getMusicResponsiveHeader();
+      if (contents == null || header == null) return null;
+
+      final title = header.titleText;
       final author = response.getAuthor();
-      final thumbnail = response.getThumbnails();
-      final songCountText = response.getSongCountText();
+      final thumbnail = header.thumbnails;
+      final songCountText = header.songCountText;
+
+      if (title == null ||
+          author == null ||
+          thumbnail == null ||
+          songCountText == null) {
+        return null;
+      }
 
       final playlistItem = PlaylistItem(
         id: playlistId,

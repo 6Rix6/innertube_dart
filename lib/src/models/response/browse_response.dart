@@ -64,14 +64,25 @@ class BrowseResponse {
     // Try twoColumnBrowseResultsRenderer
     final musicHeader = getMusicResponsiveHeader();
     if (musicHeader != null) {
-      final avatarStackViewModel =
-          musicHeader.facepile?['avatarStackViewModel'];
-      final name = avatarStackViewModel?['text']?['content'] as String?;
-      final id =
-          avatarStackViewModel?['rendererContext']?['commandContext']?['onTap']?['innertubeCommand']?['browseEndpoint']?['browseId']
-              as String?;
+      final avatarStackViewModel = musicHeader.facepile?.avatarStackViewModel;
+      final name = avatarStackViewModel?.text.content;
+      final id = avatarStackViewModel
+          ?.rendererContext
+          .commandContext
+          ?.onTap
+          ?.innertubeCommand
+          ?.browseEndpoint
+          ?.browseId;
+      final thumbnailUrl = avatarStackViewModel
+          ?.avatars
+          ?.first
+          .avatarViewModel
+          .image
+          .sources
+          .first
+          .url;
       if (name != null && name.isNotEmpty) {
-        author = Artist(name: name, id: id);
+        author = Artist(name: name, id: id, thumbnailUrl: thumbnailUrl);
       }
     }
 

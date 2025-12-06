@@ -159,7 +159,7 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.playlist(
-        'RDCLAK5uy_lXFoH_0mBWcJWJu6ZR2bPAX_gKYP_wmPo',
+        'VLPLR4_9kCHMEN0LquQumYnmO3HFNcPangOQ',
       );
       if (isDebug && result.isSuccess) {
         print(result.value.playlist.title);

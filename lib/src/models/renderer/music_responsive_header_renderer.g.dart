@@ -39,7 +39,9 @@ MusicResponsiveHeaderRenderer _$MusicResponsiveHeaderRendererFromJson(
       )
       .toList(),
   trackingParams: json['trackingParams'] as String?,
-  facepile: json['facepile'],
+  facepile: json['facepile'] == null
+      ? null
+      : Facepile.fromJson(json['facepile'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MusicResponsiveHeaderRendererToJson(
@@ -94,4 +96,14 @@ Map<String, dynamic> _$MusicResponsiveHeaderRendererButtonToJson(
   'toggleButtonRenderer': instance.toggleButtonRenderer,
   'musicPlayButtonRenderer': instance.musicPlayButtonRenderer,
   'menuRenderer': instance.menuRenderer,
+};
+
+Facepile _$FacepileFromJson(Map<String, dynamic> json) => Facepile(
+  avatarStackViewModel: AvatarStackViewModel.fromJson(
+    json['avatarStackViewModel'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$FacepileToJson(Facepile instance) => <String, dynamic>{
+  'avatarStackViewModel': instance.avatarStackViewModel,
 };

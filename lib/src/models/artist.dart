@@ -7,14 +7,16 @@ part 'artist.g.dart';
 class Artist {
   final String name;
   final String? id;
+  final String? thumbnailUrl;
 
-  const Artist({required this.name, this.id});
+  const Artist({required this.name, this.id, this.thumbnailUrl});
 
   factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
   Map<String, dynamic> toJson() => _$ArtistToJson(this);
 
   @override
-  String toString() => name;
+  String toString() =>
+      'Artist(name: $name, id: $id, thumbnailUrl: $thumbnailUrl)';
 
   @override
   bool operator ==(Object other) =>

@@ -1,4 +1,5 @@
 import 'package:innertube_dart/innertube_dart.dart';
+import 'package:innertube_dart/src/models/avater.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:innertube_dart/src/models/runs.dart';
@@ -19,7 +20,7 @@ class MusicResponsiveHeaderRenderer {
   final MusicResponsiveHeaderRendererThumbnail? straplineThumbnail;
   final List<MusicResponsiveHeaderRendererButton>? buttons;
   final String? trackingParams;
-  final dynamic facepile;
+  final Facepile? facepile;
 
   const MusicResponsiveHeaderRenderer({
     this.title,
@@ -95,4 +96,15 @@ class MusicResponsiveHeaderRendererButton {
   ) => _$MusicResponsiveHeaderRendererButtonFromJson(json);
   Map<String, dynamic> toJson() =>
       _$MusicResponsiveHeaderRendererButtonToJson(this);
+}
+
+@JsonSerializable()
+class Facepile {
+  final AvatarStackViewModel avatarStackViewModel;
+
+  const Facepile({required this.avatarStackViewModel});
+
+  factory Facepile.fromJson(Map<String, dynamic> json) =>
+      _$FacepileFromJson(json);
+  Map<String, dynamic> toJson() => _$FacepileToJson(this);
 }
