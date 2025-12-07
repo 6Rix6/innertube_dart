@@ -1,24 +1,27 @@
+import 'package:innertube_dart/src/models/continuations.dart';
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
+
 import '../models/playlist_item.dart';
 import '../models/song_item.dart';
-import '../models/artist.dart';
-import '../models/album.dart';
 import '../models/response/browse_response.dart';
-import '../models/renderer/music_item_renderer.dart';
-import '../models/runs.dart';
-import '../utils/parse_time.dart';
 
 /// Represents a parsed playlist page with songs
 class PlaylistPage {
   final PlaylistItem playlist;
   final List<SongItem> songs;
   final String? songsContinuation;
-  final String? continuation;
+  final List<Continuations>? continuations;
+
+  final Thumbnails? background;
   final BrowseResponse response;
+
   const PlaylistPage({
     required this.playlist,
     required this.songs,
     this.songsContinuation,
-    this.continuation,
+    this.continuations,
+    this.background,
     required this.response,
   });
 
@@ -29,20 +32,41 @@ class PlaylistPage {
   ) {
     try {
       final contents = response.contents?.twoColumnBrowseResultsRenderer;
-      final header = contents?.getMusicResponsiveHeader();
+      final header = contents?.musicResponsiveHeaderRenderer;
       if (contents == null || header == null) return null;
 
       final title = header.titleText;
-      final author = response.getAuthor();
+      if (title == null) return null;
+
+      final author = header.playlistAuthor;
       final thumbnail = header.thumbnails;
       final songCountText = header.songCountText;
-
-      if (title == null ||
-          author == null ||
-          thumbnail == null ||
-          songCountText == null) {
-        return null;
-      }
+      final playEndpoint = header.playEndpoint;
+      final menu = header.buttons?[2];
+      final shuffleEndpoint = menu?.menuRenderer?.items
+          ?.firstWhere(
+            (item) =>
+                item.menuNavigationItemRenderer?.icon.iconType ==
+                'MUSIC_SHUFFLE',
+            orElse: () => MenuRendererItem(
+              menuNavigationItemRenderer: null,
+              toggleMenuServiceItemRenderer: null,
+            ),
+          )
+          .menuNavigationItemRenderer
+          ?.navigationEndpoint
+          ?.watchPlaylistEndpoint;
+      final radioEndpoint = menu?.menuRenderer?.items
+          ?.firstWhere(
+            (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
+            orElse: () => MenuRendererItem(
+              menuNavigationItemRenderer: null,
+              toggleMenuServiceItemRenderer: null,
+            ),
+          )
+          .menuNavigationItemRenderer
+          ?.navigationEndpoint
+          ?.watchPlaylistEndpoint;
 
       final playlistItem = PlaylistItem(
         id: playlistId,
@@ -50,147 +74,40 @@ class PlaylistPage {
         author: author,
         songCountText: songCountText,
         thumbnails: thumbnail,
+        watchEndpoint: playEndpoint,
+        shuffleEndpoint: shuffleEndpoint,
+        radioEndpoint: radioEndpoint,
       );
-      final songs = _parseSongs(response, playlistItem);
-      final continuation = _parseContinuation(response);
+
+      final sectionListRendererContents = contents.sectionListRendererContents;
+      final playlistShelf =
+          sectionListRendererContents?.first.musicPlaylistShelfRenderer;
+
+      if (playlistShelf == null) return null;
+
+      final songs = playlistShelf.songs;
+      final songsContinuation = playlistShelf.continuation;
+      final background = response.backgroundThumbnails;
+      final continuations =
+          contents.secondaryContents?.sectionListRenderer?.continuations;
       return PlaylistPage(
         playlist: playlistItem,
         songs: songs,
-        songsContinuation: continuation,
-        continuation: continuation,
+        songsContinuation: songsContinuation,
+        continuations: continuations,
         response: response,
+        background: background,
       );
     } catch (e) {
-      // TODO: handle error
-      print('Error parsing playlist page: $e');
+      // print('Error parsing playlist page: $e');
       return null;
     }
   }
 
-  static List<SongItem> _parseSongs(
-    BrowseResponse response,
-    PlaylistItem playlist,
-  ) {
-    final songs = <SongItem>[];
-    final contents =
-        response
-                .contents
-                ?.twoColumnBrowseResultsRenderer
-                ?.secondaryContents
-                ?.sectionListRenderer
-                ?.contents
-                ?.first
-                .musicPlaylistShelfRenderer?["contents"]
-            as List?;
-    if (contents != null && contents.isNotEmpty) {
-      for (final item in contents) {
-        final renderer = item['musicResponsiveListItemRenderer'];
-        if (renderer != null) {
-          final song = _parseSong(renderer as Map<String, dynamic>, playlist);
-          if (song != null) songs.add(song);
-        }
-      }
-    }
-    return songs;
-  }
-
-  static SongItem? _parseSong(
-    Map<String, dynamic> rendererJson,
-    PlaylistItem playlist,
-  ) {
-    try {
-      final renderer = MusicResponsiveListItemRenderer.fromJson(rendererJson);
-      final videoId = renderer.playlistItemData?.videoId;
-      if (videoId == null) return null;
-      final titleRuns = renderer.flexColumns.firstOrNull?.renderer?.text?.runs;
-      final title = titleRuns?.firstOrNull?.text;
-      if (title == null) return null;
-      final artistRuns = renderer.flexColumns
-          .elementAtOrNull(1)
-          ?.renderer
-          ?.text
-          ?.runs;
-      final artists =
-          artistRuns?.oddElements().map((run) {
-            return Artist(
-              name: run.text,
-              id: run.navigationEndpoint?.browseEndpoint?.browseId,
-            );
-          }).toList() ??
-          [];
-      Album? album;
-      final albumRun = renderer.flexColumns
-          .elementAtOrNull(2)
-          ?.renderer
-          ?.text
-          ?.runs
-          ?.firstOrNull;
-      if (albumRun != null &&
-          albumRun.navigationEndpoint?.browseEndpoint?.browseId != null) {
-        album = Album(
-          name: albumRun.text,
-          id: albumRun.navigationEndpoint!.browseEndpoint!.browseId!,
-        );
-      }
-      final durationText = renderer
-          .fixedColumns
-          ?.firstOrNull
-          ?.renderer
-          ?.text
-          ?.runs
-          ?.firstOrNull
-          ?.text;
-      final duration = parseTime(durationText);
-      final thumbnails = renderer.thumbnail?.getThumbnails();
-      if (thumbnails == null) return null;
-      final explicit =
-          renderer.badges?.any(
-            (badge) =>
-                badge.musicInlineBadgeRenderer?.icon?.iconType ==
-                'MUSIC_EXPLICIT_BADGE',
-          ) ==
-          true;
-      return SongItem(
-        id: videoId,
-        title: title,
-        artists: artists,
-        album: album,
-        duration: duration,
-        thumbnails: thumbnails,
-        explicit: explicit,
-      );
-    } catch (e) {
-      print('Error parsing playlist song: $e');
-      return null;
-    }
-  }
-
-  static String? _parseContinuation(BrowseResponse response) {
-    final contents =
-        response
-                .contents
-                ?.twoColumnBrowseResultsRenderer
-                ?.secondaryContents
-                ?.sectionListRenderer
-                ?.contents
-                ?.first
-                .musicPlaylistShelfRenderer?["contents"]
-            as List?;
-    if (contents != null && contents.isNotEmpty) {
-      final lastItem = contents.last;
-      return lastItem['continuationItemRenderer']?['continuationEndpoint']?['continuationCommand']?['token']
-          as String?;
-    }
-    return null;
-  }
+  // TODO: implement getContinuation
+  // TODO: implement getSongsContinuation
 
   @override
   String toString() =>
       'PlaylistPage(playlist: ${playlist.title}, songs: ${songs.length})';
-}
-
-extension<T> on List<T> {
-  T? get firstOrNull => isEmpty ? null : first;
-  T? elementAtOrNull(int index) =>
-      index >= 0 && index < length ? this[index] : null;
 }

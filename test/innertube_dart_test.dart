@@ -159,15 +159,17 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.playlist(
-        'VLPLR4_9kCHMEN0LquQumYnmO3HFNcPangOQ',
+        'PLR4_9kCHMEN0LquQumYnmO3HFNcPangOQ',
       );
       if (isDebug && result.isSuccess) {
         print(result.value.playlist.title);
         print(result.value.playlist.author);
         print(result.value.playlist.songCountText);
-        // for (var song in result.value.songs) {
-        //   print(song);
-        // }
+        print(result.value.continuations);
+        print(result.value.songsContinuation);
+        for (var song in result.value.songs) {
+          print(song);
+        }
       }
       expect(result.isSuccess, isTrue);
     });

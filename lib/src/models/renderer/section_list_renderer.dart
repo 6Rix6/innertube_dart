@@ -2,6 +2,7 @@ import 'package:innertube_dart/src/models/album_item.dart';
 import 'package:innertube_dart/src/models/artist_item.dart';
 import 'package:innertube_dart/src/models/playlist_item.dart';
 import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/music_playlist_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
 import 'package:innertube_dart/src/models/artist.dart';
@@ -54,8 +55,8 @@ class SectionListRendererContents {
   final MusicCarouselShelfRenderer? musicCarouselShelfRenderer;
   final MusicShelfRenderer? musicShelfRenderer;
   final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer;
-  // TODO: Add support for music playlist shelf renderer
-  final Map<String, dynamic>? musicPlaylistShelfRenderer;
+  final MusicPlaylistShelfRenderer? musicPlaylistShelfRenderer;
+  // TODO: Add support for music card shelf renderer
   final Map<String, dynamic>? musicCardShelfRenderer;
 
   const SectionListRendererContents({
@@ -367,7 +368,7 @@ class SectionListRendererContents {
       author: author,
       songCountText: null,
       thumbnails: thumbnails!,
-      playEndpoint: playEndpoint,
+      watchPlaylistEndpoint: playEndpoint,
       shuffleEndpoint: shuffleEndpoint,
       radioEndpoint: radioEndpoint,
     );

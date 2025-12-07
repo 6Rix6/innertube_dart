@@ -17,10 +17,13 @@ PlaylistItem _$PlaylistItemFromJson(Map<String, dynamic> json) => PlaylistItem(
       ? null
       : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
   isEditable: json['isEditable'] as bool? ?? false,
-  playEndpoint: json['playEndpoint'] == null
+  watchEndpoint: json['watchEndpoint'] == null
+      ? null
+      : WatchEndpoint.fromJson(json['watchEndpoint'] as Map<String, dynamic>),
+  watchPlaylistEndpoint: json['watchPlaylistEndpoint'] == null
       ? null
       : WatchPlaylistEndpoint.fromJson(
-          json['playEndpoint'] as Map<String, dynamic>,
+          json['watchPlaylistEndpoint'] as Map<String, dynamic>,
         ),
   shuffleEndpoint: json['shuffleEndpoint'] == null
       ? null
@@ -42,7 +45,8 @@ Map<String, dynamic> _$PlaylistItemToJson(PlaylistItem instance) =>
       'songCountText': instance.songCountText,
       'thumbnails': instance.thumbnails,
       'isEditable': instance.isEditable,
-      'playEndpoint': instance.playEndpoint,
+      'watchEndpoint': instance.watchEndpoint,
+      'watchPlaylistEndpoint': instance.watchPlaylistEndpoint,
       'shuffleEndpoint': instance.shuffleEndpoint,
       'radioEndpoint': instance.radioEndpoint,
     };

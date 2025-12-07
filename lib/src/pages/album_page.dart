@@ -30,7 +30,7 @@ class AlbumPage {
   ) {
     try {
       final contents = response.contents?.twoColumnBrowseResultsRenderer;
-      final header = contents?.getMusicResponsiveHeader();
+      final header = contents?.musicResponsiveHeaderRenderer;
       if (contents == null || header == null) return null;
 
       final playlistId = response.getPlaylistId();
@@ -43,7 +43,7 @@ class AlbumPage {
       }
 
       // Parse info
-      final artists = header.artists;
+      final artists = header.albumArtists;
       final artistThumbnails = header.artistThumbnails;
       final albumTypeText = header.typeText;
       final year = header.yearText;
@@ -63,7 +63,7 @@ class AlbumPage {
         artistThumbnails: artistThumbnails,
       );
 
-      final sectionListContents = contents.getSectionListRendererContents();
+      final sectionListContents = contents.sectionListRendererContents;
 
       // Parse songs
       final musicShelfRenderer = sectionListContents?.first.musicShelfRenderer;

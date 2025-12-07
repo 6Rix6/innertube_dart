@@ -5,7 +5,6 @@ import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/thumbnail_renderer.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../artist.dart';
 
 part 'browse_response.g.dart';
 
@@ -59,35 +58,35 @@ class BrowseResponse {
   }
 
   /// Helper to get author name from header (only for playlist)
-  Artist? getAuthor() {
-    Artist? author;
-    // Try twoColumnBrowseResultsRenderer
-    final musicHeader = getMusicResponsiveHeader();
-    if (musicHeader != null) {
-      final avatarStackViewModel = musicHeader.facepile?.avatarStackViewModel;
-      final name = avatarStackViewModel?.text.content;
-      final id = avatarStackViewModel
-          ?.rendererContext
-          .commandContext
-          ?.onTap
-          ?.innertubeCommand
-          ?.browseEndpoint
-          ?.browseId;
-      final thumbnailUrl = avatarStackViewModel
-          ?.avatars
-          ?.first
-          .avatarViewModel
-          .image
-          .sources
-          .first
-          .url;
-      if (name != null && name.isNotEmpty) {
-        author = Artist(name: name, id: id, thumbnailUrl: thumbnailUrl);
-      }
-    }
+  // Artist? getAuthor() {
+  //   Artist? author;
+  //   // Try twoColumnBrowseResultsRenderer
+  //   final musicHeader = getMusicResponsiveHeader();
+  //   if (musicHeader != null) {
+  //     final avatarStackViewModel = musicHeader.facepile?.avatarStackViewModel;
+  //     final name = avatarStackViewModel?.text.content;
+  //     final id = avatarStackViewModel
+  //         ?.rendererContext
+  //         .commandContext
+  //         ?.onTap
+  //         ?.innertubeCommand
+  //         ?.browseEndpoint
+  //         ?.browseId;
+  //     final thumbnailUrl = avatarStackViewModel
+  //         ?.avatars
+  //         ?.first
+  //         .avatarViewModel
+  //         .image
+  //         .sources
+  //         .first
+  //         .url;
+  //     if (name != null && name.isNotEmpty) {
+  //       author = Artist(name: name, id: id, thumbnailUrl: thumbnailUrl);
+  //     }
+  //   }
 
-    return author;
-  }
+  //   return author;
+  // }
 
   /// Helper to get song count text from header (only for playlist)
   String? getSongCountText() {
@@ -164,14 +163,19 @@ class TwoColumnBrowseResultsRenderer {
   final List<Tab>? tabs; // album header
   final SecionList? secondaryContents; // album songs & foryou section
 
-  const TwoColumnBrowseResultsRenderer({this.tabs, this.secondaryContents});
+  TwoColumnBrowseResultsRenderer({this.tabs, this.secondaryContents});
 
   factory TwoColumnBrowseResultsRenderer.fromJson(Map<String, dynamic> json) =>
       _$TwoColumnBrowseResultsRendererFromJson(json);
   Map<String, dynamic> toJson() => _$TwoColumnBrowseResultsRendererToJson(this);
 
+  late final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer =
+      _getMusicResponsiveHeader();
+  late final List<SectionListRendererContents>? sectionListRendererContents =
+      _getSectionListRendererContents();
+
   /// helper to get music header
-  MusicResponsiveHeaderRenderer? getMusicResponsiveHeader() {
+  MusicResponsiveHeaderRenderer? _getMusicResponsiveHeader() {
     if (tabs != null && tabs!.isNotEmpty) {
       final sectionContents =
           tabs!.first.tabRenderer.content?.sectionListRenderer?.contents;
@@ -184,7 +188,7 @@ class TwoColumnBrowseResultsRenderer {
   }
 
   /// helper to get section list renderer contents
-  List<SectionListRendererContents>? getSectionListRendererContents() {
+  List<SectionListRendererContents>? _getSectionListRendererContents() {
     final contents = secondaryContents?.sectionListRenderer?.contents;
     if (contents != null && contents.isNotEmpty) {
       return contents;

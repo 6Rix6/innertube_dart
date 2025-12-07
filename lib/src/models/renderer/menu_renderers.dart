@@ -32,6 +32,7 @@ class MenuRenderer {
 class MenuRendererItem {
   final MenuNavigationItemRenderer? menuNavigationItemRenderer;
   final MenuServiceItemRenderer? menuServiceItemRenderer;
+  // TODO: implement toggleMenuServiceItemRenderer
   final Map<String, dynamic>? toggleMenuServiceItemRenderer;
 
   const MenuRendererItem({

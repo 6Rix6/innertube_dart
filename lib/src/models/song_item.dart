@@ -89,17 +89,41 @@ class SongItem extends YTItem {
     // Get thumbnail
     final thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.thumbnail;
 
+    // Get artists
     final artistsRuns = renderer.flexColumns[1].flexColumnRenderer?.text?.runs;
-    List<Artist> artists = [];
-    for (final run in artistsRuns ?? <Run>[]) {
-      if (run.navigationEndpoint != null) {
-        final endpoint = run.navigationEndpoint;
-        final browseId = endpoint?.browseEndpoint?.browseId;
-        final title = run.text;
-        final artist = Artist(name: title, id: browseId);
-        artists.add(artist);
-      }
+    final artists =
+        artistsRuns?.oddElements().map((run) {
+          return Artist(
+            name: run.text,
+            id: run.navigationEndpoint?.browseEndpoint?.browseId,
+          );
+        }).toList() ??
+        [];
+
+    // Get album
+    Album? album;
+    final albumRun = renderer.flexColumns
+        .elementAtOrNull(2)
+        ?.renderer
+        ?.text
+        ?.runs
+        ?.firstOrNull;
+    if (albumRun != null &&
+        albumRun.navigationEndpoint?.browseEndpoint?.browseId != null) {
+      album = Album(
+        name: albumRun.text,
+        id: albumRun.navigationEndpoint!.browseEndpoint!.browseId!,
+      );
     }
+
+    // Get explicit
+    final explicit =
+        renderer.badges?.any(
+          (badge) =>
+              badge.musicInlineBadgeRenderer?.icon?.iconType ==
+              'MUSIC_EXPLICIT_BADGE',
+        ) ==
+        true;
 
     return SongItem(
       id: videoId,
@@ -109,6 +133,8 @@ class SongItem extends YTItem {
       viewCount: viewCountText,
       thumbnails: thumbnail,
       setVideoId: renderer.playlistItemData?.playlistSetVideoId,
+      album: album,
+      explicit: explicit,
     );
   }
 
@@ -124,6 +150,12 @@ class SongItem extends YTItem {
   String toString() => '$title by ${artists?.map((a) => a.name).join(", ")}';
 }
 
-extension _FirstOrNull<T> on List<T> {
+// extension _FirstOrNull<T> on List<T> {
+//   T? get firstOrNull => isEmpty ? null : first;
+// }
+
+extension<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;
+  T? elementAtOrNull(int index) =>
+      index >= 0 && index < length ? this[index] : null;
 }

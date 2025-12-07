@@ -1,5 +1,6 @@
 import 'package:innertube_dart/innertube_dart.dart';
 import 'package:innertube_dart/src/models/avater.dart';
+import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:innertube_dart/src/models/runs.dart';
@@ -22,7 +23,7 @@ class MusicResponsiveHeaderRenderer {
   final String? trackingParams;
   final Facepile? facepile;
 
-  const MusicResponsiveHeaderRenderer({
+  MusicResponsiveHeaderRenderer({
     this.title,
     this.subtitle,
     this.secondSubtitle,
@@ -38,17 +39,23 @@ class MusicResponsiveHeaderRenderer {
       _$MusicResponsiveHeaderRendererFromJson(json);
   Map<String, dynamic> toJson() => _$MusicResponsiveHeaderRendererToJson(this);
 
+  late final List<Artist> albumArtists = _parseAlbumArtists();
+  late final Artist? playlistAuthor = _parsePlaylistAuthor();
+
   String? get titleText => title?.runs?.first.text;
   String? get typeText => subtitle?.runs?.first.text;
   String? get yearText => subtitle?.runs?.last.text;
   String? get songCountText => secondSubtitle?.runs?.first.text;
   String? get durationText => secondSubtitle?.runs?.last.text;
   Thumbnails? get thumbnails => thumbnail?.musicThumbnailRenderer.thumbnail;
-  List<Artist> get artists => _parseArtists();
   Thumbnails? get artistThumbnails =>
       straplineThumbnail?.musicThumbnailRenderer.thumbnail;
+  WatchEndpoint? get playEndpoint => buttons?[1]
+      .musicPlayButtonRenderer
+      ?.playNavigationEndpoint
+      ?.watchEndpoint;
 
-  List<Artist> _parseArtists() {
+  List<Artist> _parseAlbumArtists() {
     final artists = <Artist>[];
     final runs = straplineTextOne?.runs;
     if (runs != null) {
@@ -61,6 +68,30 @@ class MusicResponsiveHeaderRenderer {
       }
     }
     return artists;
+  }
+
+  Artist? _parsePlaylistAuthor() {
+    final avatarStackViewModel = facepile?.avatarStackViewModel;
+    final name = avatarStackViewModel?.text.content;
+    final id = avatarStackViewModel
+        ?.rendererContext
+        .commandContext
+        ?.onTap
+        ?.innertubeCommand
+        ?.browseEndpoint
+        ?.browseId;
+    final thumbnailUrl = avatarStackViewModel
+        ?.avatars
+        ?.first
+        .avatarViewModel
+        .image
+        .sources
+        .first
+        .url;
+    if (name != null && name.isNotEmpty) {
+      return Artist(name: name, id: id, thumbnailUrl: thumbnailUrl);
+    }
+    return null;
   }
 }
 

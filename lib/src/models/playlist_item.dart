@@ -23,7 +23,8 @@ class PlaylistItem extends YTItem {
 
   final bool isEditable;
 
-  final WatchPlaylistEndpoint? playEndpoint;
+  final WatchEndpoint? watchEndpoint;
+  final WatchPlaylistEndpoint? watchPlaylistEndpoint;
   final WatchPlaylistEndpoint? shuffleEndpoint;
   final WatchPlaylistEndpoint? radioEndpoint;
 
@@ -34,7 +35,8 @@ class PlaylistItem extends YTItem {
     this.songCountText,
     this.thumbnails,
     this.isEditable = false,
-    this.playEndpoint,
+    this.watchEndpoint,
+    this.watchPlaylistEndpoint,
     this.shuffleEndpoint,
     this.radioEndpoint,
   });
