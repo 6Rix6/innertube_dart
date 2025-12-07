@@ -206,11 +206,11 @@ void main() {
       if (isDebug && result.isSuccess) {
         for (var section in result.value.sections) {
           print(section);
-          if (section.items != null) {
-            for (var item in section.items!) {
-              print(item);
-            }
-          }
+          // if (section.items != null) {
+          //   for (var item in section.items!) {
+          //     print(item);
+          //   }
+          // }
         }
       }
       expect(result.isSuccess, isTrue);
@@ -225,12 +225,22 @@ void main() {
       final result = await youtube.home();
       final continuation = result.value.continuations?.first;
       final result2 = await youtube.home(continuation: continuation);
+      final continuation2 = result2.value.continuations?.first;
+      final result3 = await youtube.home(continuation: continuation2);
+      final continuation3 = result3.value.continuations?.first;
+      final result4 = await youtube.home(continuation: continuation3);
 
       if (isDebug && result2.isSuccess) {
         for (var section in result.value.sections) {
           print(section);
         }
         for (var section in result2.value.sections) {
+          print(section);
+        }
+        for (var section in result3.value.sections) {
+          print(section);
+        }
+        for (var section in result4.value.sections) {
           print(section);
         }
       }

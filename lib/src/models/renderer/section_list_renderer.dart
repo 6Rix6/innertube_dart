@@ -104,7 +104,11 @@ class SectionListRendererContent {
         }
       }
 
-      return Section(items: items);
+      return Section(
+        items: items,
+        type: SectionType.musicShelf,
+        itemType: SectionItemType.musicResponsiveListItem,
+      );
     } catch (e) {
       return null;
     }
@@ -115,14 +119,17 @@ class SectionListRendererContent {
     MusicCarouselShelfRenderer carouselData,
   ) {
     try {
-      final title =
-          carouselData.header?.title?.runs?.firstOrNull?.text ?? 'Albums';
+      final title = carouselData.header?.title?.runs?.firstOrNull?.text;
 
       final moreEndpoint = carouselData
           .header
           ?.moreContentButton
           ?.buttonRenderer
           ?.navigationEndpoint;
+      final itemType =
+          carouselData.contents.firstOrNull?.musicTwoRowItemRenderer != null
+          ? SectionItemType.musicTwoRowItem
+          : SectionItemType.musicResponsiveListItem;
 
       final items = <YTItem>[];
       for (final container in carouselData.contents) {
@@ -139,7 +146,13 @@ class SectionListRendererContent {
         }
       }
 
-      return Section(title: title, items: items, moreEndpoint: moreEndpoint);
+      return Section(
+        title: title,
+        items: items,
+        moreEndpoint: moreEndpoint,
+        type: SectionType.musicCarouselShelf,
+        itemType: itemType,
+      );
     } catch (e) {
       return null;
     }

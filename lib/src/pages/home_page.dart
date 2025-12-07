@@ -24,8 +24,9 @@ class HomePage {
           response
               .contents
               ?.singleColumnBrowseResultsRenderer
-              ?.tabs?[0]
-              .tabRenderer
+              ?.tabs
+              ?.firstOrNull
+              ?.tabRenderer
               .content
               ?.sectionListRenderer ??
           SectionListRenderer();
