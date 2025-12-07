@@ -1,3 +1,5 @@
+import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'search_response.g.dart';
@@ -5,7 +7,7 @@ part 'search_response.g.dart';
 /// Search response from YouTube API
 @JsonSerializable()
 class SearchResponse {
-  final Map<String, dynamic>? contents;
+  final SearchResponseContents? contents;
   final Map<String, dynamic>? continuationContents;
 
   const SearchResponse({this.contents, this.continuationContents});
@@ -15,31 +17,30 @@ class SearchResponse {
   Map<String, dynamic> toJson() => _$SearchResponseToJson(this);
 
   /// Helper to get music shelf contents
-  List<Map<String, dynamic>> getMusicShelfContents() {
+  List<MusicResponsiveListItem> getMusicShelfContents() {
     // Try tabbedSearchResultsRenderer
     final tabs = _getTabs();
     if (tabs != null && tabs.isNotEmpty) {
       final shelfs =
-          tabs.first['tabRenderer']?['content']?['sectionListRenderer']?['contents']
-              as List?;
+          tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
 
-      final musicShelfContents =
-          shelfs
-                  ?.where((e) => e['musicShelfRenderer'] != null)
-                  .first['musicShelfRenderer']?['contents']
-              as List?;
+      final musicShelfContents = shelfs
+          ?.where((e) => e.musicShelfRenderer != null)
+          .first
+          .musicShelfRenderer
+          ?.contents;
 
       if (musicShelfContents != null) {
-        return musicShelfContents.cast<Map<String, dynamic>>();
+        return musicShelfContents;
       }
     }
 
     // Try continuationContents
-    final contContents =
-        continuationContents?['musicShelfContinuation']?['contents'] as List?;
-    if (contContents != null) {
-      return contContents.cast<Map<String, dynamic>>();
-    }
+    // final contContents =
+    //     continuationContents?['musicShelfContinuation']?['contents'] as List?;
+    // if (contContents != null) {
+    //   return contContents.cast<Map<String, dynamic>>();
+    // }
 
     return [];
   }
@@ -49,13 +50,13 @@ class SearchResponse {
     final tabs = _getTabs();
     if (tabs != null && tabs.isNotEmpty) {
       final shelfs =
-          tabs.first['tabRenderer']?['content']?['sectionListRenderer']?['contents']
-              as List?;
+          tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
 
       final musicCardShelfContents =
           shelfs
-                  ?.where((e) => e['musicCardShelfRenderer'] != null)
-                  .first['musicCardShelfRenderer']?['contents']
+                  ?.where((e) => e.musicCardShelfRenderer != null)
+                  .first
+                  .musicCardShelfRenderer?['contents']
               as List?;
 
       if (musicCardShelfContents != null) {
@@ -78,7 +79,29 @@ class SearchResponse {
     return null;
   }
 
-  List<dynamic>? _getTabs() {
-    return contents?['tabbedSearchResultsRenderer']?['tabs'] as List?;
+  List<Tab>? _getTabs() {
+    return contents?.tabbedSearchResultsRenderer.tabs;
   }
+}
+
+@JsonSerializable()
+class SearchResponseContents {
+  final TabbedSearchResultsRenderer tabbedSearchResultsRenderer;
+
+  const SearchResponseContents({required this.tabbedSearchResultsRenderer});
+
+  factory SearchResponseContents.fromJson(Map<String, dynamic> json) =>
+      _$SearchResponseContentsFromJson(json);
+  Map<String, dynamic> toJson() => _$SearchResponseContentsToJson(this);
+}
+
+@JsonSerializable()
+class TabbedSearchResultsRenderer {
+  final List<Tab> tabs;
+
+  const TabbedSearchResultsRenderer({required this.tabs});
+
+  factory TabbedSearchResultsRenderer.fromJson(Map<String, dynamic> json) =>
+      _$TabbedSearchResultsRendererFromJson(json);
+  Map<String, dynamic> toJson() => _$TabbedSearchResultsRendererToJson(this);
 }

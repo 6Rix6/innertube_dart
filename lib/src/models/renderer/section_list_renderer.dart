@@ -32,7 +32,7 @@ class SecionList {
 
 @JsonSerializable()
 class SectionListRenderer {
-  final List<SectionListRendererContents>? contents;
+  final List<SectionListRendererContent>? contents;
   final List<Continuations>? continuations;
   final String? trackingParams;
   final Map<String, dynamic>? header;
@@ -51,7 +51,7 @@ class SectionListRenderer {
 }
 
 @JsonSerializable()
-class SectionListRendererContents {
+class SectionListRendererContent {
   final MusicCarouselShelfRenderer? musicCarouselShelfRenderer;
   final MusicShelfRenderer? musicShelfRenderer;
   final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer;
@@ -59,7 +59,7 @@ class SectionListRendererContents {
   // TODO: Add support for music card shelf renderer
   final Map<String, dynamic>? musicCardShelfRenderer;
 
-  const SectionListRendererContents({
+  const SectionListRendererContent({
     this.musicCarouselShelfRenderer,
     this.musicShelfRenderer,
     this.musicResponsiveHeaderRenderer,
@@ -67,10 +67,10 @@ class SectionListRendererContents {
     this.musicCardShelfRenderer,
   });
 
-  factory SectionListRendererContents.fromJson(Map<String, dynamic> json) =>
-      _$SectionListRendererContentsFromJson(json);
+  factory SectionListRendererContent.fromJson(Map<String, dynamic> json) =>
+      _$SectionListRendererContentFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SectionListRendererContentsToJson(this);
+  Map<String, dynamic> toJson() => _$SectionListRendererContentToJson(this);
 
   /// Parse a section content (either music shelf or carousel shelf)
   Section? parseSectionContent() {
@@ -88,12 +88,8 @@ class SectionListRendererContents {
   }
 
   /// Parse MusicShelfRenderer section (songs list)
-  Section<SongItem>? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
+  Section? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
     try {
-      final title = shelfData.title?.runs?.firstOrNull?.text ?? 'Songs';
-
-      final moreEndpoint = shelfData.bottomEndpoint?.browseEndpoint?.browseId;
-
       final items = <SongItem>[];
       if (shelfData.contents != null) {
         for (final content in shelfData.contents!) {
@@ -108,7 +104,7 @@ class SectionListRendererContents {
         }
       }
 
-      return Section(title: title, items: items, moreEndpoint: moreEndpoint);
+      return Section(items: items);
     } catch (e) {
       return null;
     }
@@ -126,9 +122,7 @@ class SectionListRendererContents {
           .header
           ?.moreContentButton
           ?.buttonRenderer
-          ?.navigationEndpoint
-          ?.browseEndpoint
-          ?.browseId;
+          ?.navigationEndpoint;
 
       final items = <YTItem>[];
       for (final container in carouselData.contents) {

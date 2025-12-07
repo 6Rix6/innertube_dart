@@ -20,10 +20,20 @@ TabRenderer _$TabRendererFromJson(Map<String, dynamic> json) => TabRenderer(
   content: json['content'] == null
       ? null
       : TabRendererContent.fromJson(json['content'] as Map<String, dynamic>),
+  title: json['title'] as String?,
+  selected: json['selected'] as bool?,
+  tabIdentifier: json['tabIdentifier'] as String?,
+  trackingParams: json['trackingParams'] as String,
 );
 
 Map<String, dynamic> _$TabRendererToJson(TabRenderer instance) =>
-    <String, dynamic>{'content': instance.content};
+    <String, dynamic>{
+      'content': instance.content,
+      'title': instance.title,
+      'selected': instance.selected,
+      'tabIdentifier': instance.tabIdentifier,
+      'trackingParams': instance.trackingParams,
+    };
 
 TabRendererContent _$TabRendererContentFromJson(Map<String, dynamic> json) =>
     TabRendererContent(

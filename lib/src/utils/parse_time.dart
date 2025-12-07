@@ -25,3 +25,16 @@ int? parseTime(String? time) {
     return null;
   }
 }
+
+/// Validates a time string
+///
+/// Examples:
+/// - "3:45" -> true
+/// - "1:23:45" -> true
+/// - "45" -> true
+/// - "invalid" -> false
+bool isValidTimeFormat(String timeString) {
+  final RegExp timeRegex = RegExp(r'^\d{1,2}:\d{2}(:\d{2})?$');
+
+  return timeRegex.hasMatch(timeString);
+}

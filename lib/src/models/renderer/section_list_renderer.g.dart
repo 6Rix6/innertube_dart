@@ -28,7 +28,7 @@ SectionListRenderer _$SectionListRendererFromJson(Map<String, dynamic> json) =>
       contents: (json['contents'] as List<dynamic>?)
           ?.map(
             (e) =>
-                SectionListRendererContents.fromJson(e as Map<String, dynamic>),
+                SectionListRendererContent.fromJson(e as Map<String, dynamic>),
           )
           .toList(),
       continuations: (json['continuations'] as List<dynamic>?)
@@ -47,9 +47,9 @@ Map<String, dynamic> _$SectionListRendererToJson(
   'header': instance.header,
 };
 
-SectionListRendererContents _$SectionListRendererContentsFromJson(
+SectionListRendererContent _$SectionListRendererContentFromJson(
   Map<String, dynamic> json,
-) => SectionListRendererContents(
+) => SectionListRendererContent(
   musicCarouselShelfRenderer: json['musicCarouselShelfRenderer'] == null
       ? null
       : MusicCarouselShelfRenderer.fromJson(
@@ -74,8 +74,8 @@ SectionListRendererContents _$SectionListRendererContentsFromJson(
       json['musicCardShelfRenderer'] as Map<String, dynamic>?,
 );
 
-Map<String, dynamic> _$SectionListRendererContentsToJson(
-  SectionListRendererContents instance,
+Map<String, dynamic> _$SectionListRendererContentToJson(
+  SectionListRendererContent instance,
 ) => <String, dynamic>{
   'musicCarouselShelfRenderer': instance.musicCarouselShelfRenderer,
   'musicShelfRenderer': instance.musicShelfRenderer,

@@ -1,5 +1,7 @@
+import 'package:innertube_dart/innertube_dart.dart';
 import 'package:innertube_dart/src/models/accessibility_data.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
+import 'package:innertube_dart/src/models/yt_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../runs.dart';
 import '../endpoints.dart';
@@ -68,6 +70,22 @@ class MusicResponsiveListItemRenderer {
       _$MusicResponsiveListItemRendererFromJson(json);
   Map<String, dynamic> toJson() =>
       _$MusicResponsiveListItemRendererToJson(this);
+
+  YTItem? toYTItem() {
+    if (isSong) {
+      return SongItem.fromMusicResponsiveListItemRenderer(this);
+    }
+    if (isAlbum) {
+      // return AlbumItem.fromMusicResponsiveListItemRenderer(this);
+    }
+    if (isArtist) {
+      // return ArtistItem.fromMusicResponsiveListItemRenderer(this);
+    }
+    if (isPlaylist) {
+      // return PlaylistItem.fromMusicResponsiveListItemRenderer(this);
+    }
+    return null;
+  }
 }
 
 @JsonSerializable()

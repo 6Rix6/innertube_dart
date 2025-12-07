@@ -16,8 +16,18 @@ class Tab {
 @JsonSerializable()
 class TabRenderer {
   final TabRendererContent? content;
+  final String? title;
+  final bool? selected;
+  final String? tabIdentifier;
+  final String trackingParams;
 
-  const TabRenderer({this.content});
+  const TabRenderer({
+    this.content,
+    this.title,
+    this.selected,
+    this.tabIdentifier,
+    required this.trackingParams,
+  });
 
   factory TabRenderer.fromJson(Map<String, dynamic> json) =>
       _$TabRendererFromJson(json);

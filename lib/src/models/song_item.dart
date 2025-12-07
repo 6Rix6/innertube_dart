@@ -66,7 +66,8 @@ class SongItem extends YTItem {
     if (title == null) return null;
 
     // Get duration
-    final durationText = renderer
+    // try fixedColumns
+    String? durationText = renderer
         .fixedColumns
         ?.firstOrNull
         ?.renderer
@@ -74,6 +75,19 @@ class SongItem extends YTItem {
         ?.runs
         ?.firstOrNull
         ?.text;
+    if (durationText == null || !isValidTimeFormat(durationText)) {
+      // try flexColumns
+      durationText = renderer.flexColumns
+          .elementAtOrNull(1)
+          ?.renderer
+          ?.text
+          ?.runs
+          ?.firstWhere(
+            (run) => isValidTimeFormat(run.text),
+            orElse: () => Run(text: ""),
+          )
+          .text;
+    }
     final duration = parseTime(durationText);
 
     // Get view count
@@ -91,14 +105,17 @@ class SongItem extends YTItem {
 
     // Get artists
     final artistsRuns = renderer.flexColumns[1].flexColumnRenderer?.text?.runs;
-    final artists =
-        artistsRuns?.oddElements().map((run) {
-          return Artist(
-            name: run.text,
-            id: run.navigationEndpoint?.browseEndpoint?.browseId,
-          );
-        }).toList() ??
-        [];
+    List<Artist> artists = [];
+    if (artistsRuns != null) {
+      for (final run in artistsRuns) {
+        if (run.navigationEndpoint?.browseEndpoint?.browseId != null) {
+          final id = run.navigationEndpoint!.browseEndpoint!.browseId!;
+          if (id.startsWith('UC')) {
+            artists.add(Artist(name: run.text, id: id));
+          }
+        }
+      }
+    }
 
     // Get album
     Album? album;
@@ -147,7 +164,8 @@ class SongItem extends YTItem {
   Map<String, dynamic> toJson() => _$SongItemToJson(this);
 
   @override
-  String toString() => '$title by ${artists?.map((a) => a.name).join(", ")}';
+  String toString() =>
+      'SongItem(title: $title, artists: $artists, duration: $duration, viewCount: $viewCount)';
 }
 
 // extension _FirstOrNull<T> on List<T> {

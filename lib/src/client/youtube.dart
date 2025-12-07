@@ -1,12 +1,12 @@
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/response/account_menu_response.dart';
+import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
 
 import '../pages/album_page.dart';
 import '../pages/search_result.dart';
-import '../pages/search_page.dart';
 import '../pages/playlist_page.dart';
 import '../utils/result.dart';
 import '../models/yt_item.dart';
@@ -15,7 +15,6 @@ import '../models/youtube_client.dart';
 import '../models/response/browse_response.dart';
 import '../models/response/search_response.dart';
 import '../models/response/player_response.dart';
-import '../models/renderer/music_item_renderer.dart';
 import 'innertube.dart';
 
 /// High-level YouTube Music API client
@@ -95,16 +94,15 @@ class YouTube {
       final items = <YTItem>[];
 
       for (final itemJson in shelfContents) {
-        final renderer = itemJson['musicResponsiveListItemRenderer'];
-        if (renderer != null) {
-          final item = SearchPage.toYTItem(
-            MusicResponsiveListItemRenderer.fromJson(
-              renderer as Map<String, dynamic>,
-            ),
-          );
-          if (item != null) {
-            items.add(item);
-          }
+        final renderer = itemJson.musicResponsiveListItemRenderer;
+        // final item = SearchPage.toYTItem(
+        //   MusicResponsiveListItemRenderer.fromJson(
+        //     renderer,
+        //   ),
+        // );
+        final item = SongItem.fromMusicResponsiveListItemRenderer(renderer);
+        if (item != null) {
+          items.add(item);
         }
       }
 

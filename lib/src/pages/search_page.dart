@@ -7,10 +7,16 @@ import '../models/artist.dart';
 import '../models/album.dart';
 import '../models/renderer/music_item_renderer.dart';
 import '../models/runs.dart';
+import '../models/section.dart';
 import '../utils/parse_time.dart';
 
 /// Search page parser
 class SearchPage {
+  final List<Section> contents;
+  final dynamic header;
+
+  const SearchPage({required this.contents, this.header});
+
   /// Convert MusicResponsiveListItemRenderer to appropriate YTItem type
   static YTItem? toYTItem(MusicResponsiveListItemRenderer renderer) {
     // Get secondary line (contains artist, album, duration info)

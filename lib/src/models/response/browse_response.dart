@@ -171,7 +171,7 @@ class TwoColumnBrowseResultsRenderer {
 
   late final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer =
       _getMusicResponsiveHeader();
-  late final List<SectionListRendererContents>? sectionListRendererContents =
+  late final List<SectionListRendererContent>? sectionListRendererContents =
       _getSectionListRendererContents();
 
   /// helper to get music header
@@ -188,7 +188,7 @@ class TwoColumnBrowseResultsRenderer {
   }
 
   /// helper to get section list renderer contents
-  List<SectionListRendererContents>? _getSectionListRendererContents() {
+  List<SectionListRendererContent>? _getSectionListRendererContents() {
     final contents = secondaryContents?.sectionListRenderer?.contents;
     if (contents != null && contents.isNotEmpty) {
       return contents;
