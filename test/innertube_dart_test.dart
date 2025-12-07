@@ -15,7 +15,10 @@ void main() {
 
       expect(artist.name, equals('Queen'));
       expect(artist.id, equals('UCRq...'));
-      expect(artist.toString(), equals('Queen'));
+      expect(
+        artist.toString(),
+        equals('Artist(name: Queen, id: UCRq..., thumbnailUrl: null)'),
+      );
     });
 
     test('Album can be created', () {
