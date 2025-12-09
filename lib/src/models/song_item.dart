@@ -131,6 +131,8 @@ class SongItem extends YTItem {
       );
     }
 
+    final subtitle = renderer.flexColumns[1].flexColumnRenderer?.text;
+
     // Get explicit
     final explicit = isExplicit(renderer.badges);
 
@@ -144,6 +146,7 @@ class SongItem extends YTItem {
       setVideoId: renderer.playlistItemData?.playlistSetVideoId,
       album: album,
       explicit: explicit,
+      subtitle: subtitle,
     );
   }
 

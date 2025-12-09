@@ -141,7 +141,7 @@ class SectionListRendererContent {
           final item = container.musicTwoRowItemRenderer!.toYTItem();
           if (item != null) items.add(item);
         } else if (container.musicResponsiveListItemRenderer != null) {
-          final item = _parseSongFromRenderer(
+          final item = SongItem.fromMusicResponsiveListItemRenderer(
             container.musicResponsiveListItemRenderer!,
           );
           if (item != null) items.add(item);
