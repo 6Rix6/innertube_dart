@@ -1,7 +1,10 @@
+import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
+import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 import 'artist.dart';
+import '../utils/utils.dart';
 
 part 'album_item.g.dart';
 
@@ -17,6 +20,7 @@ class AlbumItem extends YTItem {
   @override
   final String title;
 
+  final Runs? subtitle;
   final List<Artist>? artists;
   final String? year;
   final String? albumTypeText;
@@ -35,6 +39,7 @@ class AlbumItem extends YTItem {
     required this.playlistId,
     String? id,
     required this.title,
+    this.subtitle,
     this.artists,
     this.year,
     this.albumTypeText,
@@ -52,6 +57,46 @@ class AlbumItem extends YTItem {
       _$AlbumItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$AlbumItemToJson(this);
+
+  static AlbumItem? fromMusicTwoRowItemRenderer(
+    MusicTwoRowItemRenderer renderer,
+  ) {
+    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
+    if (browseId == null) return null;
+
+    final title = renderer.title?.runs?.firstOrNull?.text;
+    if (title == null) return null;
+
+    final playlistId = renderer
+        .thumbnailOverlay
+        ?.musicItemThumbnailOverlayRenderer
+        ?.content
+        ?.musicPlayButtonRenderer
+        ?.playNavigationEndpoint
+        ?.watchPlaylistEndpoint
+        ?.playlistId;
+
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
+
+    final year = renderer.subtitle?.runs?.lastOrNull?.text;
+
+    final explicit = isExplicit(renderer.subtitleBadges);
+    final artists = parseArtistRuns(renderer.subtitle?.runs);
+    final albumTypeText = renderer.subtitle?.runs?.firstOrNull?.text;
+
+    return AlbumItem(
+      browseId: browseId,
+      playlistId: playlistId!,
+      title: title,
+      subtitle: renderer.subtitle,
+      artists: artists,
+      year: year,
+      albumTypeText: albumTypeText,
+      thumbnails: thumbnails!,
+      explicit: explicit,
+    );
+  }
 
   @override
   String toString() {

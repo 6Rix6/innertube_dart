@@ -19,9 +19,14 @@ SongItem _$SongItemFromJson(Map<String, dynamic> json) => SongItem(
   chartPosition: (json['chartPosition'] as num?)?.toInt(),
   chartChange: json['chartChange'] as String?,
   viewCount: json['viewCount'] as String?,
+  typeText: json['typeText'] as String?,
+  subtitle: json['subtitle'] == null
+      ? null
+      : Runs.fromJson(json['subtitle'] as Map<String, dynamic>),
   thumbnails: json['thumbnails'] == null
       ? null
       : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
+  isVideo: json['isVideo'] as bool? ?? false,
   explicit: json['explicit'] as bool? ?? false,
   setVideoId: json['setVideoId'] as String?,
   libraryAddToken: json['libraryAddToken'] as String?,
@@ -38,6 +43,9 @@ Map<String, dynamic> _$SongItemToJson(SongItem instance) => <String, dynamic>{
   'chartPosition': instance.chartPosition,
   'chartChange': instance.chartChange,
   'viewCount': instance.viewCount,
+  'typeText': instance.typeText,
+  'subtitle': instance.subtitle,
+  'isVideo': instance.isVideo,
   'thumbnails': instance.thumbnails,
   'explicit': instance.explicit,
   'setVideoId': instance.setVideoId,

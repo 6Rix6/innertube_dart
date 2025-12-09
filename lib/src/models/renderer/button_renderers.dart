@@ -119,3 +119,26 @@ class SubscribeButtonRenderer {
       _$SubscribeButtonRendererFromJson(json);
   Map<String, dynamic> toJson() => _$SubscribeButtonRendererToJson(this);
 }
+
+/// Button renderer
+@JsonSerializable()
+class ButtonRenderer {
+  final String? style;
+  final bool? isDisabled;
+  final Runs? text;
+  final NavigationEndpoint? navigationEndpoint;
+  final String? trackingParams;
+
+  const ButtonRenderer({
+    this.style,
+    this.isDisabled,
+    this.text,
+    this.navigationEndpoint,
+    this.trackingParams,
+  });
+
+  factory ButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      _$ButtonRendererFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ButtonRendererToJson(this);
+}

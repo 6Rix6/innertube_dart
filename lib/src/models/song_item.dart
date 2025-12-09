@@ -1,4 +1,5 @@
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:innertube_dart/src/utils/parse_time.dart';
@@ -6,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'yt_item.dart';
 import 'artist.dart';
 import 'album.dart';
+import '../utils/utils.dart';
 
 part 'song_item.g.dart';
 
@@ -24,6 +26,9 @@ class SongItem extends YTItem {
   final int? chartPosition;
   final String? chartChange;
   final String? viewCount;
+  final String? typeText;
+  final Runs? subtitle;
+  final bool isVideo;
 
   @override
   final Thumbnails? thumbnails;
@@ -45,7 +50,10 @@ class SongItem extends YTItem {
     this.chartPosition,
     this.chartChange,
     this.viewCount,
+    this.typeText,
+    this.subtitle,
     this.thumbnails,
+    this.isVideo = false,
     this.explicit = false,
     this.setVideoId,
     this.libraryAddToken,
@@ -53,7 +61,7 @@ class SongItem extends YTItem {
     this.historyRemoveToken,
   });
 
-  /// generate songItem from musicResponsiveListItemRenderer and albumItem
+  /// generate songItem from musicResponsiveListItemRenderer
   static SongItem? fromMusicResponsiveListItemRenderer(
     MusicResponsiveListItemRenderer renderer,
   ) {
@@ -105,17 +113,7 @@ class SongItem extends YTItem {
 
     // Get artists
     final artistsRuns = renderer.flexColumns[1].flexColumnRenderer?.text?.runs;
-    List<Artist> artists = [];
-    if (artistsRuns != null) {
-      for (final run in artistsRuns) {
-        if (run.navigationEndpoint?.browseEndpoint?.browseId != null) {
-          final id = run.navigationEndpoint!.browseEndpoint!.browseId!;
-          if (id.startsWith('UC')) {
-            artists.add(Artist(name: run.text, id: id));
-          }
-        }
-      }
-    }
+    final artists = parseArtistRuns(artistsRuns);
 
     // Get album
     Album? album;
@@ -134,13 +132,7 @@ class SongItem extends YTItem {
     }
 
     // Get explicit
-    final explicit =
-        renderer.badges?.any(
-          (badge) =>
-              badge.musicInlineBadgeRenderer?.icon?.iconType ==
-              'MUSIC_EXPLICIT_BADGE',
-        ) ==
-        true;
+    final explicit = isExplicit(renderer.badges);
 
     return SongItem(
       id: videoId,
@@ -152,6 +144,47 @@ class SongItem extends YTItem {
       setVideoId: renderer.playlistItemData?.playlistSetVideoId,
       album: album,
       explicit: explicit,
+    );
+  }
+
+  static SongItem? fromMusicTwoRowItemRenderer(
+    MusicTwoRowItemRenderer renderer,
+  ) {
+    final videoId = renderer.navigationEndpoint?.watchEndpoint?.videoId;
+    if (videoId == null) return null;
+
+    final titleText = renderer.title?.runs?.firstOrNull?.text;
+    if (titleText == null) return null;
+
+    final artists = parseArtistRuns(renderer.subtitle?.runs);
+
+    final thumbnails =
+        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
+
+    final explicit = isExplicit(renderer.subtitleBadges);
+
+    final isVideo = checkIsVideo(renderer.aspectRatio);
+
+    String? typeText;
+    String? viewCount;
+    if (isVideo) {
+      viewCount = renderer.subtitle?.runs?.lastOrNull?.text;
+    } else {
+      typeText = renderer.subtitle?.runs?.firstOrNull?.text;
+    }
+
+    return SongItem(
+      id: videoId,
+      title: titleText,
+      artists: artists,
+      album: null,
+      duration: null,
+      viewCount: viewCount,
+      typeText: typeText,
+      subtitle: renderer.subtitle,
+      thumbnails: thumbnails,
+      explicit: explicit,
+      isVideo: isVideo,
     );
   }
 
@@ -167,10 +200,6 @@ class SongItem extends YTItem {
   String toString() =>
       'SongItem(title: $title, artists: $artists, duration: $duration, viewCount: $viewCount)';
 }
-
-// extension _FirstOrNull<T> on List<T> {
-//   T? get firstOrNull => isEmpty ? null : first;
-// }
 
 extension<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;

@@ -22,3 +22,4 @@ export 'src/pages/artist_page.dart';
 export 'src/utils/result.dart';
 export 'src/utils/parse_time.dart';
 export 'src/client/youtube.dart';
+export 'src/models/renderer/button_renderers.dart';

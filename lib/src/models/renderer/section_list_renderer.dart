@@ -1,7 +1,4 @@
-import 'package:innertube_dart/src/models/album_item.dart';
-import 'package:innertube_dart/src/models/artist_item.dart';
-import 'package:innertube_dart/src/models/playlist_item.dart';
-import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/chip_cloud_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_playlist_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
@@ -11,7 +8,6 @@ import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/renderer/music_carousel_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
-import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -35,7 +31,7 @@ class SectionListRenderer {
   final List<SectionListRendererContent>? contents;
   final List<Continuations>? continuations;
   final String? trackingParams;
-  final Map<String, dynamic>? header;
+  final SectionListHeader? header;
 
   const SectionListRenderer({
     this.contents,
@@ -119,13 +115,21 @@ class SectionListRendererContent {
     MusicCarouselShelfRenderer carouselData,
   ) {
     try {
-      final title = carouselData.header?.title?.runs?.firstOrNull?.text;
-
-      final moreEndpoint = carouselData
+      final title = carouselData
           .header
+          ?.musicCarouselShelfBasicHeaderRenderer
+          ?.title
+          ?.runs
+          ?.firstOrNull
+          ?.text;
+
+      final moreButton = carouselData
+          .header
+          ?.musicCarouselShelfBasicHeaderRenderer
           ?.moreContentButton
-          ?.buttonRenderer
-          ?.navigationEndpoint;
+          ?.buttonRenderer;
+
+      final moreEndpoint = moreButton?.navigationEndpoint;
       final itemType =
           carouselData.contents.firstOrNull?.musicTwoRowItemRenderer != null
           ? SectionItemType.musicTwoRowItem
@@ -134,9 +138,7 @@ class SectionListRendererContent {
       final items = <YTItem>[];
       for (final container in carouselData.contents) {
         if (container.musicTwoRowItemRenderer != null) {
-          final item = _parseItemFromTwoRowRenderer(
-            container.musicTwoRowItemRenderer!,
-          );
+          final item = container.musicTwoRowItemRenderer!.toYTItem();
           if (item != null) items.add(item);
         } else if (container.musicResponsiveListItemRenderer != null) {
           final item = _parseSongFromRenderer(
@@ -146,12 +148,34 @@ class SectionListRendererContent {
         }
       }
 
+      final header = SectionHeader(
+        title: title,
+        strapline: carouselData
+            .header
+            ?.musicCarouselShelfBasicHeaderRenderer
+            ?.strapline
+            ?.runs
+            ?.firstOrNull
+            ?.text,
+        thumbnail: carouselData
+            .header
+            ?.musicCarouselShelfBasicHeaderRenderer
+            ?.thumbnail
+            ?.musicThumbnailRenderer
+            ?.thumbnail
+            .thumbnails
+            .firstOrNull,
+        moreEndpoint: moreEndpoint,
+        moreButton: moreButton,
+      );
+
       return Section(
         title: title,
         items: items,
         moreEndpoint: moreEndpoint,
         type: SectionType.musicCarouselShelf,
         itemType: itemType,
+        header: header,
       );
     } catch (e) {
       return null;
@@ -217,227 +241,16 @@ class SectionListRendererContent {
       return null;
     }
   }
+}
 
-  /// Parse an item from MusicTwoRowItemRenderer
-  dynamic _parseItemFromTwoRowRenderer(MusicTwoRowItemRenderer renderer) {
-    try {
-      if (renderer.isSong) {
-        return _parseSongFromTwoRowRenderer(renderer);
-      } else if (renderer.isAlbum) {
-        return _parseAlbumFromTwoRowRenderer(renderer);
-      } else if (renderer.isPlaylist) {
-        return _parsePlaylistFromTwoRowRenderer(renderer);
-      } else if (renderer.isArtist) {
-        return _parseArtistFromTwoRowRenderer(renderer);
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
-  }
+@JsonSerializable()
+class SectionListHeader {
+  final ChipCloudRenderer? chipCloudRenderer;
 
-  /// Parse song from two-row renderer
-  SongItem? _parseSongFromTwoRowRenderer(MusicTwoRowItemRenderer renderer) {
-    final videoId = renderer.navigationEndpoint?.watchEndpoint?.videoId;
-    if (videoId == null) return null;
+  const SectionListHeader({this.chipCloudRenderer});
 
-    final title = renderer.title?.runs?.firstOrNull?.text;
-    if (title == null) return null;
+  factory SectionListHeader.fromJson(Map<String, dynamic> json) =>
+      _$SectionListHeaderFromJson(json);
 
-    final artists = <Artist>[];
-    final artistRun = renderer.subtitle?.runs?.firstOrNull;
-    if (artistRun != null) {
-      artists.add(
-        Artist(
-          name: artistRun.text,
-          id: artistRun.navigationEndpoint?.browseEndpoint?.browseId,
-        ),
-      );
-    }
-
-    final thumbnails =
-        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
-
-    final explicit =
-        renderer.subtitleBadges?.any(
-          (badge) =>
-              badge.musicInlineBadgeRenderer?.icon?.iconType ==
-              'MUSIC_EXPLICIT_BADGE',
-        ) ??
-        false;
-
-    return SongItem(
-      id: videoId,
-      title: title,
-      artists: artists,
-      album: null,
-      duration: null,
-      thumbnails: thumbnails!,
-      explicit: explicit,
-    );
-  }
-
-  /// Parse album from two-row renderer
-  AlbumItem? _parseAlbumFromTwoRowRenderer(MusicTwoRowItemRenderer renderer) {
-    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
-
-    final title = renderer.title?.runs?.firstOrNull?.text;
-    if (title == null) return null;
-
-    final playlistId = renderer
-        .thumbnailOverlay
-        ?.musicItemThumbnailOverlayRenderer
-        ?.content
-        ?.musicPlayButtonRenderer
-        ?.playNavigationEndpoint
-        ?.watchPlaylistEndpoint
-        ?.playlistId;
-
-    final thumbnails =
-        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
-
-    final year = renderer.subtitle?.runs?.lastOrNull?.text;
-
-    final explicit =
-        renderer.subtitleBadges?.any(
-          (badge) =>
-              badge.musicInlineBadgeRenderer?.icon?.iconType ==
-              'MUSIC_EXPLICIT_BADGE',
-        ) ??
-        false;
-
-    return AlbumItem(
-      browseId: browseId,
-      playlistId: playlistId!,
-      title: title,
-      artists: null, // always null
-      year: year,
-      thumbnails: thumbnails!,
-      explicit: explicit,
-    );
-  }
-
-  /// Parse playlist from two-row renderer
-  PlaylistItem? _parsePlaylistFromTwoRowRenderer(
-    MusicTwoRowItemRenderer renderer,
-  ) {
-    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
-
-    final id = browseId.startsWith('VL') ? browseId.substring(2) : browseId;
-    final title = renderer.title?.runs?.firstOrNull?.text;
-    if (title == null) return null;
-
-    final author = Artist(
-      name: renderer.subtitle?.runs?.lastOrNull?.text ?? '',
-      id: null,
-    );
-
-    final thumbnails =
-        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
-
-    final playEndpoint = renderer
-        .thumbnailOverlay
-        ?.musicItemThumbnailOverlayRenderer
-        ?.content
-        ?.musicPlayButtonRenderer
-        ?.playNavigationEndpoint
-        ?.watchPlaylistEndpoint;
-
-    final shuffleEndpoint = renderer.menu?.menuRenderer.items
-        ?.firstWhere(
-          (item) =>
-              item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
-          orElse: () => MenuRendererItem(
-            menuNavigationItemRenderer: null,
-            toggleMenuServiceItemRenderer: null,
-          ),
-        )
-        .menuNavigationItemRenderer
-        ?.navigationEndpoint
-        ?.watchPlaylistEndpoint;
-    final radioEndpoint = renderer.menu?.menuRenderer.items
-        ?.firstWhere(
-          (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
-          orElse: () => MenuRendererItem(
-            menuNavigationItemRenderer: null,
-            toggleMenuServiceItemRenderer: null,
-          ),
-        )
-        .menuNavigationItemRenderer
-        ?.navigationEndpoint
-        ?.watchPlaylistEndpoint;
-
-    return PlaylistItem(
-      id: id,
-      title: title,
-      author: author,
-      songCountText: null,
-      thumbnails: thumbnails!,
-      watchPlaylistEndpoint: playEndpoint,
-      shuffleEndpoint: shuffleEndpoint,
-      radioEndpoint: radioEndpoint,
-    );
-  }
-
-  /// Parse artist from two-row renderer
-  ArtistItem? _parseArtistFromTwoRowRenderer(MusicTwoRowItemRenderer renderer) {
-    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
-
-    final title = renderer.title?.runs?.lastOrNull?.text;
-    if (title == null) return null;
-
-    final thumbnails =
-        renderer.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail;
-
-    final channelId =
-        renderer.menu?.menuRenderer.items
-                ?.firstWhere(
-                  (item) =>
-                      item.toggleMenuServiceItemRenderer?['defaultIcon']?['iconType'] ==
-                      'SUBSCRIBE',
-                  orElse: () => MenuRendererItem(
-                    menuNavigationItemRenderer: null,
-                    toggleMenuServiceItemRenderer: null,
-                  ),
-                )
-                .toggleMenuServiceItemRenderer?['defaultServiceEndpoint']?['subscribeEndpoint']?['channelIds']?[0]
-            as String?;
-
-    final shuffleEndpoint = renderer.menu?.menuRenderer.items
-        ?.firstWhere(
-          (item) =>
-              item.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
-          orElse: () => MenuRendererItem(
-            menuNavigationItemRenderer: null,
-            toggleMenuServiceItemRenderer: null,
-          ),
-        )
-        .menuNavigationItemRenderer
-        ?.navigationEndpoint
-        ?.watchPlaylistEndpoint;
-
-    final radioEndpoint = renderer.menu?.menuRenderer.items
-        ?.firstWhere(
-          (item) => item.menuNavigationItemRenderer?.icon.iconType == 'MIX',
-          orElse: () => MenuRendererItem(
-            menuNavigationItemRenderer: null,
-            toggleMenuServiceItemRenderer: null,
-          ),
-        )
-        .menuNavigationItemRenderer
-        ?.navigationEndpoint
-        ?.watchPlaylistEndpoint;
-
-    return ArtistItem(
-      id: browseId,
-      title: title,
-      thumbnails: thumbnails!,
-      channelId: channelId,
-      shuffleEndpoint: shuffleEndpoint,
-      radioEndpoint: radioEndpoint,
-    );
-  }
+  Map<String, dynamic> toJson() => _$SectionListHeaderToJson(this);
 }

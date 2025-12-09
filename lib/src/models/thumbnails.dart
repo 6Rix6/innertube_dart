@@ -9,7 +9,7 @@ class Thumbnails {
   const Thumbnails({required this.thumbnails});
 
   /// Get best quality thumbnail URL
-  String? getBest() => thumbnails.isNotEmpty ? thumbnails.last.url : null;
+  Thumbnail? getBest() => thumbnails.isNotEmpty ? thumbnails.last : null;
 
   factory Thumbnails.fromJson(Map<String, dynamic> json) =>
       _$ThumbnailsFromJson(json);

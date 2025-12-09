@@ -34,6 +34,7 @@ MusicTwoRowItemRenderer _$MusicTwoRowItemRendererFromJson(
   menu: json['menu'] == null
       ? null
       : Menu.fromJson(json['menu'] as Map<String, dynamic>),
+  aspectRatio: json['aspectRatio'] as String?,
 );
 
 Map<String, dynamic> _$MusicTwoRowItemRendererToJson(
@@ -46,4 +47,5 @@ Map<String, dynamic> _$MusicTwoRowItemRendererToJson(
   'subtitle': instance.subtitle,
   'subtitleBadges': instance.subtitleBadges,
   'menu': instance.menu,
+  'aspectRatio': instance.aspectRatio,
 };

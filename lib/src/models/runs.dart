@@ -14,6 +14,11 @@ class Runs {
 
   factory Runs.fromJson(Map<String, dynamic> json) => _$RunsFromJson(json);
   Map<String, dynamic> toJson() => _$RunsToJson(this);
+
+  @override
+  String toString() {
+    return runs?.map((run) => run.text).join('') ?? '';
+  }
 }
 
 @JsonSerializable()

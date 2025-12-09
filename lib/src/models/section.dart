@@ -1,24 +1,26 @@
 import 'package:innertube_dart/innertube_dart.dart';
 import 'package:innertube_dart/src/models/endpoints.dart';
-// import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 
 enum SectionType { musicShelf, musicCarouselShelf }
 
 enum SectionItemType { musicTwoRowItem, musicResponsiveListItem }
 
 class Section {
+  final SectionItemType itemType;
+  final SectionType type;
   final String? title;
   final List<YTItem>? items;
   final NavigationEndpoint? moreEndpoint;
-  final SectionItemType itemType;
-  final SectionType type;
+  final SectionHeader? header;
 
   const Section({
+    required this.itemType,
+    required this.type,
     this.title,
     this.items,
     this.moreEndpoint,
-    required this.itemType,
-    required this.type,
+    this.header,
   });
 
   @override
@@ -27,19 +29,18 @@ class Section {
   }
 }
 
-// class MusicShelf extends Section {
-//   const MusicShelf({super.items});
+class SectionHeader {
+  final String? title;
+  final String? strapline;
+  final NavigationEndpoint? moreEndpoint;
+  final ButtonRenderer? moreButton;
+  final Thumbnail? thumbnail;
 
-//   static MusicShelf fromRenderer(MusicShelfRenderer renderer) {
-//     List<SongItem> items = [];
-//     if (renderer.contents != null) {
-//       for (final content in renderer.contents!) {
-//         final song = SongItem.fromMusicResponsiveListItemRenderer(
-//           content.musicResponsiveListItemRenderer,
-//         );
-//         if (song != null) items.add(song);
-//       }
-//     }
-//     return MusicShelf(items: items);
-//   }
-// }
+  const SectionHeader({
+    this.title,
+    this.strapline,
+    this.moreEndpoint,
+    this.moreButton,
+    this.thumbnail,
+  });
+}

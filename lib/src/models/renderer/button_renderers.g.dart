@@ -170,3 +170,27 @@ Map<String, dynamic> _$SubscribeButtonRendererToJson(
   'subscribeAccessibility': instance.subscribeAccessibility,
   'unsubscribeAccessibility': instance.unsubscribeAccessibility,
 };
+
+ButtonRenderer _$ButtonRendererFromJson(Map<String, dynamic> json) =>
+    ButtonRenderer(
+      style: json['style'] as String?,
+      isDisabled: json['isDisabled'] as bool?,
+      text: json['text'] == null
+          ? null
+          : Runs.fromJson(json['text'] as Map<String, dynamic>),
+      navigationEndpoint: json['navigationEndpoint'] == null
+          ? null
+          : NavigationEndpoint.fromJson(
+              json['navigationEndpoint'] as Map<String, dynamic>,
+            ),
+      trackingParams: json['trackingParams'] as String?,
+    );
+
+Map<String, dynamic> _$ButtonRendererToJson(ButtonRenderer instance) =>
+    <String, dynamic>{
+      'style': instance.style,
+      'isDisabled': instance.isDisabled,
+      'text': instance.text,
+      'navigationEndpoint': instance.navigationEndpoint,
+      'trackingParams': instance.trackingParams,
+    };

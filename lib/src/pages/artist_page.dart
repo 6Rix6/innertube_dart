@@ -55,7 +55,8 @@ class ArtistPage {
       name = header.title.runs?[0].text ?? "Unknown Artist";
       description = header.description?.runs?[0].text;
       thumbnailUrl = header.thumbnail?.musicThumbnailRenderer?.thumbnail
-          .getBest();
+          .getBest()
+          ?.url;
       subscriberCountText = header
           .subscriptionButton
           ?.subscribeButtonRenderer
@@ -73,7 +74,8 @@ class ArtistPage {
           ?.thumbnail
           ?.musicThumbnailRenderer
           ?.thumbnail
-          .getBest();
+          .getBest()
+          ?.url;
       subscriberCountText = response
           .header
           ?.musicVisualHeaderRenderer

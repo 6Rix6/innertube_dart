@@ -35,7 +35,9 @@ SectionListRenderer _$SectionListRendererFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Continuations.fromJson(e as Map<String, dynamic>))
           .toList(),
       trackingParams: json['trackingParams'] as String?,
-      header: json['header'] as Map<String, dynamic>?,
+      header: json['header'] == null
+          ? null
+          : SectionListHeader.fromJson(json['header'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SectionListRendererToJson(
@@ -83,3 +85,15 @@ Map<String, dynamic> _$SectionListRendererContentToJson(
   'musicPlaylistShelfRenderer': instance.musicPlaylistShelfRenderer,
   'musicCardShelfRenderer': instance.musicCardShelfRenderer,
 };
+
+SectionListHeader _$SectionListHeaderFromJson(Map<String, dynamic> json) =>
+    SectionListHeader(
+      chipCloudRenderer: json['chipCloudRenderer'] == null
+          ? null
+          : ChipCloudRenderer.fromJson(
+              json['chipCloudRenderer'] as Map<String, dynamic>,
+            ),
+    );
+
+Map<String, dynamic> _$SectionListHeaderToJson(SectionListHeader instance) =>
+    <String, dynamic>{'chipCloudRenderer': instance.chipCloudRenderer};

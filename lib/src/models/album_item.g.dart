@@ -11,6 +11,9 @@ AlbumItem _$AlbumItemFromJson(Map<String, dynamic> json) => AlbumItem(
   playlistId: json['playlistId'] as String,
   id: json['id'] as String?,
   title: json['title'] as String,
+  subtitle: json['subtitle'] == null
+      ? null
+      : Runs.fromJson(json['subtitle'] as Map<String, dynamic>),
   artists: (json['artists'] as List<dynamic>?)
       ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -30,6 +33,7 @@ Map<String, dynamic> _$AlbumItemToJson(AlbumItem instance) => <String, dynamic>{
   'playlistId': instance.playlistId,
   'id': instance.id,
   'title': instance.title,
+  'subtitle': instance.subtitle,
   'artists': instance.artists,
   'year': instance.year,
   'albumTypeText': instance.albumTypeText,

@@ -1,7 +1,13 @@
-import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import '../runs.dart';
 import '../endpoints.dart';
+import '../song_item.dart';
+import '../album_item.dart';
+import '../playlist_item.dart';
+import '../artist_item.dart';
+import '../yt_item.dart';
+import 'menu_renderers.dart';
 import 'music_item_renderer.dart';
 import 'thumbnail_renderer.dart';
 
@@ -17,6 +23,7 @@ class MusicTwoRowItemRenderer {
   final Runs? subtitle;
   final List<Badge>? subtitleBadges;
   final Menu? menu;
+  final String? aspectRatio;
 
   const MusicTwoRowItemRenderer({
     this.thumbnailRenderer,
@@ -26,6 +33,7 @@ class MusicTwoRowItemRenderer {
     this.subtitle,
     this.subtitleBadges,
     this.menu,
+    this.aspectRatio,
   });
 
   factory MusicTwoRowItemRenderer.fromJson(Map<String, dynamic> json) =>
@@ -52,4 +60,21 @@ class MusicTwoRowItemRenderer {
   /// Check if this is an artist item
   bool get isArtist =>
       navigationEndpoint?.browseEndpoint?.pageType == 'MUSIC_PAGE_TYPE_ARTIST';
+
+  YTItem? toYTItem() {
+    try {
+      if (isSong) {
+        return SongItem.fromMusicTwoRowItemRenderer(this);
+      } else if (isAlbum) {
+        return AlbumItem.fromMusicTwoRowItemRenderer(this);
+      } else if (isPlaylist) {
+        return PlaylistItem.fromMusicTwoRowItemRenderer(this);
+      } else if (isArtist) {
+        return ArtistItem.fromMusicTwoRowItemRenderer(this);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

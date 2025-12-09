@@ -24,8 +24,14 @@ MusicThumbnailRenderer _$MusicThumbnailRendererFromJson(
   Map<String, dynamic> json,
 ) => MusicThumbnailRenderer(
   thumbnail: Thumbnails.fromJson(json['thumbnail'] as Map<String, dynamic>),
+  onTap: json['onTap'] == null
+      ? null
+      : NavigationEndpoint.fromJson(json['onTap'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$MusicThumbnailRendererToJson(
   MusicThumbnailRenderer instance,
-) => <String, dynamic>{'thumbnail': instance.thumbnail};
+) => <String, dynamic>{
+  'thumbnail': instance.thumbnail,
+  'onTap': instance.onTap,
+};

@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,8 +20,9 @@ class ThumbnailRenderer {
 @JsonSerializable()
 class MusicThumbnailRenderer {
   final Thumbnails thumbnail;
+  final NavigationEndpoint? onTap;
 
-  const MusicThumbnailRenderer({required this.thumbnail});
+  const MusicThumbnailRenderer({required this.thumbnail, this.onTap});
 
   factory MusicThumbnailRenderer.fromJson(Map<String, dynamic> json) =>
       _$MusicThumbnailRendererFromJson(json);

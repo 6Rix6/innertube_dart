@@ -9,6 +9,9 @@ part of 'playlist_item.dart';
 PlaylistItem _$PlaylistItemFromJson(Map<String, dynamic> json) => PlaylistItem(
   id: json['id'] as String,
   title: json['title'] as String,
+  subtitle: json['subtitle'] == null
+      ? null
+      : Runs.fromJson(json['subtitle'] as Map<String, dynamic>),
   author: json['author'] == null
       ? null
       : Artist.fromJson(json['author'] as Map<String, dynamic>),
@@ -41,6 +44,7 @@ Map<String, dynamic> _$PlaylistItemToJson(PlaylistItem instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'subtitle': instance.subtitle,
       'author': instance.author,
       'songCountText': instance.songCountText,
       'thumbnails': instance.thumbnails,
