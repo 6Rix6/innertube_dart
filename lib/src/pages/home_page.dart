@@ -3,19 +3,25 @@ import 'package:innertube_dart/src/models/renderer/chip_cloud_renderer.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:innertube_dart/src/models/response/browse_response.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 
 class HomePage {
   final List<Section> sections;
   final List<Continuations>? continuations;
   final HomePageHeader? header;
+  final Thumbnails? background;
 
-  const HomePage({required this.sections, this.continuations, this.header});
+  const HomePage({
+    required this.sections,
+    this.continuations,
+    this.header,
+    this.background,
+  });
 
   factory HomePage.fromBrowseResponse(
     BrowseResponse response, {
     bool isContinuation = false,
   }) {
-    final sections = <Section>[];
     SectionListRenderer sectionListRenderer;
     if (isContinuation) {
       sectionListRenderer = SectionListRenderer.fromJson(
@@ -40,6 +46,10 @@ class HomePage {
           .toList(),
     );
 
+    final background = response.backgroundThumbnails;
+
+    final sections = <Section>[];
+
     final contents = sectionListRenderer.contents;
     if (contents == null || contents.isEmpty) {
       return HomePage(sections: sections);
@@ -55,6 +65,7 @@ class HomePage {
       sections: sections,
       continuations: sectionListRenderer.continuations,
       header: header,
+      background: background,
     );
   }
 }
