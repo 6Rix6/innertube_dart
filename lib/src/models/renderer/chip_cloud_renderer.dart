@@ -45,13 +45,13 @@ class ChipCloudChipRenderer {
   Runs? text;
   NavigationEndpoint? navigationEndpoint;
   NavigationEndpoint? onDeselectedCommand;
-  bool selected;
+  bool isSelected;
 
   ChipCloudChipRenderer({
     this.text,
     this.navigationEndpoint,
     this.onDeselectedCommand,
-    this.selected = false,
+    this.isSelected = false,
   });
 
   factory ChipCloudChipRenderer.fromJson(Map<String, dynamic> json) =>

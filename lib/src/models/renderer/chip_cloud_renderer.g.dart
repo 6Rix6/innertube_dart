@@ -52,7 +52,7 @@ ChipCloudChipRenderer _$ChipCloudChipRendererFromJson(
       : NavigationEndpoint.fromJson(
           json['onDeselectedCommand'] as Map<String, dynamic>,
         ),
-  selected: json['selected'] as bool? ?? false,
+  isSelected: json['isSelected'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$ChipCloudChipRendererToJson(
@@ -61,5 +61,5 @@ Map<String, dynamic> _$ChipCloudChipRendererToJson(
   'text': instance.text,
   'navigationEndpoint': instance.navigationEndpoint,
   'onDeselectedCommand': instance.onDeselectedCommand,
-  'selected': instance.selected,
+  'isSelected': instance.isSelected,
 };
