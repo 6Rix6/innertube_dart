@@ -23,3 +23,4 @@ export 'src/utils/result.dart';
 export 'src/utils/parse_time.dart';
 export 'src/client/youtube.dart';
 export 'src/models/renderer/button_renderers.dart';
+export 'src/models/renderer/chip_cloud_renderer.dart';
