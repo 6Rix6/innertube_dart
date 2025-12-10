@@ -6,26 +6,31 @@ part of 'browse_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BrowseResponse _$BrowseResponseFromJson(
-  Map<String, dynamic> json,
-) => BrowseResponse(
-  header: json['header'] == null
-      ? null
-      : BrowseHeaderRenderer.fromJson(json['header'] as Map<String, dynamic>),
-  contents: json['contents'] == null
-      ? null
-      : BrowseResponseContent.fromJson(
-          json['contents'] as Map<String, dynamic>,
-        ),
-  microformat: json['microformat'] as Map<String, dynamic>?,
-  background: json['background'] == null
-      ? null
-      : BrowseResponseBackground.fromJson(
-          json['background'] as Map<String, dynamic>,
-        ),
-  continuationContents: json['continuationContents'] as Map<String, dynamic>?,
-  trackingParams: json['trackingParams'] as String?,
-);
+BrowseResponse _$BrowseResponseFromJson(Map<String, dynamic> json) =>
+    BrowseResponse(
+      header: json['header'] == null
+          ? null
+          : BrowseHeaderRenderer.fromJson(
+              json['header'] as Map<String, dynamic>,
+            ),
+      contents: json['contents'] == null
+          ? null
+          : BrowseResponseContent.fromJson(
+              json['contents'] as Map<String, dynamic>,
+            ),
+      microformat: json['microformat'] as Map<String, dynamic>?,
+      background: json['background'] == null
+          ? null
+          : BrowseResponseBackground.fromJson(
+              json['background'] as Map<String, dynamic>,
+            ),
+      continuationContents: json['continuationContents'] == null
+          ? null
+          : BrowseResponseContinuation.fromJson(
+              json['continuationContents'] as Map<String, dynamic>,
+            ),
+      trackingParams: json['trackingParams'] as String?,
+    );
 
 Map<String, dynamic> _$BrowseResponseToJson(BrowseResponse instance) =>
     <String, dynamic>{
@@ -105,4 +110,20 @@ Map<String, dynamic> _$BrowseResponseBackgroundToJson(
   BrowseResponseBackground instance,
 ) => <String, dynamic>{
   'musicThumbnailRenderer': instance.musicThumbnailRenderer,
+};
+
+BrowseResponseContinuation _$BrowseResponseContinuationFromJson(
+  Map<String, dynamic> json,
+) => BrowseResponseContinuation(
+  sectionListContinuation: json['sectionListContinuation'] == null
+      ? null
+      : SectionListRenderer.fromJson(
+          json['sectionListContinuation'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$BrowseResponseContinuationToJson(
+  BrowseResponseContinuation instance,
+) => <String, dynamic>{
+  'sectionListContinuation': instance.sectionListContinuation,
 };

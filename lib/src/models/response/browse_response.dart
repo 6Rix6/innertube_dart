@@ -15,7 +15,7 @@ class BrowseResponse {
   final BrowseResponseContent? contents;
   final Map<String, dynamic>? microformat;
   final BrowseResponseBackground? background;
-  final Map<String, dynamic>? continuationContents;
+  final BrowseResponseContinuation? continuationContents;
   final String? trackingParams;
 
   const BrowseResponse({
@@ -44,18 +44,18 @@ class BrowseResponse {
   }
 
   /// Helper to get title from header
-  String? getTitle() {
-    // Try twoColumnBrowseResultsRenderer
-    final musicHeader = getMusicResponsiveHeader();
-    if (musicHeader != null) {
-      final runs = musicHeader.title?.runs;
-      if (runs != null && runs.isNotEmpty) {
-        return runs.first.text;
-      }
-    }
+  // String? getTitle() {
+  //   // Try twoColumnBrowseResultsRenderer
+  //   final musicHeader = getMusicResponsiveHeader();
+  //   if (musicHeader != null) {
+  //     final runs = musicHeader.title?.runs;
+  //     if (runs != null && runs.isNotEmpty) {
+  //       return runs.first.text;
+  //     }
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   /// Helper to get author name from header (only for playlist)
   // Artist? getAuthor() {
@@ -89,26 +89,26 @@ class BrowseResponse {
   // }
 
   /// Helper to get song count text from header (only for playlist)
-  String? getSongCountText() {
-    // Try twoColumnBrowseResultsRenderer
-    final musicHeader = getMusicResponsiveHeader();
-    if (musicHeader != null) {
-      final runs = musicHeader.secondSubtitle?.runs;
-      if (runs != null && runs.isNotEmpty) {
-        return runs[2].text;
-      }
-    }
+  // String? getSongCountText() {
+  //   // Try twoColumnBrowseResultsRenderer
+  //   final musicHeader = getMusicResponsiveHeader();
+  //   if (musicHeader != null) {
+  //     final runs = musicHeader.secondSubtitle?.runs;
+  //     if (runs != null && runs.isNotEmpty) {
+  //       return runs[2].text;
+  //     }
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   /// Helper to get thumbnail
-  Thumbnails? getThumbnails() {
-    final musicHeader = getMusicResponsiveHeader();
-    final thumbnails = musicHeader?.thumbnail?.musicThumbnailRenderer.thumbnail;
+  // Thumbnails? getThumbnails() {
+  //   final musicHeader = getMusicResponsiveHeader();
+  //   final thumbnails = musicHeader?.thumbnail?.musicThumbnailRenderer.thumbnail;
 
-    return thumbnails;
-  }
+  //   return thumbnails;
+  // }
 
   Thumbnails? get backgroundThumbnails =>
       background?.musicThumbnailRenderer?.thumbnail;
@@ -207,4 +207,15 @@ class BrowseResponseBackground {
   factory BrowseResponseBackground.fromJson(Map<String, dynamic> json) =>
       _$BrowseResponseBackgroundFromJson(json);
   Map<String, dynamic> toJson() => _$BrowseResponseBackgroundToJson(this);
+}
+
+@JsonSerializable()
+class BrowseResponseContinuation {
+  final SectionListRenderer? sectionListContinuation;
+
+  const BrowseResponseContinuation({this.sectionListContinuation});
+
+  factory BrowseResponseContinuation.fromJson(Map<String, dynamic> json) =>
+      _$BrowseResponseContinuationFromJson(json);
+  Map<String, dynamic> toJson() => _$BrowseResponseContinuationToJson(this);
 }

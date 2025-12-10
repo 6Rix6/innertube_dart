@@ -24,9 +24,9 @@ class HomePage {
   }) {
     SectionListRenderer sectionListRenderer;
     if (isContinuation) {
-      sectionListRenderer = SectionListRenderer.fromJson(
-        response.continuationContents?['sectionListContinuation'],
-      );
+      sectionListRenderer =
+          response.continuationContents?.sectionListContinuation ??
+          SectionListRenderer();
     } else {
       sectionListRenderer =
           response
