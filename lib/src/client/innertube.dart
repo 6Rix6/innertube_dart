@@ -18,6 +18,8 @@ class InnerTube {
   String? visitorData;
   String? dataSyncId;
   int accountIndex = 0;
+  Function(String)? onCookieUpdate;
+
   Map<String, String> _cookieMap = {};
   bool useLoginForBrowse = false;
   SessionContext sessionContext = SessionContext();
@@ -30,6 +32,7 @@ class InnerTube {
     this.visitorData,
     this.dataSyncId,
     this.accountIndex = 0,
+    this.onCookieUpdate,
     String? cookie,
   }) {
     _cookie = cookie;
@@ -114,7 +117,47 @@ class InnerTube {
 
     dio.options.contentType = Headers.jsonContentType;
     dio.options.responseType = ResponseType.json;
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) {
+          // レスポンスヘッダーから 'set-cookie' を取得
+          final setCookies = response.headers['set-cookie'];
+
+          if (setCookies != null && setCookies.isNotEmpty) {
+            _updateCookiesFromHeader(setCookies);
+          }
+
+          return handler.next(response);
+        },
+      ),
+    );
     return dio;
+  }
+
+  void _updateCookiesFromHeader(List<String> setCookies) {
+    for (final cookieRaw in setCookies) {
+      // "KEY=VALUE; Path=/; ..." となっているため、最初の ";" までを取得
+      final keyValue = cookieRaw.split(';').first;
+      final parts = keyValue.split('=');
+
+      if (parts.length >= 2) {
+        final key = parts[0].trim();
+        // VALUEに "=" が含まれる場合を考慮して結合（Base64など）
+        final value = parts.sublist(1).join('=').trim();
+
+        if (key.isNotEmpty) {
+          _cookieMap[key] = value;
+        }
+      }
+    }
+
+    // 更新されたMapからCookie文字列を再構築して保存
+    _cookie = _cookieMap.entries.map((e) => '${e.key}=${e.value}').join('; ');
+    onCookieUpdate?.call(_cookie!);
+
+    // デバッグ用（必要に応じて）
+    // print('Updated Cookies: $_cookie');
   }
 
   void _ytClient(

@@ -41,6 +41,7 @@ class YouTube {
     String? visitorData,
     String? dataSyncId,
     String? cookie,
+    Function(String)? onCookieUpdate,
     int accountIndex = 0,
   }) {
     _innerTube = InnerTube(
@@ -48,6 +49,7 @@ class YouTube {
       visitorData: visitorData,
       dataSyncId: dataSyncId,
       cookie: cookie,
+      onCookieUpdate: onCookieUpdate,
       accountIndex: accountIndex,
     );
   }
