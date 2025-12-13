@@ -15,6 +15,7 @@ export 'src/models/response/player_response.dart';
 export 'src/models/section.dart';
 export 'src/models/continuations.dart';
 export 'src/models/thumbnails.dart';
+export 'src/models/runs.dart';
 export 'src/pages/album_page.dart';
 export 'src/pages/search_result.dart';
 export 'src/pages/home_page.dart';
