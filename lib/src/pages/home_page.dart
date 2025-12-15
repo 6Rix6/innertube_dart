@@ -5,6 +5,9 @@ import 'package:innertube_dart/src/models/response/browse_response.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
 
+// TODO: add support for musicMultiRowListItemRenderer
+// see response_data/home.response.json
+
 class HomePage {
   final List<Section> sections;
   final List<Continuations>? continuations;
