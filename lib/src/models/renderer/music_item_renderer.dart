@@ -1,13 +1,19 @@
-import 'package:innertube_dart/innertube_dart.dart';
+import 'package:innertube_dart/src/models/artist_item.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+import 'package:innertube_dart/src/models/album.dart';
+import 'package:innertube_dart/src/models/endpoints.dart';
+import 'package:innertube_dart/src/models/icon.dart';
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/thumbnail_renderer.dart';
+import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/accessibility_data.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
+import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
-import 'package:json_annotation/json_annotation.dart';
-import '../runs.dart';
-import '../endpoints.dart';
-import '../icon.dart';
-import 'menu_renderers.dart';
-import 'thumbnail_renderer.dart';
+import 'package:innertube_dart/src/models/album_item.dart';
+import 'package:innertube_dart/src/utils/parse_time.dart';
+import 'package:innertube_dart/src/utils/utils.dart';
 
 part 'music_item_renderer.g.dart';
 
@@ -22,6 +28,10 @@ class MusicResponsiveListItem {
   factory MusicResponsiveListItem.fromJson(Map<String, dynamic> json) =>
       _$MusicResponsiveListItemFromJson(json);
   Map<String, dynamic> toJson() => _$MusicResponsiveListItemToJson(this);
+
+  YTItem? toYTItem() {
+    return musicResponsiveListItemRenderer.toYTItem();
+  }
 }
 
 /// Music responsive list item renderer
@@ -73,18 +83,147 @@ class MusicResponsiveListItemRenderer {
 
   YTItem? toYTItem() {
     if (isSong) {
-      return SongItem.fromMusicResponsiveListItemRenderer(this);
+      return _toSongItem();
     }
     if (isAlbum) {
-      // return AlbumItem.fromMusicResponsiveListItemRenderer(this);
+      return _toAlbumItem();
     }
     if (isArtist) {
-      // return ArtistItem.fromMusicResponsiveListItemRenderer(this);
+      return _toArtistItem();
     }
     if (isPlaylist) {
       // return PlaylistItem.fromMusicResponsiveListItemRenderer(this);
     }
     return null;
+  }
+
+  SongItem? _toSongItem() {
+    final videoId = playlistItemData?.videoId;
+    if (videoId == null) return null;
+
+    // Get title
+    final titleRuns = flexColumns.firstOrNull?.renderer?.text?.runs;
+    final title = titleRuns?.firstOrNull?.text;
+    if (title == null) return null;
+
+    // Get duration
+    // try fixedColumns
+    String? durationText =
+        fixedColumns?.firstOrNull?.renderer?.text?.runs?.firstOrNull?.text;
+    if (durationText == null || !isValidTimeFormat(durationText)) {
+      // try flexColumns
+      durationText = flexColumns
+          .elementAtOrNull(1)
+          ?.renderer
+          ?.text
+          ?.runs
+          ?.firstWhere(
+            (run) => isValidTimeFormat(run.text),
+            orElse: () => Run(text: ""),
+          )
+          .text;
+    }
+    final duration = parseTime(durationText);
+
+    // Get view count
+    final viewCountText =
+        flexColumns.lastOrNull?.renderer?.text?.runs?.firstOrNull?.text;
+
+    // Get thumbnail
+    final thumbnail = this.thumbnail?.musicThumbnailRenderer?.thumbnail;
+
+    // Get artists
+    final artistsRuns = flexColumns[1].flexColumnRenderer?.text?.runs;
+    final artists = parseArtistRuns(artistsRuns);
+
+    // Get album
+    Album? album;
+    final albumRun = flexColumns
+        .elementAtOrNull(2)
+        ?.renderer
+        ?.text
+        ?.runs
+        ?.firstOrNull;
+    if (albumRun != null &&
+        albumRun.navigationEndpoint?.browseEndpoint?.browseId != null) {
+      album = Album(
+        name: albumRun.text,
+        id: albumRun.navigationEndpoint!.browseEndpoint!.browseId!,
+      );
+    }
+
+    final subtitle = flexColumns[1].flexColumnRenderer?.text;
+
+    // Get explicit
+    final explicit = isExplicit(badges);
+
+    return SongItem(
+      id: videoId,
+      title: title,
+      artists: artists,
+      duration: duration,
+      viewCount: viewCountText,
+      thumbnails: thumbnail,
+      setVideoId: playlistItemData?.playlistSetVideoId,
+      album: album,
+      explicit: explicit,
+      subtitle: subtitle,
+    );
+  }
+
+  AlbumItem? _toAlbumItem() {
+    if (isAlbum) {
+      final browseId = navigationEndpoint?.browseEndpoint?.browseId;
+      final playlistId = overlay
+          ?.musicItemThumbnailOverlayRenderer
+          ?.content
+          ?.musicPlayButtonRenderer
+          ?.playNavigationEndpoint
+          ?.watchPlaylistEndpoint
+          ?.playlistId;
+      final title = flexColumns.firstOrNull?.renderer?.text?.toString();
+      final thumbnail = this.thumbnail?.musicThumbnailRenderer?.thumbnail;
+
+      if (browseId == null ||
+          playlistId == null ||
+          title == null ||
+          thumbnail == null) {
+        return null;
+      }
+
+      final subtitleRuns = flexColumns[1].renderer?.text;
+      final artists = parseArtistRuns(subtitleRuns?.runs);
+      final year = subtitleRuns?.runs?.lastOrNull?.text;
+      final albumTypeText = subtitleRuns?.runs?.firstOrNull?.text;
+      final explicit = isExplicit(badges);
+
+      return AlbumItem(
+        browseId: browseId,
+        playlistId: playlistId,
+        title: title,
+        thumbnails: thumbnail,
+        subtitle: subtitleRuns,
+        artists: artists,
+        year: year,
+        albumTypeText: albumTypeText,
+        explicit: explicit,
+      );
+    }
+    return null;
+  }
+
+  ArtistItem? _toArtistItem() {
+    final id = navigationEndpoint?.browseEndpoint?.browseId;
+    final title = flexColumns.firstOrNull?.renderer?.text?.toString();
+
+    if (id == null || title == null) {
+      return null;
+    }
+
+    final thumbnail = this.thumbnail?.musicThumbnailRenderer?.thumbnail;
+    // TODO
+
+    return ArtistItem(id: id, title: title, thumbnails: thumbnail);
   }
 }
 

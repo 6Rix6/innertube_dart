@@ -62,6 +62,7 @@ class SongItem extends YTItem {
   });
 
   /// generate songItem from musicResponsiveListItemRenderer
+  @Deprecated('Use MusicResponsiveListItemRenderer.toSongItem instead')
   static SongItem? fromMusicResponsiveListItemRenderer(
     MusicResponsiveListItemRenderer renderer,
   ) {

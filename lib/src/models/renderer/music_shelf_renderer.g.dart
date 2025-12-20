@@ -20,9 +20,9 @@ MusicShelfRenderer _$MusicShelfRendererFromJson(Map<String, dynamic> json) =>
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),
       trackingParams: json['trackingParams'] as String?,
-      buttomText: json['buttomText'] == null
+      bottomText: json['bottomText'] == null
           ? null
-          : Runs.fromJson(json['buttomText'] as Map<String, dynamic>),
+          : Runs.fromJson(json['bottomText'] as Map<String, dynamic>),
       bottomEndpoint: json['bottomEndpoint'] == null
           ? null
           : NavigationEndpoint.fromJson(
@@ -36,6 +36,6 @@ Map<String, dynamic> _$MusicShelfRendererToJson(MusicShelfRenderer instance) =>
       'contents': instance.contents,
       'continuations': instance.continuations,
       'trackingParams': instance.trackingParams,
-      'buttomText': instance.buttomText,
+      'bottomText': instance.bottomText,
       'bottomEndpoint': instance.bottomEndpoint,
     };

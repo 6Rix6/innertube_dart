@@ -19,8 +19,14 @@ class ChipCloud {
 @JsonSerializable()
 class ChipCloudRenderer {
   final List<ChipCloudChip>? chips;
+  final bool? horizontalScrollable;
+  final int? collapsedRowCount;
 
-  const ChipCloudRenderer({this.chips});
+  const ChipCloudRenderer({
+    this.chips,
+    this.horizontalScrollable,
+    this.collapsedRowCount,
+  });
 
   factory ChipCloudRenderer.fromJson(Map<String, dynamic> json) =>
       _$ChipCloudRendererFromJson(json);

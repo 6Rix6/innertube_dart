@@ -1,249 +1,291 @@
-import '../models/yt_item.dart';
-import '../models/song_item.dart';
-import '../models/album_item.dart';
-import '../models/artist_item.dart';
-import '../models/playlist_item.dart';
-import '../models/artist.dart';
-import '../models/album.dart';
-import '../models/renderer/music_item_renderer.dart';
-import '../models/runs.dart';
-import '../models/section.dart';
-import '../utils/parse_time.dart';
+// import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
+// import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
+// import 'package:innertube_dart/src/models/response/search_response.dart';
+// import 'package:innertube_dart/src/models/section.dart';
+// import 'package:innertube_dart/src/models/page_header.dart';
 
-/// Search page parser
-class SearchPage {
-  final List<Section> contents;
-  final dynamic header;
+// class SearchPage {
+//   final List<SearchTab> tabs;
 
-  const SearchPage({required this.contents, this.header});
+//   const SearchPage({required this.tabs});
 
-  /// Convert MusicResponsiveListItemRenderer to appropriate YTItem type
-  static YTItem? toYTItem(MusicResponsiveListItemRenderer renderer) {
-    // Get secondary line (contains artist, album, duration info)
-    final secondaryLine = renderer.flexColumns
-        .elementAtOrNull(1)
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.splitBySeparator();
+//   factory SearchPage.fromSearchResponse(SearchResponse response) {
+//     return SearchPage(tabs: []);
+//   }
+// }
 
-    if (secondaryLine == null) return null;
+// class SearchTab {
+//   final String title;
+//   final String tabIdentifier;
+//   final List<Section> contents;
+//   final PageHeader? header;
+//   final bool selected;
 
-    // Determine type and parse accordingly
-    if (renderer.isSong) {
-      return _parseSong(renderer, secondaryLine);
-    } else if (renderer.isArtist && !renderer.isAlbum && !renderer.isPlaylist) {
-      return _parseArtist(renderer);
-    } else if (renderer.isAlbum) {
-      return _parseAlbum(renderer, secondaryLine);
-    } else if (renderer.isPlaylist) {
-      return _parsePlaylist(renderer, secondaryLine);
-    }
+//   const SearchTab({
+//     required this.title,
+//     required this.tabIdentifier,
+//     required this.contents,
+//     this.header,
+//     this.selected = false,
+//   });
 
-    return null;
-  }
+//   factory SearchTab.fromTabRenderer(TabRenderer renderer) {
+//     return SearchTab(
+//       title: renderer.title ?? "",
+//       tabIdentifier: renderer.tabIdentifier ?? "",
+//       // contents: renderer.contents,
+//       // header: renderer.header?.toPageHeader(),
+//       // selected: renderer.selected,
+//     );
+//   }
+// }
 
-  static SongItem? _parseSong(
-    MusicResponsiveListItemRenderer renderer,
-    List<List<Run>> secondaryLine,
-  ) {
-    final videoId = renderer.playlistItemData?.videoId;
-    if (videoId == null) return null;
+// // import '../models/yt_item.dart';
+// // import '../models/song_item.dart';
+// // import '../models/album_item.dart';
+// // import '../models/artist_item.dart';
+// // import '../models/playlist_item.dart';
+// // import '../models/artist.dart';
+// // import '../models/album.dart';
+// // import '../models/renderer/music_item_renderer.dart';
+// // import '../models/runs.dart';
+// // import '../models/section.dart';
+// // import '../utils/parse_time.dart';
 
-    final title = renderer
-        .flexColumns
-        .firstOrNull
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.firstOrNull
-        ?.text;
-    if (title == null) return null;
+// // /// Search page parser
+// // class SearchPage {
+// //   final List<Section> contents;
+// //   final dynamic header;
 
-    final artists = secondaryLine.firstOrNull?.oddElements().map((run) {
-      return Artist(
-        name: run.text,
-        id: run.navigationEndpoint?.browseEndpoint?.browseId,
-      );
-    }).toList();
+// //   const SearchPage({required this.contents, this.header});
 
-    if (artists == null || artists.isEmpty) return null;
+// //   /// Convert MusicResponsiveListItemRenderer to appropriate YTItem type
+// //   static YTItem? toYTItem(MusicResponsiveListItemRenderer renderer) {
+// //     // Get secondary line (contains artist, album, duration info)
+// //     final secondaryLine = renderer.flexColumns
+// //         .elementAtOrNull(1)
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.splitBySeparator();
 
-    // Try to get album
-    Album? album;
-    final albumRun = secondaryLine.elementAtOrNull(1)?.firstOrNull;
-    if (albumRun != null &&
-        albumRun.navigationEndpoint?.browseEndpoint != null) {
-      album = Album(
-        name: albumRun.text,
-        id: albumRun.navigationEndpoint!.browseEndpoint!.browseId!,
-      );
-    }
+// //     if (secondaryLine == null) return null;
 
-    // Get duration
-    final durationText = secondaryLine.lastOrNull?.firstOrNull?.text;
-    final duration = parseTime(durationText);
+// //     // Determine type and parse accordingly
+// //     if (renderer.isSong) {
+// //       return _parseSong(renderer, secondaryLine);
+// //     } else if (renderer.isArtist && !renderer.isAlbum && !renderer.isPlaylist) {
+// //       return _parseArtist(renderer);
+// //     } else if (renderer.isAlbum) {
+// //       return _parseAlbum(renderer, secondaryLine);
+// //     } else if (renderer.isPlaylist) {
+// //       return _parsePlaylist(renderer, secondaryLine);
+// //     }
 
-    final thumbnails = renderer.thumbnail?.getThumbnails();
-    if (thumbnails == null) return null;
+// //     return null;
+// //   }
 
-    // Check explicit badge
-    final explicit =
-        renderer.badges?.any(
-          (badge) =>
-              badge.musicInlineBadgeRenderer?.icon?.iconType ==
-              'MUSIC_EXPLICIT_BADGE',
-        ) ==
-        true;
+// //   static SongItem? _parseSong(
+// //     MusicResponsiveListItemRenderer renderer,
+// //     List<List<Run>> secondaryLine,
+// //   ) {
+// //     final videoId = renderer.playlistItemData?.videoId;
+// //     if (videoId == null) return null;
 
-    return SongItem(
-      id: videoId,
-      title: title,
-      artists: artists,
-      album: album,
-      duration: duration,
-      thumbnails: thumbnails,
-      explicit: explicit,
-    );
-  }
+// //     final title = renderer
+// //         .flexColumns
+// //         .firstOrNull
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.firstOrNull
+// //         ?.text;
+// //     if (title == null) return null;
 
-  static ArtistItem? _parseArtist(MusicResponsiveListItemRenderer renderer) {
-    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
+// //     final artists = secondaryLine.firstOrNull?.oddElements().map((run) {
+// //       return Artist(
+// //         name: run.text,
+// //         id: run.navigationEndpoint?.browseEndpoint?.browseId,
+// //       );
+// //     }).toList();
 
-    final title = renderer
-        .flexColumns
-        .firstOrNull
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.firstOrNull
-        ?.text;
-    if (title == null) return null;
+// //     if (artists == null || artists.isEmpty) return null;
 
-    final thumbnails = renderer.thumbnail?.getThumbnails();
-    if (thumbnails == null) return null;
+// //     // Try to get album
+// //     Album? album;
+// //     final albumRun = secondaryLine.elementAtOrNull(1)?.firstOrNull;
+// //     if (albumRun != null &&
+// //         albumRun.navigationEndpoint?.browseEndpoint != null) {
+// //       album = Album(
+// //         name: albumRun.text,
+// //         id: albumRun.navigationEndpoint!.browseEndpoint!.browseId!,
+// //       );
+// //     }
 
-    return ArtistItem(
-      id: browseId,
-      title: title,
-      thumbnails: thumbnails,
-      channelId: browseId,
-    );
-  }
+// //     // Get duration
+// //     final durationText = secondaryLine.lastOrNull?.firstOrNull?.text;
+// //     final duration = parseTime(durationText);
 
-  static AlbumItem? _parseAlbum(
-    MusicResponsiveListItemRenderer renderer,
-    List<List<Run>> secondaryLine,
-  ) {
-    final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
+// //     final thumbnails = renderer.thumbnail?.getThumbnails();
+// //     if (thumbnails == null) return null;
 
-    // Get playlistId from overlay
-    final playlistId = renderer
-        .overlay
-        ?.musicItemThumbnailOverlayRenderer
-        ?.content
-        ?.musicPlayButtonRenderer
-        ?.playNavigationEndpoint
-        ?.watchPlaylistEndpoint
-        ?.playlistId;
-    if (playlistId == null) return null;
+// //     // Check explicit badge
+// //     final explicit =
+// //         renderer.badges?.any(
+// //           (badge) =>
+// //               badge.musicInlineBadgeRenderer?.icon?.iconType ==
+// //               'MUSIC_EXPLICIT_BADGE',
+// //         ) ==
+// //         true;
 
-    final title = renderer
-        .flexColumns
-        .firstOrNull
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.firstOrNull
-        ?.text;
-    if (title == null) return null;
+// //     return SongItem(
+// //       id: videoId,
+// //       title: title,
+// //       artists: artists,
+// //       album: album,
+// //       duration: duration,
+// //       thumbnails: thumbnails,
+// //       explicit: explicit,
+// //     );
+// //   }
 
-    final artists = secondaryLine.elementAtOrNull(1)?.oddElements().map((run) {
-      return Artist(
-        name: run.text,
-        id: run.navigationEndpoint?.browseEndpoint?.browseId,
-      );
-    }).toList();
+// //   static ArtistItem? _parseArtist(MusicResponsiveListItemRenderer renderer) {
+// //     final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
+// //     if (browseId == null) return null;
 
-    // Try to get year
-    final year = secondaryLine.elementAtOrNull(2)?.firstOrNull?.text;
+// //     final title = renderer
+// //         .flexColumns
+// //         .firstOrNull
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.firstOrNull
+// //         ?.text;
+// //     if (title == null) return null;
 
-    final thumbnails = renderer.thumbnail?.getThumbnails();
-    if (thumbnails == null) return null;
+// //     final thumbnails = renderer.thumbnail?.getThumbnails();
+// //     if (thumbnails == null) return null;
 
-    final explicit =
-        renderer.badges?.any(
-          (badge) =>
-              badge.musicInlineBadgeRenderer?.icon?.iconType ==
-              'MUSIC_EXPLICIT_BADGE',
-        ) ==
-        true;
+// //     return ArtistItem(
+// //       id: browseId,
+// //       title: title,
+// //       thumbnails: thumbnails,
+// //       channelId: browseId,
+// //     );
+// //   }
 
-    return AlbumItem(
-      browseId: browseId,
-      playlistId: playlistId,
-      title: title,
-      artists: artists,
-      year: year,
-      thumbnails: thumbnails,
-      explicit: explicit,
-    );
-  }
+// //   static AlbumItem? _parseAlbum(
+// //     MusicResponsiveListItemRenderer renderer,
+// //     List<List<Run>> secondaryLine,
+// //   ) {
+// //     final browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
+// //     if (browseId == null) return null;
 
-  static PlaylistItem? _parsePlaylist(
-    MusicResponsiveListItemRenderer renderer,
-    List<List<Run>> secondaryLine,
-  ) {
-    var browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
-    if (browseId == null) return null;
+// //     // Get playlistId from overlay
+// //     final playlistId = renderer
+// //         .overlay
+// //         ?.musicItemThumbnailOverlayRenderer
+// //         ?.content
+// //         ?.musicPlayButtonRenderer
+// //         ?.playNavigationEndpoint
+// //         ?.watchPlaylistEndpoint
+// //         ?.playlistId;
+// //     if (playlistId == null) return null;
 
-    // Remove VL prefix
-    if (browseId.startsWith('VL')) {
-      browseId = browseId.substring(2);
-    }
+// //     final title = renderer
+// //         .flexColumns
+// //         .firstOrNull
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.firstOrNull
+// //         ?.text;
+// //     if (title == null) return null;
 
-    final title = renderer
-        .flexColumns
-        .firstOrNull
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.firstOrNull
-        ?.text;
-    if (title == null) return null;
+// //     final artists = secondaryLine.elementAtOrNull(1)?.oddElements().map((run) {
+// //       return Artist(
+// //         name: run.text,
+// //         id: run.navigationEndpoint?.browseEndpoint?.browseId,
+// //       );
+// //     }).toList();
 
-    final authorRun = secondaryLine.firstOrNull?.firstOrNull;
-    if (authorRun == null) return null;
+// //     // Try to get year
+// //     final year = secondaryLine.elementAtOrNull(2)?.firstOrNull?.text;
 
-    final author = Artist(
-      name: authorRun.text,
-      id: authorRun.navigationEndpoint?.browseEndpoint?.browseId,
-    );
+// //     final thumbnails = renderer.thumbnail?.getThumbnails();
+// //     if (thumbnails == null) return null;
 
-    final songCountText = renderer.flexColumns
-        .elementAtOrNull(1)
-        ?.renderer
-        ?.text
-        ?.runs
-        ?.lastOrNull
-        ?.text;
+// //     final explicit =
+// //         renderer.badges?.any(
+// //           (badge) =>
+// //               badge.musicInlineBadgeRenderer?.icon?.iconType ==
+// //               'MUSIC_EXPLICIT_BADGE',
+// //         ) ==
+// //         true;
 
-    final thumbnails = renderer.thumbnail?.getThumbnails();
+// //     return AlbumItem(
+// //       browseId: browseId,
+// //       playlistId: playlistId,
+// //       title: title,
+// //       artists: artists,
+// //       year: year,
+// //       thumbnails: thumbnails,
+// //       explicit: explicit,
+// //     );
+// //   }
 
-    return PlaylistItem(
-      id: browseId,
-      title: title,
-      author: author,
-      songCountText: songCountText,
-      thumbnails: thumbnails,
-    );
-  }
-}
+// //   static PlaylistItem? _parsePlaylist(
+// //     MusicResponsiveListItemRenderer renderer,
+// //     List<List<Run>> secondaryLine,
+// //   ) {
+// //     var browseId = renderer.navigationEndpoint?.browseEndpoint?.browseId;
+// //     if (browseId == null) return null;
 
-extension<T> on List<T> {
-  T? get firstOrNull => isEmpty ? null : first;
-  T? elementAtOrNull(int index) =>
-      index >= 0 && index < length ? this[index] : null;
-}
+// //     // Remove VL prefix
+// //     if (browseId.startsWith('VL')) {
+// //       browseId = browseId.substring(2);
+// //     }
+
+// //     final title = renderer
+// //         .flexColumns
+// //         .firstOrNull
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.firstOrNull
+// //         ?.text;
+// //     if (title == null) return null;
+
+// //     final authorRun = secondaryLine.firstOrNull?.firstOrNull;
+// //     if (authorRun == null) return null;
+
+// //     final author = Artist(
+// //       name: authorRun.text,
+// //       id: authorRun.navigationEndpoint?.browseEndpoint?.browseId,
+// //     );
+
+// //     final songCountText = renderer.flexColumns
+// //         .elementAtOrNull(1)
+// //         ?.renderer
+// //         ?.text
+// //         ?.runs
+// //         ?.lastOrNull
+// //         ?.text;
+
+// //     final thumbnails = renderer.thumbnail?.getThumbnails();
+
+// //     return PlaylistItem(
+// //       id: browseId,
+// //       title: title,
+// //       author: author,
+// //       songCountText: songCountText,
+// //       thumbnails: thumbnails,
+// //     );
+// //   }
+// // }
+
+// // extension<T> on List<T> {
+// //   T? get firstOrNull => isEmpty ? null : first;
+// //   T? elementAtOrNull(int index) =>
+// //       index >= 0 && index < length ? this[index] : null;
+// // }

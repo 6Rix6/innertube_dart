@@ -86,7 +86,7 @@ TwoColumnBrowseResultsRenderer _$TwoColumnBrowseResultsRendererFromJson(
       .toList(),
   secondaryContents: json['secondaryContents'] == null
       ? null
-      : SecionList.fromJson(json['secondaryContents'] as Map<String, dynamic>),
+      : SectionList.fromJson(json['secondaryContents'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TwoColumnBrowseResultsRendererToJson(

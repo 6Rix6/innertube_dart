@@ -161,7 +161,7 @@ class SingleColumnBrowseResultsRenderer {
 @JsonSerializable()
 class TwoColumnBrowseResultsRenderer {
   final List<Tab>? tabs; // album header
-  final SecionList? secondaryContents; // album songs & foryou section
+  final SectionList? secondaryContents; // album songs & foryou section
 
   TwoColumnBrowseResultsRenderer({this.tabs, this.secondaryContents});
 

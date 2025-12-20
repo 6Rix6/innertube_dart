@@ -21,10 +21,16 @@ ChipCloudRenderer _$ChipCloudRendererFromJson(Map<String, dynamic> json) =>
       chips: (json['chips'] as List<dynamic>?)
           ?.map((e) => ChipCloudChip.fromJson(e as Map<String, dynamic>))
           .toList(),
+      horizontalScrollable: json['horizontalScrollable'] as bool?,
+      collapsedRowCount: (json['collapsedRowCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ChipCloudRendererToJson(ChipCloudRenderer instance) =>
-    <String, dynamic>{'chips': instance.chips};
+    <String, dynamic>{
+      'chips': instance.chips,
+      'horizontalScrollable': instance.horizontalScrollable,
+      'collapsedRowCount': instance.collapsedRowCount,
+    };
 
 ChipCloudChip _$ChipCloudChipFromJson(Map<String, dynamic> json) =>
     ChipCloudChip(

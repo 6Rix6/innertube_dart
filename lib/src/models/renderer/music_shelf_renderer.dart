@@ -1,8 +1,9 @@
-import 'package:innertube_dart/innertube_dart.dart';
 import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
+import 'package:innertube_dart/src/models/runs.dart';
+import 'package:innertube_dart/src/models/song_item.dart';
+import 'package:innertube_dart/src/models/yt_item.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../runs.dart';
 
 part 'music_shelf_renderer.g.dart';
 
@@ -13,7 +14,7 @@ class MusicShelfRenderer {
   final List<MusicResponsiveListItem>? contents;
   final List<Map<String, dynamic>>? continuations;
   final String? trackingParams;
-  final Runs? buttomText;
+  final Runs? bottomText;
   final NavigationEndpoint? bottomEndpoint;
 
   const MusicShelfRenderer({
@@ -21,7 +22,7 @@ class MusicShelfRenderer {
     this.contents,
     this.continuations,
     this.trackingParams,
-    this.buttomText,
+    this.bottomText,
     this.bottomEndpoint,
   });
 
@@ -29,6 +30,18 @@ class MusicShelfRenderer {
       _$MusicShelfRendererFromJson(json);
 
   Map<String, dynamic> toJson() => _$MusicShelfRendererToJson(this);
+
+  List<YTItem> perseContents() {
+    final items = <YTItem>[];
+    if (contents != null && contents!.isNotEmpty) {
+      for (final item in contents!) {
+        final renderer = item.musicResponsiveListItemRenderer;
+        final song = SongItem.fromMusicResponsiveListItemRenderer(renderer);
+        if (song != null) items.add(song);
+      }
+    }
+    return items;
+  }
 
   /// Get continuation token if available
   String? getContinuation() {

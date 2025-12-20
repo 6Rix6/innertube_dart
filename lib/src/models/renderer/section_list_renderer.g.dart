@@ -6,7 +6,7 @@ part of 'section_list_renderer.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SecionList _$SecionListFromJson(Map<String, dynamic> json) => SecionList(
+SectionList _$SectionListFromJson(Map<String, dynamic> json) => SectionList(
   sectionListRenderer: json['sectionListRenderer'] == null
       ? null
       : SectionListRenderer.fromJson(
@@ -17,7 +17,7 @@ SecionList _$SecionListFromJson(Map<String, dynamic> json) => SecionList(
       .toList(),
 );
 
-Map<String, dynamic> _$SecionListToJson(SecionList instance) =>
+Map<String, dynamic> _$SectionListToJson(SectionList instance) =>
     <String, dynamic>{
       'sectionListRenderer': instance.sectionListRenderer,
       'continuations': instance.continuations,

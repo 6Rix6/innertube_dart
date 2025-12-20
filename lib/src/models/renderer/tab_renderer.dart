@@ -15,7 +15,7 @@ class Tab {
 
 @JsonSerializable()
 class TabRenderer {
-  final TabRendererContent? content;
+  final SectionList? content;
   final String? title;
   final bool? selected;
   final String? tabIdentifier;
@@ -34,13 +34,13 @@ class TabRenderer {
   Map<String, dynamic> toJson() => _$TabRendererToJson(this);
 }
 
-@JsonSerializable()
-class TabRendererContent {
-  final SectionListRenderer? sectionListRenderer;
+// @JsonSerializable()
+// class TabRendererContent {
+//   final SectionListRenderer? sectionListRenderer;
 
-  const TabRendererContent({this.sectionListRenderer});
+//   const TabRendererContent({this.sectionListRenderer});
 
-  factory TabRendererContent.fromJson(Map<String, dynamic> json) =>
-      _$TabRendererContentFromJson(json);
-  Map<String, dynamic> toJson() => _$TabRendererContentToJson(this);
-}
+//   factory TabRendererContent.fromJson(Map<String, dynamic> json) =>
+//       _$TabRendererContentFromJson(json);
+//   Map<String, dynamic> toJson() => _$TabRendererContentToJson(this);
+// }

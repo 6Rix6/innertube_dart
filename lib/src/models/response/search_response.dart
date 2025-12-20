@@ -21,10 +21,10 @@ class SearchResponse {
     // Try tabbedSearchResultsRenderer
     final tabs = _getTabs();
     if (tabs != null && tabs.isNotEmpty) {
-      final shelfs =
+      final shelves =
           tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
 
-      final musicShelfContents = shelfs
+      final musicShelfContents = shelves
           ?.where((e) => e.musicShelfRenderer != null)
           .first
           .musicShelfRenderer
@@ -49,11 +49,11 @@ class SearchResponse {
     // Try tabbedSearchResultsRenderer
     final tabs = _getTabs();
     if (tabs != null && tabs.isNotEmpty) {
-      final shelfs =
+      final shelves =
           tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
 
       final musicCardShelfContents =
-          shelfs
+          shelves
                   ?.where((e) => e.musicCardShelfRenderer != null)
                   .first
                   .musicCardShelfRenderer?['contents']

@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/page_header.dart';
 import 'package:innertube_dart/src/models/renderer/chip_cloud_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_playlist_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
@@ -14,16 +15,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'section_list_renderer.g.dart';
 
 @JsonSerializable()
-class SecionList {
+class SectionList {
   final SectionListRenderer? sectionListRenderer;
   final List<Continuations>? continuations;
 
-  const SecionList({this.sectionListRenderer, this.continuations});
+  const SectionList({this.sectionListRenderer, this.continuations});
 
-  factory SecionList.fromJson(Map<String, dynamic> json) =>
-      _$SecionListFromJson(json);
+  factory SectionList.fromJson(Map<String, dynamic> json) =>
+      _$SectionListFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SecionListToJson(this);
+  Map<String, dynamic> toJson() => _$SectionListToJson(this);
 }
 
 @JsonSerializable()
@@ -101,7 +102,7 @@ class SectionListRendererContent {
       }
 
       return Section(
-        items: items,
+        contents: items,
         type: SectionType.musicShelf,
         itemType: SectionItemType.musicResponsiveListItem,
       );
@@ -171,7 +172,7 @@ class SectionListRendererContent {
 
       return Section(
         title: title,
-        items: items,
+        contents: items,
         moreEndpoint: moreEndpoint,
         type: SectionType.musicCarouselShelf,
         itemType: itemType,
@@ -253,4 +254,16 @@ class SectionListHeader {
       _$SectionListHeaderFromJson(json);
 
   Map<String, dynamic> toJson() => _$SectionListHeaderToJson(this);
+
+  PageHeader toPageHeader() {
+    return PageHeader(
+      chips:
+          chipCloudRenderer?.chips
+              ?.map((e) => e.chipCloudChipRenderer)
+              .toList() ??
+          [],
+      horizontalScrollable: chipCloudRenderer?.horizontalScrollable,
+      collapsedRowCount: chipCloudRenderer?.collapsedRowCount,
+    );
+  }
 }
