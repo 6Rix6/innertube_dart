@@ -57,7 +57,6 @@ class MusicShelfSection extends Section {
     super.type = SectionType.musicShelf,
     super.contents,
     super.title,
-    super.moreEndpoint,
     this.bottomText,
     this.bottomEndpoint,
   });
@@ -65,11 +64,17 @@ class MusicShelfSection extends Section {
   factory MusicShelfSection.fromMusicShelfRenderer(
     MusicShelfRenderer renderer,
   ) {
+    final items = [
+      if (renderer.contents != null)
+        for (final content in renderer.contents!)
+          if (content.toYTItem() case YTItem s) s,
+    ];
+
     return MusicShelfSection(
-      bottomText: renderer.bottomText?.runs.toString(),
+      bottomText: renderer.bottomText?.toString(),
       bottomEndpoint: renderer.bottomEndpoint,
-      contents: renderer.parseSongs(),
-      title: renderer.title?.runs.toString(),
+      contents: items,
+      title: renderer.title?.toString(),
     );
   }
 }

@@ -16,6 +16,9 @@ PlaylistItem _$PlaylistItemFromJson(Map<String, dynamic> json) => PlaylistItem(
       ? null
       : Artist.fromJson(json['author'] as Map<String, dynamic>),
   songCountText: json['songCountText'] as String?,
+  menu: json['menu'] == null
+      ? null
+      : MenuRenderer.fromJson(json['menu'] as Map<String, dynamic>),
   thumbnails: json['thumbnails'] == null
       ? null
       : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
@@ -47,6 +50,7 @@ Map<String, dynamic> _$PlaylistItemToJson(PlaylistItem instance) =>
       'subtitle': instance.subtitle,
       'author': instance.author,
       'songCountText': instance.songCountText,
+      'menu': instance.menu,
       'thumbnails': instance.thumbnails,
       'isEditable': instance.isEditable,
       'watchEndpoint': instance.watchEndpoint,

@@ -25,6 +25,9 @@ AlbumItem _$AlbumItemFromJson(Map<String, dynamic> json) => AlbumItem(
       ? null
       : Thumbnails.fromJson(json['artistThumbnails'] as Map<String, dynamic>),
   thumbnails: Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
+  menu: json['menu'] == null
+      ? null
+      : MenuRenderer.fromJson(json['menu'] as Map<String, dynamic>),
   explicit: json['explicit'] as bool? ?? false,
 );
 
@@ -40,6 +43,7 @@ Map<String, dynamic> _$AlbumItemToJson(AlbumItem instance) => <String, dynamic>{
   'songCountText': instance.songCountText,
   'durationText': instance.durationText,
   'artistThumbnails': instance.artistThumbnails,
+  'menu': instance.menu,
   'thumbnails': instance.thumbnails,
   'explicit': instance.explicit,
 };

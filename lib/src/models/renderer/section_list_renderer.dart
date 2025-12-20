@@ -3,11 +3,8 @@ import 'package:innertube_dart/src/models/renderer/chip_cloud_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_playlist_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
-import 'package:innertube_dart/src/models/artist.dart';
-import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/renderer/music_carousel_shelf_renderer.dart';
-import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/section.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -70,7 +67,7 @@ class SectionListRendererContent {
   Map<String, dynamic> toJson() => _$SectionListRendererContentToJson(this);
 
   /// Parse a section content (either music shelf or carousel shelf)
-  Section? parseSectionContent() {
+  Section? toSection() {
     // Try parsing as MusicShelfRenderer (for songs)
     if (musicShelfRenderer != null) {
       return _parseMusicShelfRenderer(musicShelfRenderer!);
@@ -87,12 +84,12 @@ class SectionListRendererContent {
   /// Parse MusicShelfRenderer section (songs list)
   Section? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
     try {
-      final items = <SongItem>[];
+      final items = <YTItem>[];
       if (shelfData.contents != null) {
         for (final content in shelfData.contents!) {
           final renderer = content.musicResponsiveListItemRenderer;
           try {
-            final item = _parseSongFromRenderer(renderer);
+            final item = renderer.toYTItem();
             if (item != null) items.add(item);
           } catch (e) {
             // Skip invalid items
@@ -142,9 +139,7 @@ class SectionListRendererContent {
           final item = container.musicTwoRowItemRenderer!.toYTItem();
           if (item != null) items.add(item);
         } else if (container.musicResponsiveListItemRenderer != null) {
-          final item = SongItem.fromMusicResponsiveListItemRenderer(
-            container.musicResponsiveListItemRenderer!,
-          );
+          final item = container.musicResponsiveListItemRenderer!.toYTItem();
           if (item != null) items.add(item);
         }
       }
@@ -177,66 +172,6 @@ class SectionListRendererContent {
         type: SectionType.musicCarouselShelf,
         itemType: itemType,
         header: header,
-      );
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /// Parse a song from MusicResponsiveListItemRenderer
-  SongItem? _parseSongFromRenderer(MusicResponsiveListItemRenderer renderer) {
-    try {
-      final flexColumns = renderer.flexColumns;
-      if (flexColumns.isEmpty) return null;
-
-      final titleRuns = flexColumns[0].renderer?.text?.runs;
-      if (titleRuns == null || titleRuns.isEmpty) return null;
-
-      final title = titleRuns.first.text;
-      final videoId =
-          renderer.playlistItemData?.videoId ??
-          renderer.navigationEndpoint?.watchEndpoint?.videoId;
-
-      if (videoId == null) return null;
-
-      // Parse artists
-      final artists = <Artist>[];
-      if (flexColumns.length > 1) {
-        final artistRuns = flexColumns[1].renderer?.text?.runs;
-        if (artistRuns != null) {
-          for (final run in artistRuns) {
-            if (run.navigationEndpoint?.browseEndpoint != null) {
-              artists.add(
-                Artist(
-                  name: run.text,
-                  id: run.navigationEndpoint!.browseEndpoint!.browseId,
-                ),
-              );
-            }
-          }
-        }
-      }
-
-      // Get thumbnail
-      final thumbnails = renderer.thumbnail?.musicThumbnailRenderer?.thumbnail;
-
-      // Check if explicit
-      final explicit =
-          renderer.badges?.any(
-            (badge) =>
-                badge.musicInlineBadgeRenderer?.icon?.iconType ==
-                'MUSIC_EXPLICIT_BADGE',
-          ) ??
-          false;
-
-      return SongItem(
-        id: videoId,
-        title: title,
-        artists: artists,
-        album: null,
-        duration: null,
-        thumbnails: thumbnails!,
-        explicit: explicit,
       );
     } catch (e) {
       return null;

@@ -73,7 +73,7 @@ class AlbumPage {
       Section? forYouSection;
       if (sectionListContents != null && sectionListContents.length >= 2) {
         final shelfRenderer = sectionListContents[1];
-        forYouSection = shelfRenderer.parseSectionContent();
+        forYouSection = shelfRenderer.toSection();
       }
 
       return AlbumPage(

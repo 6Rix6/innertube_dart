@@ -32,6 +32,9 @@ SongItem _$SongItemFromJson(Map<String, dynamic> json) => SongItem(
   libraryAddToken: json['libraryAddToken'] as String?,
   libraryRemoveToken: json['libraryRemoveToken'] as String?,
   historyRemoveToken: json['historyRemoveToken'] as String?,
+  menu: json['menu'] == null
+      ? null
+      : MenuRenderer.fromJson(json['menu'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$SongItemToJson(SongItem instance) => <String, dynamic>{
@@ -46,6 +49,7 @@ Map<String, dynamic> _$SongItemToJson(SongItem instance) => <String, dynamic>{
   'typeText': instance.typeText,
   'subtitle': instance.subtitle,
   'isVideo': instance.isVideo,
+  'menu': instance.menu,
   'thumbnails': instance.thumbnails,
   'explicit': instance.explicit,
   'setVideoId': instance.setVideoId,

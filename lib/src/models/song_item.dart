@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
@@ -29,6 +30,7 @@ class SongItem extends YTItem {
   final String? typeText;
   final Runs? subtitle;
   final bool isVideo;
+  final MenuRenderer? menu;
 
   @override
   final Thumbnails? thumbnails;
@@ -59,6 +61,7 @@ class SongItem extends YTItem {
     this.libraryAddToken,
     this.libraryRemoveToken,
     this.historyRemoveToken,
+    this.menu,
   });
 
   /// generate songItem from musicResponsiveListItemRenderer

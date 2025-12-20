@@ -97,7 +97,7 @@ class ArtistPage {
     // Parse sections
     final sections = <Section>[];
     for (final content in sectionContents) {
-      final section = content.parseSectionContent();
+      final section = content.toSection();
       if (section != null) {
         sections.add(section);
       }

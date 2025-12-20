@@ -16,6 +16,9 @@ ArtistItem _$ArtistItemFromJson(Map<String, dynamic> json) => ArtistItem(
       ? null
       : Thumbnails.fromJson(json['thumbnails'] as Map<String, dynamic>),
   channelId: json['channelId'] as String?,
+  menu: json['menu'] == null
+      ? null
+      : MenuRenderer.fromJson(json['menu'] as Map<String, dynamic>),
   shuffleEndpoint: json['shuffleEndpoint'] == null
       ? null
       : WatchPlaylistEndpoint.fromJson(
@@ -35,6 +38,7 @@ Map<String, dynamic> _$ArtistItemToJson(ArtistItem instance) =>
       'subtitle': instance.subtitle,
       'thumbnails': instance.thumbnails,
       'channelId': instance.channelId,
+      'menu': instance.menu,
       'shuffleEndpoint': instance.shuffleEndpoint,
       'radioEndpoint': instance.radioEndpoint,
     };

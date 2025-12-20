@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
@@ -12,7 +13,7 @@ part 'music_shelf_renderer.g.dart';
 class MusicShelfRenderer {
   final Runs? title;
   final List<MusicResponsiveListItem>? contents;
-  final List<Map<String, dynamic>>? continuations;
+  final List<Continuations>? continuations;
   final String? trackingParams;
   final Runs? bottomText;
   final NavigationEndpoint? bottomEndpoint;
@@ -41,13 +42,6 @@ class MusicShelfRenderer {
       }
     }
     return items;
-  }
-
-  /// Get continuation token if available
-  String? getContinuation() {
-    if (continuations == null || continuations!.isEmpty) return null;
-    return continuations!.first['nextContinuationData']?['continuation']
-        as String?;
   }
 
   List<SongItem> parseSongs() {

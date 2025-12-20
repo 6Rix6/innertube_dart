@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/music_two_row_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
@@ -27,6 +28,7 @@ class AlbumItem extends YTItem {
   final String? songCountText;
   final String? durationText;
   final Thumbnails? artistThumbnails;
+  final MenuRenderer? menu;
 
   @override
   final Thumbnails thumbnails;
@@ -47,6 +49,7 @@ class AlbumItem extends YTItem {
     this.durationText,
     this.artistThumbnails,
     required this.thumbnails,
+    this.menu,
     this.explicit = false,
   }) : id = id ?? browseId;
 

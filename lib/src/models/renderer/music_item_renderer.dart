@@ -1,4 +1,5 @@
 import 'package:innertube_dart/src/models/artist_item.dart';
+import 'package:innertube_dart/src/models/playlist_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:innertube_dart/src/models/album.dart';
@@ -92,7 +93,7 @@ class MusicResponsiveListItemRenderer {
       return _toArtistItem();
     }
     if (isPlaylist) {
-      // return PlaylistItem.fromMusicResponsiveListItemRenderer(this);
+      return _toPlaylistItem();
     }
     return null;
   }
@@ -207,6 +208,7 @@ class MusicResponsiveListItemRenderer {
         year: year,
         albumTypeText: albumTypeText,
         explicit: explicit,
+        menu: menu?.menuRenderer,
       );
     }
     return null;
@@ -221,9 +223,65 @@ class MusicResponsiveListItemRenderer {
     }
 
     final thumbnail = this.thumbnail?.musicThumbnailRenderer?.thumbnail;
-    // TODO
+    final shuffleEndpoint = menu?.menuRenderer.items
+        ?.firstWhere(
+          (e) => e.menuNavigationItemRenderer?.icon.iconType == 'MUSIC_SHUFFLE',
+          orElse: () => MenuRendererItem(
+            menuNavigationItemRenderer: null,
+            toggleMenuServiceItemRenderer: null,
+          ),
+        )
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
+    final radioEndpoint = menu?.menuRenderer.items
+        ?.firstWhere(
+          (e) => e.menuNavigationItemRenderer?.icon.iconType == 'MIX',
+          orElse: () => MenuRendererItem(
+            menuNavigationItemRenderer: null,
+            toggleMenuServiceItemRenderer: null,
+          ),
+        )
+        .menuNavigationItemRenderer
+        ?.navigationEndpoint
+        ?.watchPlaylistEndpoint;
 
-    return ArtistItem(id: id, title: title, thumbnails: thumbnail);
+    return ArtistItem(
+      id: id,
+      title: title,
+      thumbnails: thumbnail,
+      menu: menu?.menuRenderer,
+      shuffleEndpoint: shuffleEndpoint,
+      radioEndpoint: radioEndpoint,
+    );
+  }
+
+  PlaylistItem? _toPlaylistItem() {
+    final id = navigationEndpoint?.browseEndpoint?.browseId;
+    final title = flexColumns.firstOrNull?.renderer?.text?.toString();
+
+    if (id == null || title == null) return null;
+
+    final subtitle = flexColumns[1].renderer?.text;
+    final thumbnail = this.thumbnail?.musicThumbnailRenderer?.thumbnail;
+    final author = parseArtistRuns(subtitle?.runs).firstOrNull;
+    final watchPlaylistEndpoint = overlay
+        ?.musicItemThumbnailOverlayRenderer
+        ?.content
+        ?.musicPlayButtonRenderer
+        ?.playNavigationEndpoint
+        ?.watchPlaylistEndpoint;
+
+    return PlaylistItem(
+      id: id,
+      title: title,
+      author: author,
+      songCountText: null,
+      thumbnails: thumbnail,
+      isEditable: false,
+      watchPlaylistEndpoint: watchPlaylistEndpoint,
+      menu: menu?.menuRenderer,
+    );
   }
 }
 

@@ -24,6 +24,8 @@ class ArtistItem extends YTItem {
 
   final String? channelId;
 
+  final MenuRenderer? menu;
+
   final WatchPlaylistEndpoint? shuffleEndpoint;
   final WatchPlaylistEndpoint? radioEndpoint;
 
@@ -33,6 +35,7 @@ class ArtistItem extends YTItem {
     this.subtitle,
     this.thumbnails,
     this.channelId,
+    this.menu,
     this.shuffleEndpoint,
     this.radioEndpoint,
   });

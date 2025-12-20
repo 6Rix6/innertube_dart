@@ -21,6 +21,7 @@ class PlaylistItem extends YTItem {
   final Runs? subtitle;
   final Artist? author;
   final String? songCountText;
+  final MenuRenderer? menu;
 
   @override
   final Thumbnails? thumbnails;
@@ -38,6 +39,7 @@ class PlaylistItem extends YTItem {
     this.subtitle,
     this.author,
     this.songCountText,
+    this.menu,
     this.thumbnails,
     this.isEditable = false,
     this.watchEndpoint,

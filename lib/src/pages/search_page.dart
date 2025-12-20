@@ -1,44 +1,49 @@
-// import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
-// import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
-// import 'package:innertube_dart/src/models/response/search_response.dart';
-// import 'package:innertube_dart/src/models/section.dart';
-// import 'package:innertube_dart/src/models/page_header.dart';
+import 'package:innertube_dart/src/models/renderer/tab_renderer.dart';
+import 'package:innertube_dart/src/models/response/search_response.dart';
+import 'package:innertube_dart/src/models/section.dart';
+import 'package:innertube_dart/src/models/page_header.dart';
 
-// class SearchPage {
-//   final List<SearchTab> tabs;
+class SearchPage {
+  final List<SearchTab> tabs;
 
-//   const SearchPage({required this.tabs});
+  const SearchPage({required this.tabs});
 
-//   factory SearchPage.fromSearchResponse(SearchResponse response) {
-//     return SearchPage(tabs: []);
-//   }
-// }
+  factory SearchPage.fromSearchResponse(SearchResponse response) {
+    return SearchPage(tabs: []);
+  }
+}
 
-// class SearchTab {
-//   final String title;
-//   final String tabIdentifier;
-//   final List<Section> contents;
-//   final PageHeader? header;
-//   final bool selected;
+class SearchTab {
+  final String title;
+  final String tabIdentifier;
+  final List<Section> contents;
+  final PageHeader? header;
+  final bool selected;
 
-//   const SearchTab({
-//     required this.title,
-//     required this.tabIdentifier,
-//     required this.contents,
-//     this.header,
-//     this.selected = false,
-//   });
+  const SearchTab({
+    required this.title,
+    required this.tabIdentifier,
+    required this.contents,
+    this.header,
+    this.selected = false,
+  });
 
-//   factory SearchTab.fromTabRenderer(TabRenderer renderer) {
-//     return SearchTab(
-//       title: renderer.title ?? "",
-//       tabIdentifier: renderer.tabIdentifier ?? "",
-//       // contents: renderer.contents,
-//       // header: renderer.header?.toPageHeader(),
-//       // selected: renderer.selected,
-//     );
-//   }
-// }
+  factory SearchTab.fromTabRenderer(TabRenderer renderer) {
+    final sectionListRenderer = renderer.content?.sectionListRenderer;
+    final sections = [
+      if (sectionListRenderer?.contents != null)
+        for (var content in sectionListRenderer!.contents!)
+          if (content.toSection() case Section s) s,
+    ];
+    return SearchTab(
+      title: renderer.title ?? "",
+      tabIdentifier: renderer.tabIdentifier ?? "",
+      contents: sections,
+      header: sectionListRenderer?.header?.toPageHeader(),
+      selected: renderer.selected ?? false,
+    );
+  }
+}
 
 // // import '../models/yt_item.dart';
 // // import '../models/song_item.dart';

@@ -59,7 +59,7 @@ class HomePage {
     }
 
     for (final content in contents) {
-      final section = content.parseSectionContent();
+      final section = content.toSection();
       if (section != null) {
         sections.add(section);
       }
