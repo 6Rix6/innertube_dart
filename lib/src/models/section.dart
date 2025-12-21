@@ -1,5 +1,8 @@
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/renderer/music_card_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_shelf_renderer.dart';
+import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
 import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
@@ -62,11 +65,7 @@ class MusicShelfSection extends Section {
   });
 
   factory MusicShelfSection.fromRenderer(MusicShelfRenderer renderer) {
-    final items = [
-      if (renderer.contents != null)
-        for (final content in renderer.contents!)
-          if (content.toYTItem() case YTItem s) s,
-    ];
+    final items = renderer.parseItems<YTItem>();
 
     return MusicShelfSection(
       bottomText: renderer.bottomText?.toString(),
@@ -78,15 +77,38 @@ class MusicShelfSection extends Section {
 }
 
 class MusicCardShelfSection extends Section {
-  final String? bottomText;
-  final NavigationEndpoint? bottomEndpoint;
+  final Thumbnails? thumbnails;
+  final Runs? subtitle;
+  final List<ButtonRenderer>? buttons;
+  final MenuRenderer? menu;
+
+  /// Browse endpoint
+  final NavigationEndpoint? endpoint;
 
   const MusicCardShelfSection({
     super.itemType = SectionItemType.musicResponsiveListItem,
     super.type = SectionType.musicCardShelf,
     super.contents,
     super.title,
-    this.bottomText,
-    this.bottomEndpoint,
+    this.thumbnails,
+    this.subtitle,
+    this.buttons,
+    this.menu,
+    this.endpoint,
   });
+
+  factory MusicCardShelfSection.fromRenderer(MusicCardShelfRenderer renderer) {
+    final items = renderer.parseItems<YTItem>();
+    final buttons = renderer.buttons?.map((e) => e.buttonRenderer).toList();
+
+    return MusicCardShelfSection(
+      thumbnails: renderer.thumbnails?.musicThumbnailRenderer?.thumbnail,
+      subtitle: renderer.subtitle,
+      buttons: buttons,
+      menu: renderer.menu?.menuRenderer,
+      endpoint: renderer.onTap,
+      contents: items,
+      title: renderer.title?.toString(),
+    );
+  }
 }

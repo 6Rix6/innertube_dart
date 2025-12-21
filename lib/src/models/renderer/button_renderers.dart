@@ -127,14 +127,18 @@ class ButtonRenderer {
   final bool? isDisabled;
   final Runs? text;
   final NavigationEndpoint? navigationEndpoint;
+  final NavigationEndpoint? command;
   final String? trackingParams;
+  final Icon? icon;
 
   const ButtonRenderer({
     this.style,
     this.isDisabled,
     this.text,
     this.navigationEndpoint,
+    this.command,
     this.trackingParams,
+    this.icon,
   });
 
   factory ButtonRenderer.fromJson(Map<String, dynamic> json) =>

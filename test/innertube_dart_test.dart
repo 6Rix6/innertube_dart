@@ -131,6 +131,19 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.search('Reol', SearchFilter.all);
+      if (isDebug && result.isSuccess) {
+        for (final tab in result.value.tabs) {
+          print("tab: ${tab.title}");
+          for (final section in tab.contents) {
+            print("section: ${section.title}");
+            if (section.contents != null) {
+              for (final item in section.contents!) {
+                print("type: ${item.runtimeType}, title: ${item.title}");
+              }
+            }
+          }
+        }
+      }
       expect(result.isSuccess, isTrue);
     });
 

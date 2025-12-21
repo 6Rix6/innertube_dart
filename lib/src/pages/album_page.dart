@@ -67,7 +67,7 @@ class AlbumPage {
 
       // Parse songs
       final musicShelfRenderer = sectionListContents?.first.musicShelfRenderer;
-      final songs = musicShelfRenderer?.parseSongs() ?? [];
+      final songs = musicShelfRenderer?.parseItems<SongItem>() ?? [];
 
       // parse for you
       Section? forYouSection;

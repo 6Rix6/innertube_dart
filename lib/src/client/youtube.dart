@@ -1,6 +1,5 @@
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/response/account_menu_response.dart';
-import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
@@ -10,7 +9,6 @@ import '../pages/album_page.dart';
 import '../pages/search_result.dart';
 import '../pages/playlist_page.dart';
 import '../utils/result.dart';
-import '../models/yt_item.dart';
 import '../models/youtube_locale.dart';
 import '../models/youtube_client.dart';
 import '../models/response/browse_response.dart';

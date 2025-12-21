@@ -2,7 +2,6 @@ import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/renderer/music_item_renderer.dart';
 import 'package:innertube_dart/src/models/runs.dart';
-import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -32,29 +31,12 @@ class MusicShelfRenderer {
 
   Map<String, dynamic> toJson() => _$MusicShelfRendererToJson(this);
 
-  List<YTItem> perseContents() {
-    final items = <YTItem>[];
-    if (contents != null && contents!.isNotEmpty) {
-      for (final item in contents!) {
-        final renderer = item.musicResponsiveListItemRenderer;
-        final song = SongItem.fromMusicResponsiveListItemRenderer(renderer);
-        if (song != null) items.add(song);
-      }
-    }
-    return items;
-  }
-
-  List<SongItem> parseSongs() {
-    final songs = <SongItem>[];
-
-    if (contents != null && contents!.isNotEmpty) {
-      for (final item in contents!) {
-        final renderer = item.musicResponsiveListItemRenderer;
-        final song = SongItem.fromMusicResponsiveListItemRenderer(renderer);
-        if (song != null) songs.add(song);
-      }
-    }
-
-    return songs;
+  /// Parses the contents of the shelf
+  List<T> parseItems<T extends YTItem>() {
+    return [
+      if (contents != null)
+        for (final content in contents!)
+          if (content.toYTItem() case T item) item,
+    ];
   }
 }

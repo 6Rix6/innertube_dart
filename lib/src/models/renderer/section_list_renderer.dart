@@ -68,12 +68,14 @@ class SectionListRendererContent {
 
   /// Parse a section content (either music shelf or carousel shelf)
   Section? toSection() {
-    // Try parsing as MusicShelfRenderer (for songs)
     if (musicShelfRenderer != null) {
       return MusicShelfSection.fromRenderer(musicShelfRenderer!);
     }
 
-    // Try parsing as MusicCarouselShelfRenderer (for albums/playlists)
+    if (musicCardShelfRenderer != null) {
+      return MusicCardShelfSection.fromRenderer(musicCardShelfRenderer!);
+    }
+
     if (musicCarouselShelfRenderer != null) {
       return _parseMusicCarouselShelfRenderer(musicCarouselShelfRenderer!);
     }

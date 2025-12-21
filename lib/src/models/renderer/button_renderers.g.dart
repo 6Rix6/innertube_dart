@@ -183,7 +183,15 @@ ButtonRenderer _$ButtonRendererFromJson(Map<String, dynamic> json) =>
           : NavigationEndpoint.fromJson(
               json['navigationEndpoint'] as Map<String, dynamic>,
             ),
+      command: json['command'] == null
+          ? null
+          : NavigationEndpoint.fromJson(
+              json['command'] as Map<String, dynamic>,
+            ),
       trackingParams: json['trackingParams'] as String?,
+      icon: json['icon'] == null
+          ? null
+          : Icon.fromJson(json['icon'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ButtonRendererToJson(ButtonRenderer instance) =>
@@ -192,7 +200,9 @@ Map<String, dynamic> _$ButtonRendererToJson(ButtonRenderer instance) =>
       'isDisabled': instance.isDisabled,
       'text': instance.text,
       'navigationEndpoint': instance.navigationEndpoint,
+      'command': instance.command,
       'trackingParams': instance.trackingParams,
+      'icon': instance.icon,
     };
 
 Button _$ButtonFromJson(Map<String, dynamic> json) => Button(
