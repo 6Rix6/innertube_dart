@@ -70,7 +70,7 @@ class SectionListRendererContent {
   Section? toSection() {
     // Try parsing as MusicShelfRenderer (for songs)
     if (musicShelfRenderer != null) {
-      return _parseMusicShelfRenderer(musicShelfRenderer!);
+      return MusicShelfSection.fromMusicShelfRenderer(musicShelfRenderer!);
     }
 
     // Try parsing as MusicCarouselShelfRenderer (for albums/playlists)
@@ -82,31 +82,31 @@ class SectionListRendererContent {
   }
 
   /// Parse MusicShelfRenderer section (songs list)
-  Section? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
-    try {
-      final items = <YTItem>[];
-      if (shelfData.contents != null) {
-        for (final content in shelfData.contents!) {
-          final renderer = content.musicResponsiveListItemRenderer;
-          try {
-            final item = renderer.toYTItem();
-            if (item != null) items.add(item);
-          } catch (e) {
-            // Skip invalid items
-            continue;
-          }
-        }
-      }
+  // Section? _parseMusicShelfRenderer(MusicShelfRenderer shelfData) {
+  //   try {
+  //     final items = <YTItem>[];
+  //     if (shelfData.contents != null) {
+  //       for (final content in shelfData.contents!) {
+  //         final renderer = content.musicResponsiveListItemRenderer;
+  //         try {
+  //           final item = renderer.toYTItem();
+  //           if (item != null) items.add(item);
+  //         } catch (e) {
+  //           // Skip invalid items
+  //           continue;
+  //         }
+  //       }
+  //     }
 
-      return Section(
-        contents: items,
-        type: SectionType.musicShelf,
-        itemType: SectionItemType.musicResponsiveListItem,
-      );
-    } catch (e) {
-      return null;
-    }
-  }
+  //     return Section(
+  //       contents: items,
+  //       type: SectionType.musicShelf,
+  //       itemType: SectionItemType.musicResponsiveListItem,
+  //     );
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 
   /// Parse MusicCarouselShelfRenderer section (albums/playlists carousel)
   Section? _parseMusicCarouselShelfRenderer(

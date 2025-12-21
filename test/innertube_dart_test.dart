@@ -131,11 +131,6 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.search('Reol', SearchFilter.all);
-      if (isDebug && result.isSuccess) {
-        for (var song in result.value.items) {
-          print(song);
-        }
-      }
       expect(result.isSuccess, isTrue);
     });
 

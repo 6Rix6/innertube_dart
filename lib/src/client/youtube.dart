@@ -4,6 +4,7 @@ import 'package:innertube_dart/src/models/song_item.dart';
 import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
+import 'package:innertube_dart/src/pages/search_page.dart';
 
 import '../pages/album_page.dart';
 import '../pages/search_result.dart';
@@ -77,7 +78,7 @@ class YouTube {
   /// [query] - Search query string
   /// [filter] - Filter results by type
   /// Returns a Result containing SearchResult or an error
-  Future<Result<SearchResult>> search(String query, SearchFilter filter) async {
+  Future<Result<SearchPage>> search(String query, SearchFilter filter) async {
     try {
       // Call InnerTube search API
       final response = await _innerTube.search(
@@ -91,28 +92,30 @@ class YouTube {
         response.data as Map<String, dynamic>,
       );
 
-      // Get shelf contents and parse
-      final shelfContents = searchResponse.getMusicShelfContents();
-      final items = <YTItem>[];
+      return Result.success(SearchPage.fromSearchResponse(searchResponse));
 
-      for (final itemJson in shelfContents) {
-        final renderer = itemJson.musicResponsiveListItemRenderer;
-        // final item = SearchPage.toYTItem(
-        //   MusicResponsiveListItemRenderer.fromJson(
-        //     renderer,
-        //   ),
-        // );
-        final item = SongItem.fromMusicResponsiveListItemRenderer(renderer);
-        if (item != null) {
-          items.add(item);
-        }
-      }
+      // // Get shelf contents and parse
+      // final shelfContents = searchResponse.getMusicShelfContents();
+      // final items = <YTItem>[];
 
-      final continuation = searchResponse.getContinuation();
+      // for (final itemJson in shelfContents) {
+      //   final renderer = itemJson.musicResponsiveListItemRenderer;
+      //   // final item = SearchPage.toYTItem(
+      //   //   MusicResponsiveListItemRenderer.fromJson(
+      //   //     renderer,
+      //   //   ),
+      //   // );
+      //   final item = SongItem.fromMusicResponsiveListItemRenderer(renderer);
+      //   if (item != null) {
+      //     items.add(item);
+      //   }
+      // }
 
-      return Result.success(
-        SearchResult(items: items, continuation: continuation),
-      );
+      // final continuation = searchResponse.getContinuation();
+
+      // return Result.success(
+      //   SearchResult(items: items, continuation: continuation),
+      // );
     } catch (e) {
       return Result.error(e);
     }

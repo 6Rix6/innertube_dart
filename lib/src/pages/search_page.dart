@@ -9,7 +9,15 @@ class SearchPage {
   const SearchPage({required this.tabs});
 
   factory SearchPage.fromSearchResponse(SearchResponse response) {
-    return SearchPage(tabs: []);
+    final tabRenderers = response.contents?.tabbedSearchResultsRenderer.tabs;
+    final tabs = [
+      if (tabRenderers != null)
+        for (var tabRenderer in tabRenderers)
+          if (SearchTab.fromTabRenderer(tabRenderer.tabRenderer)
+              case SearchTab s)
+            s,
+    ];
+    return SearchPage(tabs: tabs);
   }
 }
 
