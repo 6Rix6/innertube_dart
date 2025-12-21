@@ -45,22 +45,21 @@ class SearchResponse {
     return [];
   }
 
-  List<Map<String, dynamic>> getMusicCardShelfContents() {
+  List<MusicResponsiveListItem> getMusicCardShelfContents() {
     // Try tabbedSearchResultsRenderer
     final tabs = _getTabs();
     if (tabs != null && tabs.isNotEmpty) {
       final shelves =
           tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
 
-      final musicCardShelfContents =
-          shelves
-                  ?.where((e) => e.musicCardShelfRenderer != null)
-                  .first
-                  .musicCardShelfRenderer?['contents']
-              as List?;
+      final musicCardShelfContents = shelves
+          ?.where((e) => e.musicCardShelfRenderer != null)
+          .first
+          .musicCardShelfRenderer
+          ?.contents;
 
       if (musicCardShelfContents != null) {
-        return musicCardShelfContents.cast<Map<String, dynamic>>();
+        return musicCardShelfContents;
       }
     }
 

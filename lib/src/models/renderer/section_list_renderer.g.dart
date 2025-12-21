@@ -72,8 +72,11 @@ SectionListRendererContent _$SectionListRendererContentFromJson(
       : MusicPlaylistShelfRenderer.fromJson(
           json['musicPlaylistShelfRenderer'] as Map<String, dynamic>,
         ),
-  musicCardShelfRenderer:
-      json['musicCardShelfRenderer'] as Map<String, dynamic>?,
+  musicCardShelfRenderer: json['musicCardShelfRenderer'] == null
+      ? null
+      : MusicCardShelfRenderer.fromJson(
+          json['musicCardShelfRenderer'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$SectionListRendererContentToJson(

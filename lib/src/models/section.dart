@@ -61,9 +61,7 @@ class MusicShelfSection extends Section {
     this.bottomEndpoint,
   });
 
-  factory MusicShelfSection.fromMusicShelfRenderer(
-    MusicShelfRenderer renderer,
-  ) {
+  factory MusicShelfSection.fromRenderer(MusicShelfRenderer renderer) {
     final items = [
       if (renderer.contents != null)
         for (final content in renderer.contents!)
@@ -77,4 +75,18 @@ class MusicShelfSection extends Section {
       title: renderer.title?.toString(),
     );
   }
+}
+
+class MusicCardShelfSection extends Section {
+  final String? bottomText;
+  final NavigationEndpoint? bottomEndpoint;
+
+  const MusicCardShelfSection({
+    super.itemType = SectionItemType.musicResponsiveListItem,
+    super.type = SectionType.musicCardShelf,
+    super.contents,
+    super.title,
+    this.bottomText,
+    this.bottomEndpoint,
+  });
 }

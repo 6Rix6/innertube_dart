@@ -142,3 +142,13 @@ class ButtonRenderer {
 
   Map<String, dynamic> toJson() => _$ButtonRendererToJson(this);
 }
+
+@JsonSerializable()
+class Button {
+  final ButtonRenderer buttonRenderer;
+
+  const Button({required this.buttonRenderer});
+
+  factory Button.fromJson(Map<String, dynamic> json) => _$ButtonFromJson(json);
+  Map<String, dynamic> toJson() => _$ButtonToJson(this);
+}

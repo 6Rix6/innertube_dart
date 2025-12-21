@@ -194,3 +194,13 @@ Map<String, dynamic> _$ButtonRendererToJson(ButtonRenderer instance) =>
       'navigationEndpoint': instance.navigationEndpoint,
       'trackingParams': instance.trackingParams,
     };
+
+Button _$ButtonFromJson(Map<String, dynamic> json) => Button(
+  buttonRenderer: ButtonRenderer.fromJson(
+    json['buttonRenderer'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$ButtonToJson(Button instance) => <String, dynamic>{
+  'buttonRenderer': instance.buttonRenderer,
+};

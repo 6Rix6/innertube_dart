@@ -1,5 +1,6 @@
 import 'package:innertube_dart/src/models/page_header.dart';
 import 'package:innertube_dart/src/models/renderer/chip_cloud_renderer.dart';
+import 'package:innertube_dart/src/models/renderer/music_card_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_playlist_shelf_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/music_responsive_header_renderer.dart';
 import 'package:innertube_dart/src/models/yt_item.dart';
@@ -50,8 +51,7 @@ class SectionListRendererContent {
   final MusicShelfRenderer? musicShelfRenderer;
   final MusicResponsiveHeaderRenderer? musicResponsiveHeaderRenderer;
   final MusicPlaylistShelfRenderer? musicPlaylistShelfRenderer;
-  // TODO: Add support for music card shelf renderer
-  final Map<String, dynamic>? musicCardShelfRenderer;
+  final MusicCardShelfRenderer? musicCardShelfRenderer;
 
   const SectionListRendererContent({
     this.musicCarouselShelfRenderer,
@@ -70,7 +70,7 @@ class SectionListRendererContent {
   Section? toSection() {
     // Try parsing as MusicShelfRenderer (for songs)
     if (musicShelfRenderer != null) {
-      return MusicShelfSection.fromMusicShelfRenderer(musicShelfRenderer!);
+      return MusicShelfSection.fromRenderer(musicShelfRenderer!);
     }
 
     // Try parsing as MusicCarouselShelfRenderer (for albums/playlists)
