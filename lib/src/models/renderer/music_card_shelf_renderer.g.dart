@@ -20,7 +20,10 @@ MusicCardShelfRenderer _$MusicCardShelfRendererFromJson(
       ? null
       : Runs.fromJson(json['subtitle'] as Map<String, dynamic>),
   contents: (json['contents'] as List<dynamic>?)
-      ?.map((e) => MusicResponsiveListItem.fromJson(e as Map<String, dynamic>))
+      ?.map(
+        (e) =>
+            MusicCardShelfRendererContent.fromJson(e as Map<String, dynamic>),
+      )
       .toList(),
   buttons: (json['buttons'] as List<dynamic>?)
       ?.map((e) => Button.fromJson(e as Map<String, dynamic>))
@@ -48,4 +51,27 @@ Map<String, dynamic> _$MusicCardShelfRendererToJson(
   'menu': instance.menu,
   'onTap': instance.onTap,
   'endIcon': instance.endIcon,
+};
+
+MusicCardShelfRendererContent _$MusicCardShelfRendererContentFromJson(
+  Map<String, dynamic> json,
+) => MusicCardShelfRendererContent(
+  musicResponsiveListItemRenderer:
+      json['musicResponsiveListItemRenderer'] == null
+      ? null
+      : MusicResponsiveListItemRenderer.fromJson(
+          json['musicResponsiveListItemRenderer'] as Map<String, dynamic>,
+        ),
+  messageRenderer: json['messageRenderer'] == null
+      ? null
+      : MessageRenderer.fromJson(
+          json['messageRenderer'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$MusicCardShelfRendererContentToJson(
+  MusicCardShelfRendererContent instance,
+) => <String, dynamic>{
+  'musicResponsiveListItemRenderer': instance.musicResponsiveListItemRenderer,
+  'messageRenderer': instance.messageRenderer,
 };

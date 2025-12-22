@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/message_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:innertube_dart/src/models/endpoints.dart';
@@ -17,7 +18,7 @@ class MusicCardShelfRenderer {
   final ThumbnailRenderer? thumbnail;
   final Runs? title;
   final Runs? subtitle;
-  final List<MusicResponsiveListItem>? contents;
+  final List<MusicCardShelfRendererContent>? contents;
   final List<Button>? buttons;
   final Menu? menu;
   final NavigationEndpoint? onTap;
@@ -44,7 +45,25 @@ class MusicCardShelfRenderer {
     return [
       if (contents != null)
         for (final content in contents!)
-          if (content.toYTItem() case T item) item,
+          if (content.musicResponsiveListItemRenderer != null)
+            if (content.musicResponsiveListItemRenderer!.toYTItem() case T item)
+              item,
     ];
   }
+}
+
+@JsonSerializable()
+class MusicCardShelfRendererContent {
+  final MusicResponsiveListItemRenderer? musicResponsiveListItemRenderer;
+  final MessageRenderer? messageRenderer;
+
+  const MusicCardShelfRendererContent({
+    this.musicResponsiveListItemRenderer,
+    this.messageRenderer,
+  });
+
+  factory MusicCardShelfRendererContent.fromJson(Map<String, dynamic> json) =>
+      _$MusicCardShelfRendererContentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MusicCardShelfRendererContentToJson(this);
 }
