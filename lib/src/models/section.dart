@@ -102,7 +102,7 @@ class MusicCardShelfSection extends Section {
     final buttons = renderer.buttons?.map((e) => e.buttonRenderer).toList();
 
     return MusicCardShelfSection(
-      thumbnails: renderer.thumbnails?.musicThumbnailRenderer?.thumbnail,
+      thumbnails: renderer.thumbnail?.musicThumbnailRenderer?.thumbnail,
       subtitle: renderer.subtitle,
       buttons: buttons,
       menu: renderer.menu?.menuRenderer,

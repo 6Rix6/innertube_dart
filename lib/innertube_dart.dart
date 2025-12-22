@@ -18,6 +18,7 @@ export 'src/models/thumbnails.dart';
 export 'src/models/runs.dart';
 export 'src/pages/album_page.dart';
 export 'src/pages/search_result.dart';
+export 'src/pages/search_page.dart';
 export 'src/pages/home_page.dart';
 export 'src/pages/playlist_page.dart';
 export 'src/pages/artist_page.dart';

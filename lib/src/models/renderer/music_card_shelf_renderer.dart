@@ -14,7 +14,7 @@ part 'music_card_shelf_renderer.g.dart';
 @JsonSerializable()
 class MusicCardShelfRenderer {
   final String? trackingParams;
-  final ThumbnailRenderer? thumbnails;
+  final ThumbnailRenderer? thumbnail;
   final Runs? title;
   final Runs? subtitle;
   final List<MusicResponsiveListItem>? contents;
@@ -25,7 +25,7 @@ class MusicCardShelfRenderer {
 
   const MusicCardShelfRenderer({
     this.trackingParams,
-    this.thumbnails,
+    this.thumbnail,
     this.title,
     this.subtitle,
     this.contents,

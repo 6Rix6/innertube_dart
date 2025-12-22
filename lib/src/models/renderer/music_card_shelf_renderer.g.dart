@@ -10,9 +10,9 @@ MusicCardShelfRenderer _$MusicCardShelfRendererFromJson(
   Map<String, dynamic> json,
 ) => MusicCardShelfRenderer(
   trackingParams: json['trackingParams'] as String?,
-  thumbnails: json['thumbnails'] == null
+  thumbnail: json['thumbnail'] == null
       ? null
-      : ThumbnailRenderer.fromJson(json['thumbnails'] as Map<String, dynamic>),
+      : ThumbnailRenderer.fromJson(json['thumbnail'] as Map<String, dynamic>),
   title: json['title'] == null
       ? null
       : Runs.fromJson(json['title'] as Map<String, dynamic>),
@@ -40,7 +40,7 @@ Map<String, dynamic> _$MusicCardShelfRendererToJson(
   MusicCardShelfRenderer instance,
 ) => <String, dynamic>{
   'trackingParams': instance.trackingParams,
-  'thumbnails': instance.thumbnails,
+  'thumbnail': instance.thumbnail,
   'title': instance.title,
   'subtitle': instance.subtitle,
   'contents': instance.contents,
