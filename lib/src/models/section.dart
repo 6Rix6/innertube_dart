@@ -81,6 +81,7 @@ class MusicCardShelfSection extends Section {
   final Runs? subtitle;
   final List<ButtonRenderer>? buttons;
   final MenuRenderer? menu;
+  final String? contentTitle;
 
   /// Browse endpoint
   final NavigationEndpoint? endpoint;
@@ -95,11 +96,13 @@ class MusicCardShelfSection extends Section {
     this.buttons,
     this.menu,
     this.endpoint,
+    this.contentTitle,
   });
 
   factory MusicCardShelfSection.fromRenderer(MusicCardShelfRenderer renderer) {
     final items = renderer.parseItems<YTItem>();
     final buttons = renderer.buttons?.map((e) => e.buttonRenderer).toList();
+    final contentTitle = renderer.getContentTitle();
 
     return MusicCardShelfSection(
       thumbnails: renderer.thumbnail?.musicThumbnailRenderer?.thumbnail,
@@ -109,6 +112,7 @@ class MusicCardShelfSection extends Section {
       endpoint: renderer.onTap,
       contents: items,
       title: renderer.title?.toString(),
+      contentTitle: contentTitle,
     );
   }
 }

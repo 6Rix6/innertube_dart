@@ -50,6 +50,15 @@ class MusicCardShelfRenderer {
               item,
     ];
   }
+
+  String? getContentTitle() {
+    if (contents == null) return null;
+    final content = contents!.firstWhere(
+      (e) => e.messageRenderer != null,
+      orElse: () => MusicCardShelfRendererContent(),
+    );
+    return content.messageRenderer?.text.toString();
+  }
 }
 
 @JsonSerializable()
