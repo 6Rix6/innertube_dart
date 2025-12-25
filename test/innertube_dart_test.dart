@@ -261,13 +261,14 @@ void main() {
       );
       await youtube.initialize();
       final result = await youtube.player(
-        'Jv7lwTiq7iw',
+        'P-VpNTjB9_A',
         client: YouTubeClient.android,
       );
       if (isDebug && result.isSuccess) {
         print(result.value.playabilityStatus.status);
         print(result.value.videoDetails?.title);
         print(result.value.videoDetails?.author);
+        print(result.value.videoDetails?.thumbnail.thumbnails);
         print(result.value.streamingData?.adaptiveFormats);
         print(result.value.streamingData?.serverAbrStreamingUrl);
       }

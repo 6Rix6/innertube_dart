@@ -27,4 +27,7 @@ class Thumbnail {
   factory Thumbnail.fromJson(Map<String, dynamic> json) =>
       _$ThumbnailFromJson(json);
   Map<String, dynamic> toJson() => _$ThumbnailToJson(this);
+
+  @override
+  String toString() => 'Thumbnail(url: $url, width: $width, height: $height)';
 }
