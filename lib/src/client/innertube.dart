@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+
 import 'package:innertube_dart/src/models/body/account_body.dart';
+import 'package:innertube_dart/src/models/body/browse_body.dart';
+import 'package:innertube_dart/src/models/body/next_body.dart';
+import 'package:innertube_dart/src/models/body/player_body.dart';
+import 'package:innertube_dart/src/models/body/search_body.dart';
 import 'package:innertube_dart/src/models/context.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
+import 'package:innertube_dart/src/models/youtube_client.dart';
+import 'package:innertube_dart/src/models/youtube_locale.dart';
+
 import 'package:innertube_dart/src/utils/result.dart';
-import '../models/youtube_client.dart';
-import '../models/youtube_locale.dart';
-import '../models/body/browse_body.dart';
-import '../models/body/search_body.dart';
-import '../models/body/player_body.dart';
-import '../utils/utils.dart';
+import 'package:innertube_dart/src/utils/utils.dart';
 
 class InnerTube {
   late Dio _httpClient;
@@ -280,6 +283,31 @@ class InnerTube {
     );
 
     return _httpClient.post('player', data: body.toJson(), options: options);
+  }
+
+  Future<Response> next(
+    YouTubeClient client, {
+    String? videoId,
+    String? playlistId,
+    String? playlistSetVideoId,
+    int? index,
+    String? params,
+    String? continuation,
+  }) {
+    final options = Options();
+    _ytClient(options.toRequestOptions(), client, setLogin: true);
+
+    final body = NextBody(
+      context: client.toContext(locale, dataSyncId, null),
+      videoId: videoId,
+      playlistId: playlistId,
+      playlistSetVideoId: playlistSetVideoId,
+      index: index,
+      params: params,
+      continuation: continuation,
+    );
+
+    return _httpClient.post('next', data: body.toJson(), options: options);
   }
 
   Future<Response> accountMenu(YouTubeClient client) async {

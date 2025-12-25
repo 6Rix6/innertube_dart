@@ -275,6 +275,15 @@ void main() {
       expect(result.isSuccess, isTrue);
     });
 
+    test('Next Api is working', () async {
+      final youtube = YouTube(
+        locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
+      );
+      await youtube.initialize();
+      await youtube.next('7QvXU4ieyIA', playlistId: 'RDAMVM7QvXU4ieyIA');
+      expect(true, isTrue);
+    });
+
     test('Account Info Api is working', () async {
       final youtube = YouTube(
         cookie: testCookie,

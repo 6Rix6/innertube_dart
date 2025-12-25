@@ -283,6 +283,40 @@ class YouTube {
     }
   }
 
+  /// Get next response for a video
+  ///
+  /// [videoId] - Video ID
+  /// [playlistId] - Optional playlist ID
+  /// [playlistSetVideoId] - Optional playlist set video ID
+  /// [index] - Optional index
+  /// [params] - Optional params
+  /// [continuation] - Optional continuation
+  /// Returns a Result containing NextResponse or an error
+  Future<void> next(
+    String videoId, {
+    String? playlistId,
+    String? playlistSetVideoId,
+    int? index,
+    String? params,
+    String? continuation,
+  }) async {
+    try {
+      final response = await _innerTube.next(
+        YouTubeClient.webRemix,
+        videoId: videoId,
+        playlistId: playlistId,
+        playlistSetVideoId: playlistSetVideoId,
+        index: index,
+        params: params,
+        continuation: continuation,
+      );
+
+      print(response.data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   /// Get account info
   ///
   /// [client] - YouTube client to use (default: YouTubeClient.webRemix)
