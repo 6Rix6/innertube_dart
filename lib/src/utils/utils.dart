@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:innertube_dart/src/models/album.dart';
+import 'package:innertube_dart/src/utils/parse_time.dart';
 import 'dart:math' as math;
 
 import '../models/artist.dart';
@@ -58,6 +60,34 @@ List<Artist> parseArtistRuns(List<Run>? runs) {
     }
   }
   return artists;
+}
+
+Album? parseAlbumRuns(List<Run>? runs) {
+  final albumRun = runs?.firstWhere(
+    (run) =>
+        run.navigationEndpoint?.browseEndpoint?.browseId?.startsWith(
+          'MPREb_',
+        ) ??
+        false,
+    orElse: () => Run(text: ''),
+  );
+
+  if (albumRun == null) return null;
+
+  final name = albumRun.text;
+  final id = albumRun.navigationEndpoint?.browseEndpoint?.browseId;
+
+  if (name.isEmpty || id == null || id.isEmpty) return null;
+
+  return Album(name: name, id: id);
+}
+
+Duration? parseTimeText(String? timeText) {
+  if (timeText == null) return null;
+  final isValidText = isValidTimeFormat(timeText);
+  if (!isValidText) return null;
+
+  return Duration(seconds: parseTime(timeText) ?? 0);
 }
 
 bool isExplicit(List<Badge>? badges) {

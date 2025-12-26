@@ -1,5 +1,4 @@
 import 'package:innertube_dart/innertube_dart.dart';
-import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:test/test.dart';
 
 const testCookie =
@@ -36,7 +35,7 @@ void main() {
         thumbnails: Thumbnails(
           thumbnails: [Thumbnail(url: 'https://example.com/thumb.jpg')],
         ),
-        duration: 354,
+        duration: Duration(seconds: 354),
       );
 
       expect(song.id, equals('dQw4w9WgXcQ'));
@@ -280,8 +279,16 @@ void main() {
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
-      await youtube.next('7QvXU4ieyIA', playlistId: 'RDAMVM7QvXU4ieyIA');
-      expect(true, isTrue);
+      final result = await youtube.next(
+        '7QvXU4ieyIA',
+        playlistId: 'RDAMVM7QvXU4ieyIA',
+      );
+      if (isDebug && result.isSuccess) {
+        for (var item in result.value.items) {
+          print('title: ${item.title}, id: ${item.id}');
+        }
+      }
+      expect(result.isSuccess, isTrue);
     });
 
     test('Account Info Api is working', () async {

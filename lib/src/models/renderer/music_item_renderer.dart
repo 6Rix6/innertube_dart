@@ -124,7 +124,7 @@ class MusicResponsiveListItemRenderer {
           )
           .text;
     }
-    final duration = parseTime(durationText);
+    final duration = parseTimeText(durationText);
 
     // Get view count
     final viewCountText =

@@ -61,9 +61,7 @@ Map<String, dynamic> _$PlaylistPanelVideoToJson(PlaylistPanelVideo instance) =>
 PlaylistPanelVideoRenderer _$PlaylistPanelVideoRendererFromJson(
   Map<String, dynamic> json,
 ) => PlaylistPanelVideoRenderer(
-  title: json['title'] == null
-      ? null
-      : Runs.fromJson(json['title'] as Map<String, dynamic>),
+  title: Runs.fromJson(json['title'] as Map<String, dynamic>),
   longBylineText: json['longBylineText'] == null
       ? null
       : Runs.fromJson(json['longBylineText'] as Map<String, dynamic>),
@@ -88,7 +86,7 @@ PlaylistPanelVideoRenderer _$PlaylistPanelVideoRendererFromJson(
       : NavigationEndpoint.fromJson(
           json['queueNavigationEndpoint'] as Map<String, dynamic>,
         ),
-  videoId: json['videoId'] as String?,
+  videoId: json['videoId'] as String,
   playlistSetVideoId: json['playlistSetVideoId'] as String?,
   playlistEditParams: json['playlistEditParams'] as String?,
   menu: json['menu'] == null

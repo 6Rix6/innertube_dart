@@ -15,7 +15,9 @@ SongItem _$SongItemFromJson(Map<String, dynamic> json) => SongItem(
   album: json['album'] == null
       ? null
       : Album.fromJson(json['album'] as Map<String, dynamic>),
-  duration: (json['duration'] as num?)?.toInt(),
+  duration: json['duration'] == null
+      ? null
+      : Duration(microseconds: (json['duration'] as num).toInt()),
   chartPosition: (json['chartPosition'] as num?)?.toInt(),
   chartChange: json['chartChange'] as String?,
   viewCount: json['viewCount'] as String?,
@@ -42,7 +44,7 @@ Map<String, dynamic> _$SongItemToJson(SongItem instance) => <String, dynamic>{
   'title': instance.title,
   'artists': instance.artists,
   'album': instance.album,
-  'duration': instance.duration,
+  'duration': instance.duration?.inMicroseconds,
   'chartPosition': instance.chartPosition,
   'chartChange': instance.chartChange,
   'viewCount': instance.viewCount,

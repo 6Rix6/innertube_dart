@@ -23,7 +23,7 @@ class SongItem extends YTItem {
 
   final List<Artist>? artists;
   final Album? album;
-  final int? duration;
+  final Duration? duration;
   final int? chartPosition;
   final String? chartChange;
   final String? viewCount;
@@ -100,7 +100,7 @@ class SongItem extends YTItem {
           )
           .text;
     }
-    final duration = parseTime(durationText);
+    final duration = parseTimeText(durationText);
 
     // Get view count
     final viewCountText = renderer

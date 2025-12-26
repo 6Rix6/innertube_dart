@@ -1,11 +1,13 @@
-import 'package:innertube_dart/src/models/endpoints.dart';
-import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
-import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:innertube_dart/src/models/endpoints.dart';
+import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
+import 'package:innertube_dart/src/models/song_item.dart';
+import 'package:innertube_dart/src/models/thumbnails.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:innertube_dart/src/models/runs.dart';
+import 'package:innertube_dart/src/utils/utils.dart';
 
 part 'playlist_panel_renderer.g.dart';
 
@@ -59,7 +61,7 @@ class PlaylistPanelVideo {
 
 @JsonSerializable()
 class PlaylistPanelVideoRenderer {
-  final Runs? title;
+  final Runs title;
   final Runs? longBylineText;
   final Runs? shortBylineText;
   final Runs? lengthText;
@@ -68,13 +70,13 @@ class PlaylistPanelVideoRenderer {
   final bool canReorder;
   final NavigationEndpoint? navigationEndpoint;
   final NavigationEndpoint? queueNavigationEndpoint;
-  final String? videoId;
+  final String videoId;
   final String? playlistSetVideoId;
   final String? playlistEditParams;
   final Menu? menu;
 
   const PlaylistPanelVideoRenderer({
-    this.title,
+    required this.title,
     this.longBylineText,
     this.shortBylineText,
     this.lengthText,
@@ -83,7 +85,7 @@ class PlaylistPanelVideoRenderer {
     this.canReorder = true,
     this.navigationEndpoint,
     this.queueNavigationEndpoint,
-    this.videoId,
+    required this.videoId,
     this.playlistSetVideoId,
     this.playlistEditParams,
     this.menu,
@@ -93,4 +95,15 @@ class PlaylistPanelVideoRenderer {
       _$PlaylistPanelVideoRendererFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaylistPanelVideoRendererToJson(this);
+
+  SongItem toSongItem() => SongItem(
+    id: videoId,
+    title: title.toString(),
+    thumbnails: thumbnail,
+    artists: parseArtistRuns(longBylineText?.runs),
+    album: parseAlbumRuns(shortBylineText?.runs),
+    duration: parseTimeText(lengthText?.toString()),
+    setVideoId: playlistSetVideoId,
+    menu: menu?.menuRenderer,
+  );
 }

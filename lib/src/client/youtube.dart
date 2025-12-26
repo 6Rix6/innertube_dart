@@ -4,6 +4,7 @@ import 'package:innertube_dart/src/models/response/next_response.dart';
 import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
+import 'package:innertube_dart/src/pages/next_page.dart';
 import 'package:innertube_dart/src/pages/search_page.dart';
 
 import '../pages/album_page.dart';
@@ -293,7 +294,7 @@ class YouTube {
   /// [params] - Optional params
   /// [continuation] - Optional continuation
   /// Returns a Result containing NextResponse or an error
-  Future<void> next(
+  Future<Result<NextPage>> next(
     String videoId, {
     String? playlistId,
     String? playlistSetVideoId,
@@ -316,30 +317,11 @@ class YouTube {
         response.data as Map<String, dynamic>,
       );
 
-      final queue = nextResponse
-          .contents
-          ?.singleColumnMusicWatchNextResultsRenderer
-          .tabbedRenderer
-          ?.watchNextTabbedResultsRenderer
-          ?.tabs
-          .firstOrNull
-          ?.tabRenderer
-          .content
-          ?.musicQueueRenderer
-          ?.content
-          ?.playlistPanelRenderer
-          .contents;
+      final nextPage = NextPage.fromNextResponse(nextResponse);
 
-      if (queue != null) {
-        for (final item in queue) {
-          final renderer = item.playlistPanelVideoRenderer;
-          print(
-            '${renderer.title?.toString()} ${renderer.selected ? '☑' : '☐'}',
-          );
-        }
-      }
+      return Result.success(nextPage);
     } catch (e) {
-      print(e);
+      return Result.error(e);
     }
   }
 
