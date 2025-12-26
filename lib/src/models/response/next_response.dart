@@ -7,22 +7,24 @@ part 'next_response.g.dart';
 
 @JsonSerializable()
 class NextResponse {
-  final Map<String, dynamic>? responseContext;
   final SingleColumnMusicWatchNextResults? contents;
   final NavigationEndpoint? currentVideoEndpoint;
   final Map<String, dynamic>? playerOverlays;
-  final Map<String, dynamic>? videoReporting;
   final String? trackingParams;
   final String? queueContextParams;
 
+  // unnecessary
+  final Map<String, dynamic>? responseContext;
+  final Map<String, dynamic>? videoReporting;
+
   NextResponse({
     this.contents,
-    this.responseContext,
     this.currentVideoEndpoint,
     this.playerOverlays,
-    this.videoReporting,
     this.trackingParams,
     this.queueContextParams,
+    this.responseContext,
+    this.videoReporting,
   });
 
   factory NextResponse.fromJson(Map<String, dynamic> json) =>
