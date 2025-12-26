@@ -1,3 +1,5 @@
+import 'package:innertube_dart/innertube_dart.dart';
+import 'package:innertube_dart/src/models/renderer/music_queue_renderer.dart';
 import 'package:innertube_dart/src/models/renderer/section_list_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,11 +17,12 @@ class Tab {
 
 @JsonSerializable()
 class TabRenderer {
-  final SectionList? content;
+  final TabRendererContent? content;
   final String? title;
   final bool? selected;
   final String? tabIdentifier;
   final String trackingParams;
+  final NavigationEndpoint? endpoint;
 
   const TabRenderer({
     this.content,
@@ -27,6 +30,7 @@ class TabRenderer {
     this.selected,
     this.tabIdentifier,
     required this.trackingParams,
+    this.endpoint,
   });
 
   factory TabRenderer.fromJson(Map<String, dynamic> json) =>
@@ -34,13 +38,14 @@ class TabRenderer {
   Map<String, dynamic> toJson() => _$TabRendererToJson(this);
 }
 
-// @JsonSerializable()
-// class TabRendererContent {
-//   final SectionListRenderer? sectionListRenderer;
+@JsonSerializable()
+class TabRendererContent {
+  final SectionListRenderer? sectionListRenderer;
+  final MusicQueueRenderer? musicQueueRenderer;
 
-//   const TabRendererContent({this.sectionListRenderer});
+  const TabRendererContent({this.sectionListRenderer, this.musicQueueRenderer});
 
-//   factory TabRendererContent.fromJson(Map<String, dynamic> json) =>
-//       _$TabRendererContentFromJson(json);
-//   Map<String, dynamic> toJson() => _$TabRendererContentToJson(this);
-// }
+  factory TabRendererContent.fromJson(Map<String, dynamic> json) =>
+      _$TabRendererContentFromJson(json);
+  Map<String, dynamic> toJson() => _$TabRendererContentToJson(this);
+}

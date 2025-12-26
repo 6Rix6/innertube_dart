@@ -6,17 +6,24 @@ part of 'continuations.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Continuations _$ContinuationsFromJson(Map<String, dynamic> json) =>
-    Continuations(
-      nextContinuationData: json['nextContinuationData'] == null
-          ? null
-          : NextContinuationData.fromJson(
-              json['nextContinuationData'] as Map<String, dynamic>,
-            ),
-    );
+Continuation _$ContinuationFromJson(Map<String, dynamic> json) => Continuation(
+  nextContinuationData: json['nextContinuationData'] == null
+      ? null
+      : NextContinuationData.fromJson(
+          json['nextContinuationData'] as Map<String, dynamic>,
+        ),
+  nextRadioContinuationData: json['nextRadioContinuationData'] == null
+      ? null
+      : NextContinuationData.fromJson(
+          json['nextRadioContinuationData'] as Map<String, dynamic>,
+        ),
+);
 
-Map<String, dynamic> _$ContinuationsToJson(Continuations instance) =>
-    <String, dynamic>{'nextContinuationData': instance.nextContinuationData};
+Map<String, dynamic> _$ContinuationToJson(Continuation instance) =>
+    <String, dynamic>{
+      'nextContinuationData': instance.nextContinuationData,
+      'nextRadioContinuationData': instance.nextRadioContinuationData,
+    };
 
 NextContinuationData _$NextContinuationDataFromJson(
   Map<String, dynamic> json,

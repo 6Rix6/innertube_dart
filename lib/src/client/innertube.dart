@@ -224,7 +224,7 @@ class InnerTube {
     YouTubeClient client, {
     String? browseId,
     String? params,
-    Continuations? continuation,
+    Continuation? continuation,
     bool setLogin = true,
   }) async {
     final options = RequestOptions();

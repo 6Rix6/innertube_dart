@@ -13,7 +13,7 @@ SectionList _$SectionListFromJson(Map<String, dynamic> json) => SectionList(
           json['sectionListRenderer'] as Map<String, dynamic>,
         ),
   continuations: (json['continuations'] as List<dynamic>?)
-      ?.map((e) => Continuations.fromJson(e as Map<String, dynamic>))
+      ?.map((e) => Continuation.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
@@ -32,7 +32,7 @@ SectionListRenderer _$SectionListRendererFromJson(Map<String, dynamic> json) =>
           )
           .toList(),
       continuations: (json['continuations'] as List<dynamic>?)
-          ?.map((e) => Continuations.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Continuation.fromJson(e as Map<String, dynamic>))
           .toList(),
       trackingParams: json['trackingParams'] as String?,
       header: json['header'] == null

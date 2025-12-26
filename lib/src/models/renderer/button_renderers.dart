@@ -24,9 +24,8 @@ class ToggleButtonRenderer {
   final bool? isDisabled;
   final Icon? defaultIcon;
   final Icon? toggledIcon;
-  // TODO: create model
-  final dynamic defaultServiceEndpoint;
-  final dynamic toggledServiceEndpoint;
+  final NavigationEndpoint defaultServiceEndpoint;
+  final NavigationEndpoint toggledServiceEndpoint;
   final Accessibility? accessibilityData;
   final Accessibility? toggledAccessibilityData;
 

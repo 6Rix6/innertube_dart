@@ -11,7 +11,7 @@ class PlaylistPage {
   final PlaylistItem playlist;
   final List<SongItem> songs;
   final String? songsContinuation;
-  final List<Continuations>? continuations;
+  final List<Continuation>? continuations;
 
   final Thumbnails? background;
   final BrowseResponse response;

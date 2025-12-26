@@ -23,10 +23,3 @@ Map<String, dynamic> _$MessageRendererToJson(MessageRenderer instance) =>
       'text': instance.text,
       'style': instance.style,
     };
-
-Style _$StyleFromJson(Map<String, dynamic> json) =>
-    Style(value: json['value'] as String?);
-
-Map<String, dynamic> _$StyleToJson(Style instance) => <String, dynamic>{
-  'value': instance.value,
-};

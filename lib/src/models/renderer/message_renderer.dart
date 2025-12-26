@@ -1,5 +1,7 @@
-import 'package:innertube_dart/src/models/runs.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'package:innertube_dart/src/models/runs.dart';
+import 'package:innertube_dart/src/models/style.dart';
 
 part 'message_renderer.g.dart';
 
@@ -15,15 +17,4 @@ class MessageRenderer {
       _$MessageRendererFromJson(json);
 
   Map<String, dynamic> toJson() => _$MessageRendererToJson(this);
-}
-
-@JsonSerializable()
-class Style {
-  final String? value;
-
-  const Style({this.value});
-
-  factory Style.fromJson(Map<String, dynamic> json) => _$StyleFromJson(json);
-
-  Map<String, dynamic> toJson() => _$StyleToJson(this);
 }

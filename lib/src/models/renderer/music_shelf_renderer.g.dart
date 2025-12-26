@@ -17,7 +17,7 @@ MusicShelfRenderer _$MusicShelfRendererFromJson(Map<String, dynamic> json) =>
           )
           .toList(),
       continuations: (json['continuations'] as List<dynamic>?)
-          ?.map((e) => Continuations.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Continuation.fromJson(e as Map<String, dynamic>))
           .toList(),
       trackingParams: json['trackingParams'] as String?,
       bottomText: json['bottomText'] == null

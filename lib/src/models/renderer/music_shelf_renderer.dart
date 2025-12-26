@@ -12,7 +12,7 @@ part 'music_shelf_renderer.g.dart';
 class MusicShelfRenderer {
   final Runs? title;
   final List<MusicResponsiveListItem>? contents;
-  final List<Continuations>? continuations;
+  final List<Continuation>? continuations;
   final String? trackingParams;
   final Runs? bottomText;
   final NavigationEndpoint? bottomEndpoint;

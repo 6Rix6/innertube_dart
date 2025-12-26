@@ -1,6 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'package:innertube_dart/src/models/endpoints.dart';
 import 'package:innertube_dart/src/models/runs.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:innertube_dart/src/models/style.dart';
+import 'package:innertube_dart/src/models/icon.dart';
 
 part 'chip_cloud_renderer.g.dart';
 
@@ -48,16 +51,22 @@ class ChipCloudChip {
 
 @JsonSerializable()
 class ChipCloudChipRenderer {
-  Runs? text;
-  NavigationEndpoint? navigationEndpoint;
-  NavigationEndpoint? onDeselectedCommand;
-  bool isSelected;
+  final Runs? text;
+  final NavigationEndpoint? navigationEndpoint;
+  final NavigationEndpoint? onDeselectedCommand;
+  final bool isSelected;
+  final Style? style;
+  final Icon? icon;
+  final String? uniqueId;
 
-  ChipCloudChipRenderer({
+  const ChipCloudChipRenderer({
     this.text,
     this.navigationEndpoint,
     this.onDeselectedCommand,
     this.isSelected = false,
+    this.style,
+    this.icon,
+    this.uniqueId,
   });
 
   factory ChipCloudChipRenderer.fromJson(Map<String, dynamic> json) =>

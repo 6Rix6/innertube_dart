@@ -10,7 +10,7 @@ import 'package:innertube_dart/src/models/thumbnails.dart';
 
 class HomePage {
   final List<Section> sections;
-  final List<Continuations>? continuations;
+  final List<Continuation>? continuations;
   final HomePageHeader? header;
   final Thumbnails? background;
 

@@ -59,6 +59,13 @@ ChipCloudChipRenderer _$ChipCloudChipRendererFromJson(
           json['onDeselectedCommand'] as Map<String, dynamic>,
         ),
   isSelected: json['isSelected'] as bool? ?? false,
+  style: json['style'] == null
+      ? null
+      : Style.fromJson(json['style'] as Map<String, dynamic>),
+  icon: json['icon'] == null
+      ? null
+      : Icon.fromJson(json['icon'] as Map<String, dynamic>),
+  uniqueId: json['uniqueId'] as String?,
 );
 
 Map<String, dynamic> _$ChipCloudChipRendererToJson(
@@ -68,4 +75,7 @@ Map<String, dynamic> _$ChipCloudChipRendererToJson(
   'navigationEndpoint': instance.navigationEndpoint,
   'onDeselectedCommand': instance.onDeselectedCommand,
   'isSelected': instance.isSelected,
+  'style': instance.style,
+  'icon': instance.icon,
+  'uniqueId': instance.uniqueId,
 };

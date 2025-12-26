@@ -19,11 +19,14 @@ Map<String, dynamic> _$TabToJson(Tab instance) => <String, dynamic>{
 TabRenderer _$TabRendererFromJson(Map<String, dynamic> json) => TabRenderer(
   content: json['content'] == null
       ? null
-      : SectionList.fromJson(json['content'] as Map<String, dynamic>),
+      : TabRendererContent.fromJson(json['content'] as Map<String, dynamic>),
   title: json['title'] as String?,
   selected: json['selected'] as bool?,
   tabIdentifier: json['tabIdentifier'] as String?,
   trackingParams: json['trackingParams'] as String,
+  endpoint: json['endpoint'] == null
+      ? null
+      : NavigationEndpoint.fromJson(json['endpoint'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TabRendererToJson(TabRenderer instance) =>
@@ -33,4 +36,25 @@ Map<String, dynamic> _$TabRendererToJson(TabRenderer instance) =>
       'selected': instance.selected,
       'tabIdentifier': instance.tabIdentifier,
       'trackingParams': instance.trackingParams,
+      'endpoint': instance.endpoint,
+    };
+
+TabRendererContent _$TabRendererContentFromJson(Map<String, dynamic> json) =>
+    TabRendererContent(
+      sectionListRenderer: json['sectionListRenderer'] == null
+          ? null
+          : SectionListRenderer.fromJson(
+              json['sectionListRenderer'] as Map<String, dynamic>,
+            ),
+      musicQueueRenderer: json['musicQueueRenderer'] == null
+          ? null
+          : MusicQueueRenderer.fromJson(
+              json['musicQueueRenderer'] as Map<String, dynamic>,
+            ),
+    );
+
+Map<String, dynamic> _$TabRendererContentToJson(TabRendererContent instance) =>
+    <String, dynamic>{
+      'sectionListRenderer': instance.sectionListRenderer,
+      'musicQueueRenderer': instance.musicQueueRenderer,
     };

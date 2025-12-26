@@ -15,7 +15,7 @@ part 'section_list_renderer.g.dart';
 @JsonSerializable()
 class SectionList {
   final SectionListRenderer? sectionListRenderer;
-  final List<Continuations>? continuations;
+  final List<Continuation>? continuations;
 
   const SectionList({this.sectionListRenderer, this.continuations});
 
@@ -28,7 +28,7 @@ class SectionList {
 @JsonSerializable()
 class SectionListRenderer {
   final List<SectionListRendererContent>? contents;
-  final List<Continuations>? continuations;
+  final List<Continuation>? continuations;
   final String? trackingParams;
   final SectionListHeader? header;
 

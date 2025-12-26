@@ -27,8 +27,12 @@ ToggleButtonRenderer _$ToggleButtonRendererFromJson(
   toggledIcon: json['toggledIcon'] == null
       ? null
       : Icon.fromJson(json['toggledIcon'] as Map<String, dynamic>),
-  defaultServiceEndpoint: json['defaultServiceEndpoint'],
-  toggledServiceEndpoint: json['toggledServiceEndpoint'],
+  defaultServiceEndpoint: NavigationEndpoint.fromJson(
+    json['defaultServiceEndpoint'] as Map<String, dynamic>,
+  ),
+  toggledServiceEndpoint: NavigationEndpoint.fromJson(
+    json['toggledServiceEndpoint'] as Map<String, dynamic>,
+  ),
   accessibilityData: json['accessibilityData'] == null
       ? null
       : Accessibility.fromJson(

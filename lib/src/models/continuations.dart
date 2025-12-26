@@ -3,19 +3,23 @@ import 'package:json_annotation/json_annotation.dart';
 part 'continuations.g.dart';
 
 @JsonSerializable()
-class Continuations {
+class Continuation {
   final NextContinuationData? nextContinuationData;
+  final NextContinuationData? nextRadioContinuationData;
 
-  const Continuations({this.nextContinuationData});
+  const Continuation({
+    this.nextContinuationData,
+    this.nextRadioContinuationData,
+  });
 
-  factory Continuations.fromJson(Map<String, dynamic> json) =>
-      _$ContinuationsFromJson(json);
+  factory Continuation.fromJson(Map<String, dynamic> json) =>
+      _$ContinuationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ContinuationsToJson(this);
+  Map<String, dynamic> toJson() => _$ContinuationToJson(this);
 
   @override
   String toString() {
-    return 'Continuations(nextContinuationData: $nextContinuationData)';
+    return 'Continuation(nextContinuationData: $nextContinuationData)';
   }
 }
 

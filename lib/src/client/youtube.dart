@@ -1,5 +1,6 @@
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/response/account_menu_response.dart';
+import 'package:innertube_dart/src/models/response/next_response.dart';
 import 'package:innertube_dart/src/pages/account_menu_page.dart';
 import 'package:innertube_dart/src/pages/artist_page.dart';
 import 'package:innertube_dart/src/pages/home_page.dart';
@@ -226,7 +227,7 @@ class YouTube {
   /// Get home feed
   ///
   /// Returns a Result containing HomePage or an error
-  Future<Result<HomePage>> home({Continuations? continuation}) async {
+  Future<Result<HomePage>> home({Continuation? continuation}) async {
     try {
       // Call InnerTube browse API
       final response = await _innerTube.browse(
@@ -311,7 +312,32 @@ class YouTube {
         continuation: continuation,
       );
 
-      print(response.data);
+      final nextResponse = NextResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      final queue = nextResponse
+          .contents
+          ?.singleColumnMusicWatchNextResultsRenderer
+          .tabbedRenderer
+          ?.watchNextTabbedResultsRenderer
+          ?.tabs
+          .firstOrNull
+          ?.tabRenderer
+          .content
+          ?.musicQueueRenderer
+          ?.content
+          ?.playlistPanelRenderer
+          .contents;
+
+      if (queue != null) {
+        for (final item in queue) {
+          final renderer = item.playlistPanelVideoRenderer;
+          print(
+            '${renderer.title?.toString()} ${renderer.selected ? '☑' : '☐'}',
+          );
+        }
+      }
     } catch (e) {
       print(e);
     }
