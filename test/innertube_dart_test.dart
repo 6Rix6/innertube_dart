@@ -279,14 +279,23 @@ void main() {
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
-      final result = await youtube.next(
-        '7QvXU4ieyIA',
-        playlistId: 'RDAMVM7QvXU4ieyIA',
-      );
+      final result = await youtube.next('7QvXU4ieyIA', 'RDAMVM7QvXU4ieyIA');
       if (isDebug && result.isSuccess) {
         for (var item in result.value.items) {
           print('title: ${item.title}, id: ${item.id}');
         }
+      }
+      expect(result.isSuccess, isTrue);
+    });
+
+    test('Get playlist endpoint api is working', () async {
+      final youtube = YouTube(
+        locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
+      );
+      await youtube.initialize();
+      final result = await youtube.getPlaylistEndpoint('Al0wOHVx2yo');
+      if (isDebug && result.isSuccess) {
+        print(result.value.playlistId);
       }
       expect(result.isSuccess, isTrue);
     });

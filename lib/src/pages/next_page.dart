@@ -61,12 +61,13 @@ class NextPage {
 
     final items =
         panelContents
-            ?.map((e) => e.playlistPanelVideoRenderer.toSongItem())
+            ?.map((e) => e.playlistPanelVideoRenderer?.toSongItem())
+            .whereType<SongItem>()
             .toList() ??
         <SongItem>[];
 
     final currentIndex = panelContents?.indexWhere(
-      (e) => e.playlistPanelVideoRenderer.selected,
+      (e) => e.playlistPanelVideoRenderer?.selected ?? false,
     );
 
     return NextPage(

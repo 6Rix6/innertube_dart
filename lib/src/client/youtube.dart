@@ -1,3 +1,4 @@
+import 'package:innertube_dart/innertube_dart.dart';
 import 'package:innertube_dart/src/models/continuations.dart';
 import 'package:innertube_dart/src/models/response/account_menu_response.dart';
 import 'package:innertube_dart/src/models/response/next_response.dart';
@@ -295,13 +296,14 @@ class YouTube {
   /// [continuation] - Optional continuation
   /// Returns a Result containing NextResponse or an error
   Future<Result<NextPage>> next(
-    String videoId, {
-    String? playlistId,
+    String? videoId,
+    String? playlistId, {
     String? playlistSetVideoId,
     int? index,
     String? params,
     String? continuation,
   }) async {
+    assert(videoId != null || playlistId != null);
     try {
       final response = await _innerTube.next(
         YouTubeClient.webRemix,
@@ -320,6 +322,53 @@ class YouTube {
       final nextPage = NextPage.fromNextResponse(nextResponse);
 
       return Result.success(nextPage);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  /// Get playlist endpoint for a song
+  ///
+  /// [songId] - Song ID
+  /// Returns a Result containing watchPlaylistEndpoint or an error
+  Future<Result<WatchPlaylistEndpoint>> getPlaylistEndpoint(
+    String songId,
+  ) async {
+    try {
+      final response = await _innerTube.next(
+        YouTubeClient.webRemix,
+        videoId: songId,
+      );
+
+      final nextResponse = NextResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      final endpoint = nextResponse
+          .contents
+          ?.singleColumnMusicWatchNextResultsRenderer
+          .tabbedRenderer
+          ?.watchNextTabbedResultsRenderer
+          ?.tabs
+          .firstOrNull
+          ?.tabRenderer
+          .content
+          ?.musicQueueRenderer
+          ?.content
+          ?.playlistPanelRenderer
+          .contents
+          ?.firstWhere((e) => e.automixPreviewVideoRenderer != null)
+          .automixPreviewVideoRenderer
+          ?.content
+          .automixPlaylistVideoRenderer
+          ?.navigationEndpoint
+          .watchPlaylistEndpoint;
+
+      if (endpoint == null) {
+        throw Exception('Failed to get playlist endpoint');
+      }
+
+      return Result.success(endpoint);
     } catch (e) {
       return Result.error(e);
     }

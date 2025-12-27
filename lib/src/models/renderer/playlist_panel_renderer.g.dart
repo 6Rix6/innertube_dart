@@ -31,7 +31,9 @@ PlaylistPanelRenderer _$PlaylistPanelRendererFromJson(
       ?.map((e) => Continuation.fromJson(e as Map<String, dynamic>))
       .toList(),
   contents: (json['contents'] as List<dynamic>?)
-      ?.map((e) => PlaylistPanelVideo.fromJson(e as Map<String, dynamic>))
+      ?.map(
+        (e) => PlaylistPanelRendererContent.fromJson(e as Map<String, dynamic>),
+      )
       .toList(),
 );
 
@@ -44,6 +46,28 @@ Map<String, dynamic> _$PlaylistPanelRendererToJson(
   'shuffleToggleButton': instance.shuffleToggleButton,
   'continuations': instance.continuations,
   'contents': instance.contents,
+};
+
+PlaylistPanelRendererContent _$PlaylistPanelRendererContentFromJson(
+  Map<String, dynamic> json,
+) => PlaylistPanelRendererContent(
+  playlistPanelVideoRenderer: json['playlistPanelVideoRenderer'] == null
+      ? null
+      : PlaylistPanelVideoRenderer.fromJson(
+          json['playlistPanelVideoRenderer'] as Map<String, dynamic>,
+        ),
+  automixPreviewVideoRenderer: json['automixPreviewVideoRenderer'] == null
+      ? null
+      : AutomixPreviewVideoRenderer.fromJson(
+          json['automixPreviewVideoRenderer'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$PlaylistPanelRendererContentToJson(
+  PlaylistPanelRendererContent instance,
+) => <String, dynamic>{
+  'playlistPanelVideoRenderer': instance.playlistPanelVideoRenderer,
+  'automixPreviewVideoRenderer': instance.automixPreviewVideoRenderer,
 };
 
 PlaylistPanelVideo _$PlaylistPanelVideoFromJson(Map<String, dynamic> json) =>

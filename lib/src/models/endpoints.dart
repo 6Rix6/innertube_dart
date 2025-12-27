@@ -75,10 +75,10 @@ class WatchEndpoint {
 
 @JsonSerializable()
 class WatchPlaylistEndpoint {
-  final String playlistId;
+  final String? playlistId;
   final String? params;
 
-  const WatchPlaylistEndpoint({required this.playlistId, this.params});
+  const WatchPlaylistEndpoint({this.playlistId, this.params});
 
   factory WatchPlaylistEndpoint.fromJson(Map<String, dynamic> json) =>
       _$WatchPlaylistEndpointFromJson(json);

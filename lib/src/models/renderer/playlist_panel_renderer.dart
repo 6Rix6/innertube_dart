@@ -1,3 +1,4 @@
+import 'package:innertube_dart/src/models/renderer/automix_preview_video_renderer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:innertube_dart/src/models/endpoints.dart';
@@ -30,7 +31,7 @@ class PlaylistPanelRenderer {
   final int? numItemsToShow;
   final ToggleButton? shuffleToggleButton;
   final List<Continuation>? continuations;
-  final List<PlaylistPanelVideo>? contents;
+  final List<PlaylistPanelRendererContent>? contents;
 
   const PlaylistPanelRenderer({
     this.playlistId,
@@ -45,6 +46,22 @@ class PlaylistPanelRenderer {
       _$PlaylistPanelRendererFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaylistPanelRendererToJson(this);
+}
+
+@JsonSerializable()
+class PlaylistPanelRendererContent {
+  final PlaylistPanelVideoRenderer? playlistPanelVideoRenderer;
+  final AutomixPreviewVideoRenderer? automixPreviewVideoRenderer;
+
+  const PlaylistPanelRendererContent({
+    this.playlistPanelVideoRenderer,
+    this.automixPreviewVideoRenderer,
+  });
+
+  factory PlaylistPanelRendererContent.fromJson(Map<String, dynamic> json) =>
+      _$PlaylistPanelRendererContentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaylistPanelRendererContentToJson(this);
 }
 
 @JsonSerializable()

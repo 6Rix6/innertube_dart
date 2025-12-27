@@ -79,7 +79,7 @@ Map<String, dynamic> _$WatchEndpointToJson(WatchEndpoint instance) =>
 WatchPlaylistEndpoint _$WatchPlaylistEndpointFromJson(
   Map<String, dynamic> json,
 ) => WatchPlaylistEndpoint(
-  playlistId: json['playlistId'] as String,
+  playlistId: json['playlistId'] as String?,
   params: json['params'] as String?,
 );
 

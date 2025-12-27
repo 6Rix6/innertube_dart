@@ -39,6 +39,7 @@ class SongItem extends YTItem {
   final bool explicit;
 
   final String? setVideoId;
+  final String? playlistId;
   final String? libraryAddToken;
   final String? libraryRemoveToken;
   final String? historyRemoveToken;
@@ -58,6 +59,7 @@ class SongItem extends YTItem {
     this.isVideo = false,
     this.explicit = false,
     this.setVideoId,
+    this.playlistId,
     this.libraryAddToken,
     this.libraryRemoveToken,
     this.historyRemoveToken,
@@ -163,6 +165,8 @@ class SongItem extends YTItem {
     final titleText = renderer.title?.runs?.firstOrNull?.text;
     if (titleText == null) return null;
 
+    final playlistId = renderer.navigationEndpoint?.watchEndpoint?.playlistId;
+
     final artists = parseArtistRuns(renderer.subtitle?.runs);
 
     final thumbnails =
@@ -192,6 +196,7 @@ class SongItem extends YTItem {
       thumbnails: thumbnails,
       explicit: explicit,
       isVideo: isVideo,
+      playlistId: playlistId,
     );
   }
 
