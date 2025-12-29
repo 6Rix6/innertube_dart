@@ -62,7 +62,7 @@ Map<String, dynamic> _$BrowseEndpointToJson(BrowseEndpoint instance) =>
 
 WatchEndpoint _$WatchEndpointFromJson(Map<String, dynamic> json) =>
     WatchEndpoint(
-      videoId: json['videoId'] as String,
+      videoId: json['videoId'] as String?,
       playlistId: json['playlistId'] as String?,
       index: (json['index'] as num?)?.toInt(),
       params: json['params'] as String?,

@@ -265,8 +265,8 @@ class InnerTube {
     String? playlistId,
     int? signatureTimestamp,
   }) async {
-    final options = Options();
-    _ytClient(options.toRequestOptions(), client, setLogin: true);
+    final options = RequestOptions();
+    _ytClient(options, client, setLogin: true);
 
     final body = PlayerBody(
       context: client.toContext(locale, dataSyncId, null),
@@ -282,7 +282,11 @@ class InnerTube {
           : null,
     );
 
-    return _httpClient.post('player', data: body.toJson(), options: options);
+    return _httpClient.post(
+      'player',
+      data: body.toJson(),
+      // options: Options(headers: options.headers),
+    );
   }
 
   Future<Response> next(
@@ -294,8 +298,8 @@ class InnerTube {
     String? params,
     String? continuation,
   }) {
-    final options = Options();
-    _ytClient(options.toRequestOptions(), client, setLogin: true);
+    final options = RequestOptions();
+    _ytClient(options, client, setLogin: true);
 
     final body = NextBody(
       context: client.toContext(locale, dataSyncId, null),
@@ -307,7 +311,11 @@ class InnerTube {
       continuation: continuation,
     );
 
-    return _httpClient.post('next', data: body.toJson(), options: options);
+    return _httpClient.post(
+      'next',
+      data: body.toJson(),
+      options: Options(headers: options.headers),
+    );
   }
 
   Future<Response> accountMenu(YouTubeClient client) async {

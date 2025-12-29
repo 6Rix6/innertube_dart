@@ -116,6 +116,7 @@ class PlaylistPanelVideoRenderer {
   SongItem toSongItem() => SongItem(
     id: videoId,
     title: title.toString(),
+    subtitle: shortBylineText,
     thumbnails: thumbnail,
     artists: parseArtistRuns(longBylineText?.runs),
     album: parseAlbumRuns(shortBylineText?.runs),

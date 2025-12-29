@@ -56,17 +56,12 @@ class BrowseEndpoint {
 
 @JsonSerializable()
 class WatchEndpoint {
-  final String videoId;
+  final String? videoId;
   final String? playlistId;
   final int? index;
   final String? params;
 
-  const WatchEndpoint({
-    required this.videoId,
-    this.playlistId,
-    this.index,
-    this.params,
-  });
+  const WatchEndpoint({this.videoId, this.playlistId, this.index, this.params});
 
   factory WatchEndpoint.fromJson(Map<String, dynamic> json) =>
       _$WatchEndpointFromJson(json);
