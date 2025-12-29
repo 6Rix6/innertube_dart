@@ -35,6 +35,7 @@ class AlbumPage {
 
       final playlistId = response.getPlaylistId();
       final title = header.titleText;
+      final subtitle = header.subtitle;
       final thumbnails = header.thumbnails;
       final backgroundThumbnails = response.backgroundThumbnails;
 
@@ -54,6 +55,7 @@ class AlbumPage {
         browseId: browseId,
         playlistId: playlistId,
         title: title,
+        subtitle: subtitle,
         artists: artists.isNotEmpty ? artists : null,
         year: year,
         albumTypeText: albumTypeText,

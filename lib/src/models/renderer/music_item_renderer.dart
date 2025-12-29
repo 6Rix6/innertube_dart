@@ -153,7 +153,19 @@ class MusicResponsiveListItemRenderer {
       );
     }
 
-    final subtitle = flexColumns[1].flexColumnRenderer?.text;
+    final subtitleRunsList = flexColumns
+        .skip(1) // skip title runs
+        .map((e) => e.flexColumnRenderer?.text?.runs)
+        .whereType<List<Run>>()
+        .toList();
+    final separator = Run(text: " • ");
+    final List<Run> subtitleRuns = [
+      for (int i = 0; i < subtitleRunsList.length; i++) ...[
+        ...subtitleRunsList[i],
+        if (i < subtitleRunsList.length - 1) separator,
+      ],
+    ];
+    final subtitle = Runs(runs: subtitleRuns);
 
     // Get explicit
     final explicit = isExplicit(badges);

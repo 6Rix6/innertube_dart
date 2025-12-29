@@ -5,6 +5,7 @@ import 'package:innertube_dart/src/models/renderer/button_renderers.dart';
 import 'package:innertube_dart/src/models/renderer/menu_renderers.dart';
 import 'package:innertube_dart/src/models/runs.dart';
 import 'package:innertube_dart/src/models/thumbnails.dart';
+import 'package:innertube_dart/src/utils/utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'thumbnail_renderer.dart';
 
@@ -59,13 +60,7 @@ class MusicResponsiveHeaderRenderer {
     final artists = <Artist>[];
     final runs = straplineTextOne?.runs;
     if (runs != null) {
-      // Get odd elements (artists, skipping separators)
-      for (var i = 0; i < runs.length; i += 2) {
-        final run = runs[i];
-        final name = run.text;
-        final id = run.navigationEndpoint?.browseEndpoint?.browseId;
-        artists.add(Artist(name: name, id: id));
-      }
+      artists.addAll(parseArtistRuns(runs));
     }
     return artists;
   }
