@@ -22,6 +22,7 @@ class AlbumItem extends YTItem {
   final String title;
 
   final Runs? subtitle;
+  final Runs? secondSubtitle;
   final List<Artist>? artists;
   final String? year;
   final String? albumTypeText;
@@ -42,6 +43,7 @@ class AlbumItem extends YTItem {
     String? id,
     required this.title,
     this.subtitle,
+    this.secondSubtitle,
     this.artists,
     this.year,
     this.albumTypeText,
