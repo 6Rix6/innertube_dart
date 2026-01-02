@@ -36,7 +36,6 @@ class BrowseResponse {
     // Try microformat first
     final urlCanonical =
         microformat?['microformatDataRenderer']?['urlCanonical'] as String?;
-    print(urlCanonical);
     if (urlCanonical != null && urlCanonical.contains('=')) {
       return urlCanonical.split('=').last;
     }

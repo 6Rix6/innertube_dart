@@ -89,11 +89,6 @@ class ArtistPage {
       throw Exception('No header found');
     }
 
-    print("Artist: $name");
-    print("Description: $description");
-    print("Thumbnail URL: $thumbnailUrl");
-    print("Subscriber Count: $subscriberCountText");
-
     // Parse sections
     final sections = <Section>[];
     for (final content in sectionContents) {
