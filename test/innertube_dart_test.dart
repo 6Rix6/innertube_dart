@@ -279,7 +279,10 @@ void main() {
         locale: YouTubeLocale(gl: 'JP', hl: 'ja'),
       );
       await youtube.initialize();
-      final result = await youtube.next('7QvXU4ieyIA', 'RDAMVM7QvXU4ieyIA');
+      final result = await youtube.next(
+        playlistId: 'OLAK5uy_nUV_hiPmCZPbN9ElX0Yn0NdZQ_qmaSKb0',
+        params: 'wAEB8gECKAE%3D',
+      );
       if (isDebug && result.isSuccess) {
         for (var item in result.value.items) {
           print('title: ${item.title}, id: ${item.id}');

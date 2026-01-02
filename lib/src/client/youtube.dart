@@ -287,17 +287,18 @@ class YouTube {
   }
 
   /// Get next response for a video
+  /// Video ID or Playlist ID is required
   ///
   /// [videoId] - Video ID
-  /// [playlistId] - Optional playlist ID
+  /// [playlistId] - Playlist ID
   /// [playlistSetVideoId] - Optional playlist set video ID
   /// [index] - Optional index
   /// [params] - Optional params
   /// [continuation] - Optional continuation
   /// Returns a Result containing NextResponse or an error
-  Future<Result<NextPage>> next(
+  Future<Result<NextPage>> next({
     String? videoId,
-    String? playlistId, {
+    String? playlistId,
     String? playlistSetVideoId,
     int? index,
     String? params,
