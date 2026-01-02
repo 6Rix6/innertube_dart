@@ -36,6 +36,7 @@ class BrowseResponse {
     // Try microformat first
     final urlCanonical =
         microformat?['microformatDataRenderer']?['urlCanonical'] as String?;
+    print(urlCanonical);
     if (urlCanonical != null && urlCanonical.contains('=')) {
       return urlCanonical.split('=').last;
     }
@@ -43,86 +44,8 @@ class BrowseResponse {
     return null;
   }
 
-  /// Helper to get title from header
-  // String? getTitle() {
-  //   // Try twoColumnBrowseResultsRenderer
-  //   final musicHeader = getMusicResponsiveHeader();
-  //   if (musicHeader != null) {
-  //     final runs = musicHeader.title?.runs;
-  //     if (runs != null && runs.isNotEmpty) {
-  //       return runs.first.text;
-  //     }
-  //   }
-
-  //   return null;
-  // }
-
-  /// Helper to get author name from header (only for playlist)
-  // Artist? getAuthor() {
-  //   Artist? author;
-  //   // Try twoColumnBrowseResultsRenderer
-  //   final musicHeader = getMusicResponsiveHeader();
-  //   if (musicHeader != null) {
-  //     final avatarStackViewModel = musicHeader.facepile?.avatarStackViewModel;
-  //     final name = avatarStackViewModel?.text.content;
-  //     final id = avatarStackViewModel
-  //         ?.rendererContext
-  //         .commandContext
-  //         ?.onTap
-  //         ?.innertubeCommand
-  //         ?.browseEndpoint
-  //         ?.browseId;
-  //     final thumbnailUrl = avatarStackViewModel
-  //         ?.avatars
-  //         ?.first
-  //         .avatarViewModel
-  //         .image
-  //         .sources
-  //         .first
-  //         .url;
-  //     if (name != null && name.isNotEmpty) {
-  //       author = Artist(name: name, id: id, thumbnailUrl: thumbnailUrl);
-  //     }
-  //   }
-
-  //   return author;
-  // }
-
-  /// Helper to get song count text from header (only for playlist)
-  // String? getSongCountText() {
-  //   // Try twoColumnBrowseResultsRenderer
-  //   final musicHeader = getMusicResponsiveHeader();
-  //   if (musicHeader != null) {
-  //     final runs = musicHeader.secondSubtitle?.runs;
-  //     if (runs != null && runs.isNotEmpty) {
-  //       return runs[2].text;
-  //     }
-  //   }
-
-  //   return null;
-  // }
-
-  /// Helper to get thumbnail
-  // Thumbnails? getThumbnails() {
-  //   final musicHeader = getMusicResponsiveHeader();
-  //   final thumbnails = musicHeader?.thumbnail?.musicThumbnailRenderer.thumbnail;
-
-  //   return thumbnails;
-  // }
-
   Thumbnails? get backgroundThumbnails =>
       background?.musicThumbnailRenderer?.thumbnail;
-
-  MusicResponsiveHeaderRenderer? getMusicResponsiveHeader() {
-    final tabs = contents?.twoColumnBrowseResultsRenderer?.tabs;
-    if (tabs == null || tabs.isEmpty) return null;
-
-    final sectionContents =
-        tabs.first.tabRenderer.content?.sectionListRenderer?.contents;
-    if (sectionContents == null || sectionContents.isEmpty) return null;
-
-    return sectionContents.first.musicResponsiveHeaderRenderer;
-  }
 
   @override
   String toString() {
