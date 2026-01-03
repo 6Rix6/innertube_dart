@@ -57,6 +57,8 @@ List<Artist> parseArtistRuns(List<Run>? runs) {
       if (id.startsWith('UC')) {
         artists.add(Artist(name: run.text, id: id));
       }
+    } else if (run.text == 'Various Artists') {
+      artists.add(Artist(name: run.text, id: null));
     }
   }
   return artists;
